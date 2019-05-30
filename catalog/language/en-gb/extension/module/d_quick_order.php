@@ -8,6 +8,7 @@
 
 
 $_['d_quick_order_error_field'] = 'Please enter a';
+$_['d_quick_order_error_incorrect_product_id'] = 'Please add to quick card correct product!';
 
 $_['d_quick_order_success_submit'] = 'Thank you! We will contact you shortly for more details. Your request ID is: %s';
 $_['d_quick_order_error_no_email'] = 'Please enter an e-mail address.';

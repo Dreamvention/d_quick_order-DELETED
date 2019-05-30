@@ -11,9 +11,15 @@ $_['text_module']                               = 'Modules';
 $_['text_undefined']                            = 'Undefined';
 
 // main tabs
-$_['tab_event']                                 = 'Open Orders';
-$_['tab_setting']                               = 'Setting';
-$_['tab_instruction']                           = 'Instructions';
+$_['tab_heading_orders']                        = 'Orders';
+$_['tab_heading_orders_icon']                   = '<span class="fa fa-shopping-basket"></span>';
+$_['tab_heading_setting']                       = 'Setting';
+$_['tab_heading_setting_icon']                  = '<span class="fa fa-cog"></span>';
+$_['tab_heading_instruction']                   = 'Instructions';
+$_['tab_heading_instruction_icon']              = '<span class="fa fa-info-circle"></span>';
+
+// Ajax responce
+$_['ajax_success_delete']                       = 'Successfully deleted';
 
 // tabs in settings tab
 $_['tab_basic_setting']                         = 'Basic Settings';
@@ -34,6 +40,8 @@ $_['tab_import']                                = 'Import';
 $_['text_upload']                               = 'File imported successfully';
 $_['error_upload']                              = 'The file can not be imported';
 
+$_['column_order_id']                           = 'Order ID';
+$_['column_product']                            = 'Product';
 $_['column_product_name']                       = 'Product Name';
 $_['column_product_description']                = "Product Description";
 $_['column_column_qty']                         = "Product Qty";
@@ -41,6 +49,7 @@ $_['column_product_price']                      = "Product Price";
 $_['column_customer_name']                      = "Client Name";
 $_['column_customer_email']                     = "Client Email";
 $_['column_customer_phone']                     = "Client Phone";
+$_['column_customer_comment']                   = "Client Comment";
 $_['column_date_added']                         = "Created At";
 $_['column_sort_order']                         = "Status";
 $_['column_action']                             = "Actions";

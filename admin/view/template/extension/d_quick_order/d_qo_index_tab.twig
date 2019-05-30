@@ -1,0 +1,162 @@
+<div class="tab-pane active" id="tab_event">
+    <div class="tab-body">
+        <div id="filter" class="well">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-code">{{ filter_product_name }}</label>
+                        <input type="text" name="filter_product_name"
+                               value="{{ filter_product_name }}"
+                               placeholder="{{ filter_product_name }}" id="input-code"
+                               class="form-control"
+                               data-item="filter_product_name"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="input-trigger">{{ entry_trigger }}</label>
+                        <input type="text" name="filter_trigger" value="{{ filter_trigger }}"
+                               placeholder="{{ entry_trigger }}" id="input-trigger"
+                               class="form-control" data-item="trigger"/>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-event-action">{{ entry_action }}</label>
+                        <input type="text" name="filter_action" value="{{ filter_action }}"
+                               placeholder="{{ entry_action }}" id="input-event-action"
+                               class="form-control" data-item="action"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="input-status">{{ entry_status }}</label>
+                        <select name="filter_status" id="input-status" class="form-control">
+                            <option value="*"></option>
+                            {% if filter_status %}
+                                <option value="1" selected="selected">{{ text_enabled }} </option>
+                            {% else %}
+                                <option value="1">{{ text_enabled }} </option>
+                            {% endif %}
+                            {% if not filter_status and filter_status is not null %}
+                                <option value="0" selected="selected">{{ text_disabled }} </option>
+                            {% else %}
+                                <option value="0">{{ text_disabled }} </option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <button type="button" id="button-filter" class="btn btn-primary pull-right">
+                        <i class="fa fa-search"></i> {{ button_filter }} </button>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-event">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td style="width: 1px;" class="text-center"><input type="checkbox"
+                                                                           onclick="$('input[name*=\'id\']').prop('checked', this.checked);"/>
+                        </td>
+                        <td class="text-left">
+                            {% if sort == 'product_name' %}
+                                <a href="{{ sort_product_name }}"
+                                   class="{{ order|lower }}">{{ column_product_name }} </a>
+                            {% else %}
+                                <a href="{{ sort_product_name }}">{{ column_product_name }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-left">
+                            {% if sort == 'product_price' %}
+                                <a href="{{ sort_product_price }}"
+                                   class="{{ order|lower }}">{{ column_product_price }} </a>
+                            {% else %}
+                                <a href="{{ sort_product_price }}">{{ column_product_price }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-left">
+                            {% if sort == 'product_qty' %}
+                                <a href="{{ sort_product_qty }}"
+                                   class="{{ order|lower }}">{{ column_product_qty }} </a>
+                            {% else %}
+                                <a href="{{ sort_product_qty }}">{{ column_product_qty }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-left">
+                            {% if sort == 'customer_name' %}
+                                <a href="{{ sort_customer_name }}"
+                                   class="{{ order|lower }}">{{ column_customer_name }} </a>
+                            {% else %}
+                                <a href="{{ sort_customer_name }}">{{ column_customer_name }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-left">
+                            {% if sort ==  'customer_email' %}
+                                <a href="{{ sort_customer_email }}"
+                                   class="{{ order|lower }}">{{ column_customer_email }} </a>
+                            {% else %}
+                                <a href="{{ sort_customer_email }}">{{ column_customer_email }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-left">
+                            {% if sort ==  'customer_phone' %}
+                                <a href="{{ sort_customer_phone }}"
+                                   class="{{ order|lower }}">{{ column_customer_phone }} </a>
+                            {% else %}
+                                <a href="{{ sort_customer_phone }}">{{ column_customer_phone }} </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if sort ==  'date_added' %}
+                                <a href="{{ sort_date_added }}"
+                                   class="{{ order|lower }}">{{ column_date_added }} </a>
+                            {% else %}
+                                <a href="{{ sort_date_added }}">{{ column_date_added }} </a>
+                            {% endif %}
+                        </td>
+                        <td class="text-right">{{ column_action }} </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if events %}
+                        {% for event in events %}
+                        <tr id="event_id_{{ event.event_id }}" {% if event.status %} class="enabled" {% endif %} ''>
+                            <td class="text-center">
+                                {% if event.event_id in selected|keys %}
+                                    <input type="checkbox" name="event_id[]" value="{{ event.event_id}}" checked="checked" />
+                                {% else %}
+                                    <input type="checkbox" name="event_id[]" value="{{ event.event_id }}" />
+                                {% endif %}
+                            </td>
+                            <td class="text-left">{{ event.product_name }} </td>
+                            <td class="text-left">{{ event.product_price }} </td>
+                            <td class="text-left">{{ event.customer_name }} </td>
+                            <td class="text-left">{{ event.customer_email }} </td>
+                            <td class="text-left">{{ event.customer_phone }} </td>
+                            <td class="text-left">{{ event.date_added }} </td>
+                            <td class="text-right">
+                                <a href="{{ event.enable }}" data-toggle="tooltip" title="{{ button_enable }}" data-event_id="{{ event.id }}" class="btn btn-success action enable"><i class="fa fa-thumbs-o-up"></i></a>
+                                <a href="{{ event.disable }}" data-toggle="tooltip" title="{{ button_disable }}" data-event_id="{{ event.id }}" class="btn btn-danger action disable"><i class="fa fa-thumbs-o-down"></i></a>
+                                <a href="{{ event.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary edit"><i class="fa fa-pencil"></i></a>
+                            </td>
+                        </tr>
+                         {% endfor %}
+                     {% else %}
+                        <tr>
+                            <td class="text-center" colspan="8">{{ text_no_results }} </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-6 text-left">{{ pagination }} </div>
+            <div class="col-sm-6 text-right">{{ results }} </div>
+        </div>
+    </div>
+</div>

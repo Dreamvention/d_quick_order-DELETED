@@ -200,7 +200,7 @@ class ModelExtensionModuleDQuickOrder extends Model
             `product_to_order_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
             `order_id` INT NOT NULL,
             `product_id` INT NOT NULL,
-            `product_name` varchar(191) NOT NULL, 
+            `name` varchar(191) NOT NULL, 
             `model` varchar(191) NULL, 
             `quantity` int(4) NOT NULL,
             `price` decimal(15,4) NOT NULL,
@@ -239,6 +239,11 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function deleteOrder($order_id)
     {
-        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_order` WHERE id='" . (int)$order_id . "'");
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_order` WHERE quick_order_id='" . (int)$order_id . "'");
+    }
+
+    public function deleteProductsOrder($order_id)
+    {
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_product_to_order` WHERE order_id='" . (int)$order_id . "'");
     }
 }

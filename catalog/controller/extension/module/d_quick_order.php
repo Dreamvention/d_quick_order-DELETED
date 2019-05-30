@@ -76,6 +76,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->setting = $this->model_setting_setting->getSetting($this->codename);
             $data = $this->setting['d_quick_order_setting'];
 
+            $data['language_id'] = $this->config->get('config_language_id');
+
             $html = $this->load->view('extension/module/' . $this->codename, $data);
 
             $html_dom = new d_simple_html_dom();
@@ -93,18 +95,58 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         if ($status) {
             $json = array();
             if ($this->validateAjaxOrder($this->request->post)) {
-                $result = $this->createOrder($this->request->post);
 
-                if ($result) {
-                    $lastid = $this->db->getLastId();
+                //$this->validateMinQtyRequirements();
+                // Validate minimum quantity requirements.
+                $product_id = (int)$this->request->post['d_qo_product_id'];
+                $product = $this->getProductInfo($product_id);
 
-                    $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'), $lastid);
+                $orderId = $this->createOrder($this->request->post);
+
+                if ($orderId) {
+                    $productToOrderId = $this->productToOrder($product, $orderId, (int)$this->request->post['amount']);
+
+                    if (!$productToOrderId) {
+                        $json['error'] = $this->error;
+                    }
+
+                    $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'), $orderId);
                 } else {
                     $json['error'] = $this->error;
                 }
 
             } else {
                 $json['error'] = $this->error;
+            }
+
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+        }
+    }
+
+    public function validateAddToCartProductIdAjax()
+    {
+        $this->load->model('setting/setting');
+        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+
+        if ($status) {
+            $json = array();
+
+            $this->load->language('extension/module/' . $this->codename);
+            $product_id = (int)$this->request->post['id'];
+            $product = $this->getProductInfo($product_id);
+
+//            var_dump($product);
+//            die();
+
+            if (!$product) {
+                $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
+            }else{
+                $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'), $product_id);
+                $json['product_image'] = $product['image'];
+                $json['product_name'] = $product['name'];
+                $json['product_model'] = $product['model'];
+                $json['product_quantity'] = $product['quantity'];
             }
 
             $this->response->addHeader('Content-Type: application/json');
@@ -161,6 +203,11 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                     break;
                 }
             }
+
+//            if ($key == "d_qo_product_id" && !empty($val)) {
+//                var_dump("d_qo_product_id");
+//                $product = $this->getProductInfo($val);
+//            }
         }
 
         if (!$this->error) {
@@ -168,6 +215,25 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
 
         return false;
+    }
+
+    public function validateMinQtyRequirements()
+    {
+        $products = $this->cart->getProducts();
+
+        foreach ($products as $product) {
+            $product_total = 0;
+
+            foreach ($products as $product_2) {
+                if ($product_2['product_id'] == $product['product_id']) {
+                    $product_total += $product_2['quantity'];
+                }
+            }
+
+            if ($product['minimum'] > $product_total) {
+                $this->response->redirect($this->url->link('checkout/cart'));
+            }
+        }
     }
 
     public function getProductInfo($id)
@@ -179,24 +245,179 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function createOrder($request)
     {
-        $product_id = (int)$request['d_qo_product_id'];
-        $product = $this->getProductInfo($product_id);
-        $productLink = $this->url->link('product/product', 'product_id=' . $product_id);
-        $user_session_token = $this->session->data['user_token'];
+        $this->load->model('account/custom_field');
 
-        $data['product_id'] = $request['d_qo_product_id'];
-        $data['product_name'] = $product['name'] ? $product['name'] : null;
-        $data['product_link'] = $productLink ? $productLink : null;
-        $data['product_price'] = $product['price'] ? $product['price'] : null;
-        $data['product_amount'] = $request['amount'] ? $request['amount'] : null;
-        $data['customer_session_id'] = $user_session_token ? $user_session_token : null;
-        $data['customer_name'] = $request['name'] ? $request['name'] : null;
-        $data['customer_email'] = $request['email'] ? $request['email'] : null;
-        $data['customer_phone'] = $request['phone'] ? $request['phone'] : null;
-        $data['customer_comment'] = $request['comment'] ? $request['comment'] : null;
-        $data['status'] = 'open';
+        // Customer Group
+        if (isset($this->request->get['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->get['customer_group_id'], $this->config->get('config_customer_group_display'))) {
+            $customer_group_id = $this->request->get['customer_group_id'];
+        } else {
+            $customer_group_id = $this->config->get('config_customer_group_id');
+        }
+
+        $this->load->language('checkout/checkout');
+        $order_data['store_id'] = $this->config->get('config_store_id');
+        if ($order_data['store_id']) {
+            $order_data['store_url'] = $this->config->get('config_url');
+        } else {
+            if ($this->request->server['HTTPS']) {
+                $order_data['store_url'] = HTTPS_SERVER;
+            } else {
+                $order_data['store_url'] = HTTP_SERVER;
+            }
+        }
+
+        $data['invoice_no'] = 0;
+        $data['invoice_prefix'] = $this->config->get('config_invoice_prefix') ? $this->config->get('config_invoice_prefix') : "";
+
+        $data['store_id'] = $order_data['store_id'];
+        $data['store_name'] = $this->config->get('config_name');
+        $data['store_url'] = $order_data['store_url'];
+
+        $this->load->model('account/customer');
+        if ($this->customer->isLogged()) {
+            $customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
+
+            $data['customer_id'] = $this->customer->getId();
+            $data['customer_group_id'] = $customer_info['customer_group_id'];
+            $data['firstname'] = $customer_info['firstname'];
+            $data['lastname'] = $customer_info['lastname'];
+            $data['email'] = $customer_info['email'];
+            $data['telephone'] = $customer_info['telephone'];
+            $data['fax'] = $customer_info['fax'];
+            $data['custom_field'] = [''];
+        } elseif (isset($this->session->data['guest'])) {
+            $data['customer_id'] = 0;
+            $data['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
+            $data['firstname'] = $request['name'] ? $request['name'] : $this->session->data['guest']['firstname'];
+            $data['lastname'] = $request['name'] ? $request['name'] : $this->session->data['guest']['lastname'];
+            $data['email'] = $request['email'] ? $request['email'] : $this->session->data['guest']['email'];
+            $data['telephone'] = $request['phone'] ? $request['phone'] : $this->session->data['guest']['telephone'];
+            $data['fax'] = '';
+            $data['custom_field'] = $this->session->data['guest']['custom_field'] ? $this->session->data['guest']['custom_field'] : "[]";
+        }
+
+        $data['payment_firstname'] = '';
+        $data['payment_lastname'] = '';
+        $data['payment_company'] = '';
+
+        $data['payment_address_1'] = isset($this->session->data['shipping_address']['address_1']) ? $this->session->data['shipping_address']['address_1'] : '';
+        $data['payment_address_2'] = isset($this->session->data['shipping_address']['address_2']) ? $this->session->data['shipping_address']['address_2'] : '';
+        $data['payment_city'] = isset($this->session->data['shipping_address']['city']) ? $this->session->data['shipping_address']['city'] : '';
+        $data['payment_postcode'] = '';
+        $data['payment_zone'] = '';
+        $data['payment_zone_id'] = isset($this->session->data['payment_address']['zone_id']) ? $this->session->data['payment_address']['zone_id'] : '';
+        $data['payment_country'] = isset($this->session->data['shipping_address']['city']) ? $this->session->data['shipping_address']['city'] : '';
+        $data['payment_country_id'] = isset($this->session->data['shipping_address']['country_id']) ? $this->session->data['shipping_address']['country_id'] : $this->config->get('config_country_id');
+        $data['payment_address_format'] = '';
+        $data['payment_custom_field'] = "[]";
+        $data['payment_method'] = '';
+        $data['payment_code'] = 'cod';
+
+
+        $data['shipping_firstname'] = isset($this->session->data['shipping_address']['firstname']) ? $this->session->data['shipping_address']['firstname'] : '';
+        $data['shipping_lastname'] = isset($this->session->data['shipping_address']['lastname']) ? $this->session->data['shipping_address']['lastname'] : '';
+        $data['shipping_company'] = isset($this->session->data['shipping_address']['company']) ? $this->session->data['shipping_address']['company'] : '';
+        $data['shipping_address_1'] = isset($this->session->data['shipping_address']['address_1']) ? $this->session->data['shipping_address']['address_1'] : '';
+        $data['shipping_address_2'] = isset($this->session->data['shipping_address']['address_2']) ? $this->session->data['shipping_address']['address_2'] : '';
+        $data['shipping_postcode'] = isset($this->session->data['shipping_address']['postcode']) ? $this->session->data['shipping_address']['postcode'] : '';
+        $data['shipping_city'] = isset($this->session->data['shipping_address']['city']) ? $this->session->data['shipping_address']['city'] : '';
+
+        $data['shipping_country'] = "";
+        $data['shipping_country_id'] = isset($this->session->data['shipping_address']['country_id']) ? $this->session->data['shipping_address']['country_id'] : 0;
+        $data['shipping_zone'] = '';
+        $data['shipping_zone_id'] = isset($this->session->data['shipping_address']['zone_id']) ? $this->session->data['shipping_address']['zone_id'] : 0;
+        $data['shipping_zone_code'] = "";
+        $data['shipping_address_format'] = '';
+        $data['shipping_custom_field'] = '[]';
+        $data['shipping_method'] = "";
+        $data['shipping_code'] = "";
+
+
+        $data['comment'] = $request['comment'] ? $request['comment'] : $this->session->data['guest']['telephone'];
+        $data['total'] = $request['amount'] ? $request['amount'] : 1;
+
+
+        $data['order_status_id'] = 0;
+        if (isset($this->request->cookie['tracking'])) {
+            $order_data['tracking'] = $this->request->cookie['tracking'];
+
+            $subtotal = $this->cart->getSubTotal();
+
+            // Affiliate
+            $affiliate_info = $this->model_account_customer->getAffiliateByTracking($this->request->cookie['tracking']);
+
+            if ($affiliate_info) {
+                $order_data['affiliate_id'] = $affiliate_info['customer_id'];
+                $order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
+            } else {
+                $order_data['affiliate_id'] = 0;
+                $order_data['commission'] = 0;
+            }
+
+            // Marketing
+            $this->load->model('checkout/marketing');
+            $marketing_info = $this->model_checkout_marketing->getMarketingByCode($this->request->cookie['tracking']);
+
+            if ($marketing_info) {
+                $order_data['marketing_id'] = $marketing_info['marketing_id'];
+            } else {
+                $order_data['marketing_id'] = 0;
+            }
+        } else {
+            $order_data['affiliate_id'] = 0;
+            $order_data['commission'] = 0;
+            $order_data['marketing_id'] = 0;
+            $order_data['tracking'] = '';
+        }
+
+        $data['affiliate_id'] = $order_data['affiliate_id'];
+        $data['commission'] = $order_data['commission'];
+        $data['marketing_id'] = $order_data['marketing_id'];
+        $data['tracking'] = $order_data['tracking'];
+
+
+        $order_data['language_id'] = $this->config->get('config_language_id');
+        $order_data['currency_id'] = $this->currency->getId($this->session->data['currency']);
+        $order_data['currency_code'] = $this->session->data['currency'];
+        $order_data['currency_value'] = $this->currency->getValue($this->session->data['currency']);
+        $order_data['ip'] = $this->request->server['REMOTE_ADDR'];
+
+        $data['language_id'] = $this->config->get('config_language_id');
+        $data['currency_id'] = $this->currency->getId($this->session->data['currency']);
+        $data['currency_code'] = $this->session->data['currency'];
+        $data['currency_value'] = $this->currency->getValue($this->session->data['currency']);
+        $data['ip'] = $this->request->server['REMOTE_ADDR'];
+
+
+        if (!empty($this->request->server['HTTP_X_FORWARDED_FOR'])) {
+            $order_data['forwarded_ip'] = $this->request->server['HTTP_X_FORWARDED_FOR'];
+        } elseif (!empty($this->request->server['HTTP_CLIENT_IP'])) {
+            $order_data['forwarded_ip'] = $this->request->server['HTTP_CLIENT_IP'];
+        } else {
+            $order_data['forwarded_ip'] = '';
+        }
+
+        $data['forwarded_ip'] = $order_data['forwarded_ip'];
+        $data['user_agent'] = isset($this->request->server['HTTP_USER_AGENT']) ? $this->request->server['HTTP_USER_AGENT'] : '';
+        $data['accept_language'] = isset($this->request->server['HTTP_ACCEPT_LANGUAGE']) ? $this->request->server['HTTP_ACCEPT_LANGUAGE'] : '';
 
         $this->load->model('extension/module/d_quick_order');
-        return $this->model_extension_module_d_quick_order->store($data);
+        return $this->model_extension_module_d_quick_order->addOrder($data);
+    }
+
+    public function productToOrder($product, $orderid, $qty)
+    {
+        $data['order_id'] = $orderid;
+        $data['product_id'] = $product['product_id'];
+        $data['name'] = $product['name'];
+        $data['model'] = $product['model'];
+        $data['quantity'] = $qty;
+        $data['price'] = $product['price'];
+        $data['total'] = $product['price'] * (int)$qty;
+        $data['tax'] = $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'));
+        $data['reward'] = "0";
+
+        $this->load->model('extension/module/d_quick_order');
+        return $this->model_extension_module_d_quick_order->productToOrder($data);
     }
 }

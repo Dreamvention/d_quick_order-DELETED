@@ -138,24 +138,27 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $results = $this->model_extension_module_d_quick_order->getOrders($filter_data);
 
+//        var_dump($event_total);
+//        var_dump($results);
+
         $data['events'] = array();
 
         foreach ($results as $result) {
-            $enable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/enable', 'id=' . $result['id'] . $url);
-            $disable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/disable', 'id=' . $result['id'] . $url);
+            $enable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/enable', 'id=' . $result['quick_order_id'] . $url);
+            $disable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/disable', 'id=' . $result['quick_order_id'] . $url);
 
             $data['events'][] = array(
-                'id' => $result['id'],
-                'product_name' => $result['product_name'],
-                'product_price' => $result['product_price'],
-                'customer_name' => $result['customer_name'],
-                'customer_email' => $result['customer_email'],
-                'customer_phone' => $result['customer_phone'],
+                'id' => $result['quick_order_id'],
+                'userName' => $result['firstname'],
+                'email' => $result['email'],
+                'telephone' => $result['telephone'],
+                'comment' => $result['comment'],
                 'status' => (isset($result['status'])) ? $result['status'] : 1,
                 'date_added' => $result['date_added'] ? date($result['date_added'], strtotime("Y-m-d H:i")) : '',
+
                 'enable' => $enable,
                 'disable' => $disable,
-                'edit' => $this->model_extension_d_opencart_patch_url->link($this->route . '/edit', 'id=' . $result['id'] . $url)
+                'edit' => $this->model_extension_d_opencart_patch_url->link($this->route . '/edit', 'id=' . $result['quick_order_id'] . $url)
             );
         }
 
@@ -170,6 +173,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         unset($url_params['sort']);
         $url = ((!empty($url_params)) ? '&' : '') . http_build_query($url_params);
+        $data['id'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=id' . $url);
         $data['sort_code'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=code' . $url);
         $data['sort_trigger'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_trigger' . $url);
         $data['sort_action'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_action' . $url);
@@ -212,7 +216,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['sort'] = $sort;
         $data['order'] = $order;
 
-
         //get setting
         $setting = $this->model_setting_setting->getSetting($this->codename, $this->store_id);
         if (!$setting) {
@@ -221,7 +224,23 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $data['setting'] = $setting;
         }
 
+        $this->load->model('localisation/language');
+        $data['languages'] = $this->model_localisation_language->getLanguages();
+        foreach ($data['languages'] as $key => $language) {
+            if (VERSION >= '2.2.0.0') {
+                $data['languages'][$key]['flag'] = 'language/' . $language['code'] . '/' . $language['code'] . '.png';
+            } else {
+                $data['languages'][$key]['flag'] = 'view/image/flags/' . $language['image'];
+            }
+        }
+
+        $data['tab_orders'] = $this->tabOrders($data);
+        $data['tab_settings'] = $this->tabSetting($data);
+        $data['tab_instructions'] = $this->tabInstructions($data);
+
         $this->addNecessaryStylesAndScripts();
+        $this->load->model('localisation/language');
+
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -230,23 +249,40 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput($this->model_extension_d_opencart_patch_load->view($this->route, $data));
     }
 
+    public function tabOrders($data)
+    {
+        return $this->load->view($this->route . '/tab_orders', $data);
+    }
+
+    public function tabSetting($data)
+    {
+
+
+        return $this->load->view($this->route . '/tab_setting', $data);
+    }
+
+    public function tabInstructions($data)
+    {
+        return $this->load->view($this->route . '/tab_instruction', $data);
+    }
+
     public function createOrder()
     {
         $json = array();
-        if(isset($this->request->post['quick_order_id'])){
+        if (isset($this->request->post['quick_order_id'])) {
             $quick_order_id = $this->request->post['quick_order_id'];
 
             $order_id = $this->model_quick_order->addOrder($quick_order_id);
-            if(order_id){
+            if ($order_id) {
                 $this->model_quick_order->editQuickOrder($quick_order_id, array('$order_id' => $order_id));
 
                 $this->session->data['success'] = $this->language->get('text_success_add_order');
-                $this->response->redirect($this->model_extension_d_opencart_patch_link->url('sale/order/edit','order_id='.$order_id));
-            }else{
-                $this->session->data['error']  = $this->language->get('text_error_add_order');
+                $this->response->redirect($this->model_extension_d_opencart_patch_link->url('sale/order/edit', 'order_id=' . $order_id));
+            } else {
+                $this->session->data['error'] = $this->language->get('text_error_add_order');
             }
 
-        }else{
+        } else {
             $this->session->data['error'] = $this->language->get('text_error_no_quick_order_id');
         }
 
@@ -745,26 +781,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput($this->model_extension_d_opencart_patch_load->view('extension/module/d_link_cart', $data));
     }
 
-    public function getViewed()
-    {
-        $this->load->model($this->route);
-        $json = array();
-        $json = $this->model_extension_module_d_link_cart->getViewedLinks();
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
-    public function getTopSales()
-    {
-        $this->load->model($this->route);
-        $json = array();
-        $json = $this->model_extension_module_d_link_cart->getTopSalesLinks();
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
     protected function validate()
     {
         if (!$this->user->hasPermission('modify', $this->route)) {
@@ -780,13 +796,23 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function delete()
     {
-        var_dump("delete action");
-        die();
+        $json = array();
 
-        $this->load->model($this->route);
-        $this->model_extension_module_d_link_cart->delete();
-        unset($this->session->data['success']);
-        $this->session->data['success'] = $this->language->get('success_delete');
+        if ($this->request->post['id']) {
+            $orderId = (int)$this->request->post['id'];
+
+            $this->load->model($this->route);
+
+            $this->model_extension_module_d_quick_order->deleteOrder($orderId);
+            $this->model_extension_module_d_quick_order->deleteProductsOrder($orderId);
+
+            $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'));
+        } else {
+            $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
     }
 
     public function edit_comment()

@@ -9,7 +9,7 @@
 $_['d_quick_order_setting'] = array(
     'config' => 'd_quick_order',
 
-    'text_button' => 'Quick Order',
+    'text_button' => array('1' => 'Quick Order'),
     'button_style' => array(
         'color' => 'white',
         'border' => 'black',

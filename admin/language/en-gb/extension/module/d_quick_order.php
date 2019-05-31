@@ -45,22 +45,28 @@ $_['column_product']                            = 'Product';
 $_['column_product_name']                       = 'Product Name';
 $_['column_product_description']                = "Product Description";
 $_['column_column_qty']                         = "Product Qty";
+$_['column_product_qty']                        = "Product Qty";
+$_['column_product_total']                      = "Total";
+$_['column_product_status']                     = "Status";
+$_['column_products_images']                    = "Products";
 $_['column_product_price']                      = "Product Price";
-$_['column_customer_name']                      = "Client Name";
-$_['column_customer_email']                     = "Client Email";
-$_['column_customer_phone']                     = "Client Phone";
-$_['column_customer_comment']                   = "Client Comment";
-$_['column_date_added']                         = "Created At";
+$_['column_customer_name']                      = "Name";
+$_['column_customer_email']                     = "Email";
+$_['column_customer_phone']                     = "Phone";
+$_['column_customer_comment']                   = "Comment";
+$_['column_date_added']                         = "Date Added";
 $_['column_sort_order']                         = "Status";
 $_['column_action']                             = "Actions";
 
-$_['filter_product_name']                       = 'Enter product name';
-$_['text_menu_post']                            = 'Posts';
+// filters
+$_['filter_customer_name']                      = 'Enter name';
+$_['filter_customer_email']                     = 'Enter email';
+$_['filter_product_phone']                      = 'Enter phone';
+$_['filter_order_status']                       = 'Status';
 
-$_['text_menu_post']                            = 'Posts';
-$_['text_menu_category']                        = 'Categories';
-$_['text_menu_review']                          = 'Reviews';
-$_['text_menu_author']                          = 'Authors';
+
+// Settings
+$_['entry_design_custom_style']                 = 'Set Custom Class';
 
 $_['text_install_twig_support']                 = 'Install Twig';
 $_['text_install_event_support']                = 'Install Events';
@@ -75,105 +81,11 @@ $_['help_incremental_no']                       = '(Remove all the old data befo
 $_['help_review_social_login']                  = '<h4>Social login</h4><p>If you have social login installed, you can allow visitors to write comments in posts by registrting through their social network account. You can <a href="http://www.opencart.com/index.php?route=extension/extension/info&extension_id=16711" target="_blank">upgrade social login here</a></p>';
 $_['help_style_short_description_display']      = '<h4>How it works?</h4><p>If you want to use any style for your post short description, turn on this switch. Be careful, this option disables the settings of "Set short description length" and will include html tags in short description.</p>';
 
-// Entry
-$_['entry_export_type']                         = 'Select which data you want to export:';
-$_['entry_incremental']                         = 'Use updating Import';
-$_['entry_upload']                              = 'Upload File';
-
-//entry
-$_['entry_status']                              = 'Status';
-$_['entry_theme']                               = 'Theme';
-$_['entry_category_main_category_id']           = 'Home category';
-$_['entry_category_image_display']              = 'Show main category image';
-$_['entry_category_layout']                     = 'Grid layout';
-$_['entry_category_layout_type']                = 'Layout type';
-$_['entry_category_post_page_limit']            = 'Post page limit';
-$_['entry_category_image_size']                 = 'Image size';
-$_['entry_category_sub_category_display']       = 'Display sub category';
-$_['entry_category_sub_category_col']           = 'Set columns for sub category';
-$_['entry_category_sub_category_image']         = 'Display sub category image';
-$_['entry_category_sub_category_post_count']    = 'Display sub category post count';
-$_['entry_category_sub_category_image_size']    = 'Sub category image size';
-$_['entry_main_post_display']					= 'Display posts on main page';
-$_['entry_limited_post_display'] 				= 'Display limited access posts';
-
-$_['entry_post_image_display']                  = 'Display main image';
-$_['entry_post_popup_display']                  = 'Display main image popup';
-$_['entry_post_image_size']                     = 'Image size';
-$_['entry_post_popup_size']                     = 'Popup size';
-$_['entry_post_author_display']                 = 'Display author';
-$_['entry_post_date_display']                   = 'Display date';
-$_['entry_post_date_format']                    = 'Date format';
-$_['entry_post_review_display']                 = 'Display reviews';
-$_['entry_post_rating_display']                 = 'Display rating';
-$_['entry_post_tag_display']					= 'Display tag';
-$_['entry_post_category_label_display']         = 'Display category label';
-$_['entry_post_short_description_length']       = 'Set short description length';
-$_['entry_post_style_short_description_display']= 'Display style for short description';
-$_['entry_post_nav_display']                    = 'Display Next and Prev links';
-$_['entry_post_nav_same_category']              = 'Scroll through Next and Prev links in same category';
-
-$_['entry_post_thumb_image_size']               = 'Image size';
-$_['entry_post_thumb_title_length']             = 'Set title length';
-$_['entry_post_thumb_short_description_length'] = 'Set length short description';
-$_['entry_post_thumb_description_length']       = 'Set length description';
-$_['entry_post_thumb_category_label']           = 'Set category label class';
-$_['entry_post_thumb_category_label_display']   = 'Display category label';
-$_['entry_post_thumb_author_display']           = 'Display author';
-$_['entry_post_thumb_date_display']             = 'Display date';
-$_['entry_post_thumb_date_format']              = 'Date format';
-$_['entry_post_thumb_rating_display']           = 'Display rating';
-$_['entry_post_thumb_description_display']      = 'Display short description';
-$_['entry_post_thumb_tag_display']              = 'Display tag';
-$_['entry_post_thumb_views_display']            = 'Display views';
-$_['entry_post_thumb_review_display']           = 'Display reviews';
-$_['entry_post_thumb_read_more_display']        = 'Display read more';
-$_['entry_post_thumb_animate']                  = 'Animate post thumb appearance';
-
-$_['entry_review_guest']                        = 'Allow guest reviews';
-$_['entry_review_social_login']                 = 'Social login';
-$_['entry_review_page_limit']                   = 'Reviews per page limit';
-$_['entry_review_rating_display']               = 'Display rating';
-$_['entry_review_customer_display']             = 'Display logged in customer info';
-$_['entry_review_moderate']                     = 'Moderate reviews';
-$_['entry_review_image_limit']                  = 'Number of pictures in review';
-$_['entry_review_image_user_display']           = 'Display images in review';
-$_['entry_review_upload_image_size']            = 'Size upload image';
-
-$_['entry_review_thumb_image_size']             = 'Profile image size';
-$_['entry_review_thumb_no_image']               = 'Set no image url link';
-$_['entry_review_thumb_date_display']           = 'Display date';
-$_['entry_review_thumb_image_display']          = 'Display profile image';
-$_['entry_review_thumb_rating_display']         = 'Display rating';
-$_['entry_review_thumb_image_user_display']     = 'Display add images in review';
-$_['entry_review_user_image_size']              = 'Uploaded image size';
-$_['entry_review_image_user_display']           = 'Add images to review';
-
-$_['entry_author_layout']                       = 'Grid Layout';
-$_['entry_author_layout_type']                  = 'Layout type';
-$_['entry_author_post_page_limit']              = 'Post page limit';
-$_['entry_author_image_size']                   = 'Image size';
-$_['entry_author_category_display']             = 'Display category';
-$_['entry_author_category_col']                 = 'Set columns for category';
-$_['entry_author_category_image']               = 'Display category image';
-$_['entry_author_category_post_count']          = 'Display category post count';
-$_['entry_author_category_image_size']          = 'Category image size';
-
-$_['entry_seo_lang_folder']                     = 'SubFolder for every language';
-$_['entry_seo_for_multi_lang']                  = 'Multi Language SEO URL';
-$_['entry_enabled_ssl_url']                     = 'Set the full path to your site';
-$_['help_enabled_ssl_url']                      = '<h4>For Multistore</h4><p>If you have mulistore activated, you will need to specify the direct url to your website where the real css and js files are located. This will remove relative links and add full path links, avoiding missing styles and other bugs. Ex: <code>'.HTTP_CATALOG.'</code></p>';
-
-$_['entry_design_custom_style']                 = 'Set Custom styles';
-
-$_['text_export_type_category']                 = 'Categories';
-$_['text_export_type_post']                     = 'Posts';
-$_['text_export_type_review']                   = 'Reviews';
-$_['text_export_type_author']                   = 'Authors';
-
 //button
 $_['button_save_and_stay']                      = 'Save and stay';
 $_['button_enabled_ssl']                        = 'Specify URL';
+$_['button_create_order']                       = 'Create order';
+$_['button_delete_order']                       = 'Delete order';
 
 //success
 $_['success_modifed']                           = 'Success: You have modified module Quick Order Module!';
@@ -215,6 +127,5 @@ $_['text_welcome_mobile_ready']     = 'Choose different <br> layouts and themes'
 $_['text_welcome_increase_sales']   = 'Add Dozens <br> of modules';
 
 $_['button_setup']                  = 'Setup';
-$_['checkbox_setup'] 				= 'Install Demo Data';
 $_['success_setup']                 = 'Success: You have now setup Quick Order Module! You should now see the blog link in the frontend category menu';
 $_['text_pro']                      = '<a href="https://dream.page.link/tc4X" target="_blank">For SEO Urls and Quick Order Modules get the Quick Order Module Pro</a>';

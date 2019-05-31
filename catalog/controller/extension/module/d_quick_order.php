@@ -76,7 +76,15 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->setting = $this->model_setting_setting->getSetting($this->codename);
             $data = $this->setting['d_quick_order_setting'];
 
-            $data['language_id'] = $this->config->get('config_language_id');
+            $this->load->model('localisation/language');
+            $data['languages'] = $this->model_localisation_language->getLanguages();
+            foreach ($data['languages'] as $key => $language) {
+                if (VERSION >= '2.2.0.0') {
+                    $data['languages'][$key]['flag'] = 'language/' . $language['code'] . '/' . $language['code'] . '.png';
+                } else {
+                    $data['languages'][$key]['flag'] = 'view/image/flags/' . $language['image'];
+                }
+            }
 
             $html = $this->load->view('extension/module/' . $this->codename, $data);
 
@@ -135,9 +143,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->load->language('extension/module/' . $this->codename);
             $product_id = (int)$this->request->post['id'];
             $product = $this->getProductInfo($product_id);
-
-//            var_dump($product);
-//            die();
 
             if (!$product) {
                 $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
@@ -234,6 +239,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $this->response->redirect($this->url->link('checkout/cart'));
             }
         }
+
     }
 
     public function getProductInfo($id)
@@ -246,13 +252,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public function createOrder($request)
     {
         $this->load->model('account/custom_field');
-
-        // Customer Group
-        if (isset($this->request->get['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->get['customer_group_id'], $this->config->get('config_customer_group_display'))) {
-            $customer_group_id = $this->request->get['customer_group_id'];
-        } else {
-            $customer_group_id = $this->config->get('config_customer_group_id');
-        }
 
         $this->load->language('checkout/checkout');
         $order_data['store_id'] = $this->config->get('config_store_id');

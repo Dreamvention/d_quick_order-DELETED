@@ -64,7 +64,7 @@
 
 #quickorderModal .wrapper-modal-qty{
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     height: 100%;
     width: 100%;
@@ -73,28 +73,47 @@
     font-size: 18px;
 }
 
+#quickorderModal .d-qo-wrapper-product{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 180px;
+}
+
+#quickorderModal .d-qo-product-image{
+    max-height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+}
+
 #quickorderModal .wrapper-modal-qty p{
     margin: 0;
     padding: 5px;
 }
 
 #quickorder_form #badge_selector{
-    min-width: 25px;
+    min-width: 26px;
     border-radius: 15px;
     padding: 7px 7px;
-    /*display: flex;*/
     align-items: center;
     justify-content: center;
+}
+
+#quickorderModal .q-qo-wrapper-submit-btn{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 #quickorderModal #dqo_submit {
     color: white;
     width: 125px;
     display: flex;
-    justify-content: flex-end;
-    float: right;
-    position: relative;
-    top: -2px;
+    justify-content: center;
     right: 0;
 }
 
@@ -107,8 +126,9 @@
 }
 
 .d-qo-product-image img{
-    width: 180px;
-    height: auto;
+    width: auto;
+    height: 180px;
+    max-height: 180px;
 }
 
 .wrapper-modal-qty p{

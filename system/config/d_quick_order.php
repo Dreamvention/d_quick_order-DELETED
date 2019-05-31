@@ -22,9 +22,9 @@ $_['d_quick_order_setting'] = array(
         'additional_class' => null,
     ),
 
-    'modal_heading_title' => 'Quick Order',
-    'modal_description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit . Debitis, ipsam . ',
-    'text_modal_button' => 'Quick Order Now!',
+    'modal_heading_title' => array('1' => 'Quick Order'),
+    'modal_description' => array('1' => 'Quick Order description'),
+    'text_modal_button' => array('1' => 'Quick Order Now'),
 
     'modal_field' => array(
         'name' => true,

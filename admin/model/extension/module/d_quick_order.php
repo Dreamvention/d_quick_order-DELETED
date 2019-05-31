@@ -8,6 +8,9 @@
 
 class ModelExtensionModuleDQuickOrder extends Model
 {
+    public $table = "d_qo_product_to_order";
+
+//    todo: addOrder
     public function store($data)
     {
         return $this->db->query("INSERT IGNORE INTO " . DB_PREFIX . "d_qo_order SET 
@@ -87,6 +90,13 @@ class ModelExtensionModuleDQuickOrder extends Model
         }
 
         $query = $this->db->query($sql);
+
+        return $query->rows;
+    }
+
+    public function getProductsByOrderId($quick_order_id)
+    {
+        $query = $this->db->query("SELECT op.*,p.image , op.*,p.model FROM " . DB_PREFIX . "d_qo_product_to_order op LEFT JOIN " . DB_PREFIX . "product p ON (p.product_id = op.product_id)  WHERE quick_order_id = '" . (int)$quick_order_id . "'");
 
         return $query->rows;
     }
@@ -235,6 +245,23 @@ class ModelExtensionModuleDQuickOrder extends Model
         }
 
         return $user_group_id;
+    }
+
+    public function editOrder($order_id, $data)
+    {
+        $this->db->query("UPDATE " . DB_PREFIX . "d_qo_order SET 
+            `firstname	` = '" . $this->db->escape($data['firstname'])."',
+            `email` = '" . $this->db->escape($data['email'])."',
+            `telephone` = '". $this->db->escape($data['telephone'])."'
+            `comment` = '". $this->db->escape($data['comment'])."'
+            WHERE quick_order_id = '" . (int)$order_id . "'");
+    }
+
+    public function getAllStatuses()
+    {
+        $statuses = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_status");
+
+        return $statuses->rows;
     }
 
     public function deleteOrder($order_id)

@@ -37,3 +37,11 @@ $_['d_quick_order_setting'] = array(
         'phone_format' => '+ 9(999)999 - 99 - 99',
     ),
 );
+
+$_['d_quick_order_statuses'] = array(
+    'pending' => array('order_status_id' => '0', 'name' => 'Processing'),
+    'processed' => array('order_status_id' => '1', 'name' => 'Processed'),
+    'canceled' => array('order_status_id' => '2', 'name' => 'Canceled'),
+);
+
+

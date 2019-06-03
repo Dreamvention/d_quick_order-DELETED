@@ -106,6 +106,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
                 //$this->validateMinQtyRequirements();
                 // Validate minimum quantity requirements.
+
                 $product_id = (int)$this->request->post['d_qo_product_id'];
                 $product = $this->getProductInfo($product_id);
 
@@ -147,7 +148,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             if (!$product) {
                 $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
             }else{
-                $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'), $product_id);
+                $json['success'] = 'ok';
                 $json['product_image'] = $product['image'];
                 $json['product_name'] = $product['name'];
                 $json['product_model'] = $product['model'];
@@ -252,6 +253,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public function createOrder($request)
     {
         $this->load->model('account/custom_field');
+        $this->load->model('extension/module/d_quick_order');
 
         $this->load->language('checkout/checkout');
         $order_data['store_id'] = $this->config->get('config_store_id');
@@ -336,7 +338,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['total'] = $request['amount'] ? $request['amount'] : 1;
 
 
-        $data['order_status_id'] = 0;
+//       Set Config Status Order Id
+        $statuses = $this->config->get($this->codename . '_statuses');
+
+        $data['order_status_id'] = $statuses['pending']['order_status_id'];
         if (isset($this->request->cookie['tracking'])) {
             $order_data['tracking'] = $this->request->cookie['tracking'];
 
@@ -400,7 +405,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['user_agent'] = isset($this->request->server['HTTP_USER_AGENT']) ? $this->request->server['HTTP_USER_AGENT'] : '';
         $data['accept_language'] = isset($this->request->server['HTTP_ACCEPT_LANGUAGE']) ? $this->request->server['HTTP_ACCEPT_LANGUAGE'] : '';
 
-        $this->load->model('extension/module/d_quick_order');
+
         return $this->model_extension_module_d_quick_order->addOrder($data);
     }
 

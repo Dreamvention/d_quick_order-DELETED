@@ -76,16 +76,16 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
 
         //Customer
-        if (isset($this->request->get['filter_code'])) {
-            $url_params['filter_code'] = urlencode(html_entity_decode($this->request->get['filter_code'], ENT_QUOTES, 'UTF-8'));
+        if (isset($this->request->get['filter_name'])) {
+            $url_params['filter_name'] = urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
         }
 
         if (isset($this->request->get['filter_email'])) {
             $url_params['filter_email'] = urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
         }
 
-        if (isset($this->request->get['filter_action'])) {
-            $url_params['filter_action'] = urlencode(html_entity_decode($this->request->get['filter_action'], ENT_QUOTES, 'UTF-8'));
+        if (isset($this->request->get['filter_phone'])) {
+            $url_params['filter_phone'] = urlencode(html_entity_decode($this->request->get['filter_phone'], ENT_QUOTES, 'UTF-8'));
         }
 
         if (isset($this->request->get['filter_date_added'])) {
@@ -112,11 +112,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->load->config('d_event_manager');
         }
 
-
         $filter_name = (isset($this->request->get['filter_name'])) ? $this->request->get['filter_name'] : null;
         $filter_email = (isset($this->request->get['filter_email'])) ? $this->request->get['filter_email'] : null;
-        $filter_action = (isset($this->request->get['filter_action'])) ? $this->request->get['filter_action'] : null;
-        $filter_status = (isset($this->request->get['filter_status'])) ? $this->request->get['filter_status'] : null;
+        $filter_phone = (isset($this->request->get['filter_phone'])) ? $this->request->get['filter_phone'] : null;
+        $filter_status_id = (isset($this->request->get['filter_status_id'])) ? $this->request->get['filter_status_id'] : null;
         $filter_date_added = (isset($this->request->get['filter_date_added'])) ? $this->request->get['filter_date_added'] : null;
 
         $sort = (isset($this->request->get['sort'])) ? $this->request->get['sort'] : '';
@@ -126,8 +125,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $filter_data = array(
             'filter_name' => $filter_name,
             'filter_email' => $filter_email,
-            'filter_action' => $filter_action,
-            'filter_status' => $filter_status,
+            'filter_phone' => $filter_phone,
+            'filter_status_id' => $filter_status_id,
             'filter_date_added' => $filter_date_added,
             'sort' => $sort,
             'order' => $order,
@@ -135,41 +134,46 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             'limit' => $this->config->get('config_limit_admin')
         );
 
+        var_dump($filter_data['sort']);
+//                $this->dd($filter_data);
+
         $event_total = $this->model_extension_module_d_quick_order->getTotalOrders($filter_data);
 
         $orders = $this->model_extension_module_d_quick_order->getOrders($filter_data);
         $data['orders'] = array();
         foreach ($orders as $key => $order) {
-
-            $order[$key]['products'] = $this->model_extension_module_d_quick_order->getProductsByOrderId($order['quick_order_id']);
-
             $enable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/enable', 'id=' . $order['quick_order_id'] . $url);
             $disable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/disable', 'id=' . $order['quick_order_id'] . $url);
 
+            $products = $this->model_extension_module_d_quick_order->getProductsByOrderId($order['quick_order_id']);
+
+            foreach ($products as &$product) {
+                $product['link'] = $this->model_extension_d_opencart_patch_url->link('catalog/product/edit', 'product_id=' . $product['product_id'], 'SSL');
+            }
+
             $data['orders'][] = array(
                 'id' => $order['quick_order_id'],
-                'userName' => $order['firstname'],
+                'firstname' => $order['firstname'],
                 'email' => $order['email'],
                 'telephone' => $order['telephone'],
                 'comment' => $order['comment'],
                 'status' => (isset($order['status'])) ? $order['status'] : 1,
-                'date_added' => $order['date_added'] ? date($order['date_added'], strtotime("Y-m-d H:i")) : '',
-
+                'date_added' => $order['date_added'] ? date("Y-m-d H:i", strtotime($order['date_added'])) : '',
                 'enable' => $enable,
                 'disable' => $disable,
                 'edit' => $this->model_extension_d_opencart_patch_url->link($this->route . '/edit', 'id=' . $order['quick_order_id'] . $url),
                 'create' => $this->model_extension_d_opencart_patch_url->link($this->route . '/create', 'id=' . $order['quick_order_id'] . $url),
-                'products' => $this->model_extension_module_d_quick_order->getProductsByOrderId($order['quick_order_id'])
+                'products' => $products
             );
         }
 
-/*        highlight_string("<?php\n\$data =\n" . var_export($data['orders'], true) . ";\n?>");*/
-//        die();
-
-        $statuses = $this->model_extension_module_d_quick_order->getAllStatuses();
-        $data['statuses'] = $statuses;
+//      Statuses
+        $settings = $this->model_setting_setting->getSetting($this->codename, '_statuses');
+        $data['statuses'] = $settings[$this->codename . '_statuses'];
 
         //sort
+        $order = (isset($this->request->get['order'])) ? $this->request->get['order'] : '';
+
         if ($sort) {
             if ($order == 'ASC') {
                 $url_params['order'] = 'DESC';
@@ -180,12 +184,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         unset($url_params['sort']);
         $url = ((!empty($url_params)) ? '&' : '') . http_build_query($url_params);
-        $data['id'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=id' . $url);
-        $data['sort_code'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=code' . $url);
-        $data['sort_trigger'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_trigger' . $url);
-        $data['sort_action'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_action' . $url);
+        $data['sort_quick_order_id'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=quick_order_id' . $url);
+        $data['sort_firstname'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=firstname' . $url);
+        $data['sort_email'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=email' . $url);
+        $data['sort_telephone'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=telephone' . $url);
+        $data['sort_comment'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=comment' . $url);
         $data['sort_status'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_status' . $url);
-        $data['sort_sort_order'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=sort_sort_order' . $url);
         $data['sort_date_added'] = $this->model_extension_d_opencart_patch_url->link($this->route, 'sort=date_added' . $url);
 
         //pagination
@@ -214,8 +218,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $data['filter_name'] = $filter_name;
         $data['filter_email'] = $filter_email;
-        $data['filter_action'] = $filter_action;
-        $data['filter_status'] = $filter_status;
+        $data['filter_phone'] = $filter_phone;
+        $data['filter_status_id'] = $filter_status_id;
         $data['filter_date_added'] = $filter_date_added;
 
         $this->load->model('setting/store');
@@ -248,7 +252,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->addNecessaryStylesAndScripts();
         $this->load->model('localisation/language');
 
-
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -263,8 +266,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function tabSetting($data)
     {
-
-
         return $this->load->view($this->route . '/tab_setting', $data);
     }
 
@@ -273,31 +274,52 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $this->load->view($this->route . '/tab_instruction', $data);
     }
 
-    public function createOrder()
+    public function create()
     {
         $json = array();
-        if (isset($this->request->post['quick_order_id'])) {
-            $quick_order_id = $this->request->post['quick_order_id'];
 
-            $order_id = $this->model_quick_order->addOrder($quick_order_id);
-            if ($order_id) {
-                $this->model_quick_order->editQuickOrder($quick_order_id, array('$order_id' => $order_id));
+        if ($this->request->post['id']) {
+            $orderId = (int)$this->request->post['id'];
+            $this->load->model($this->route);
 
-                $this->session->data['success'] = $this->language->get('text_success_add_order');
-                $this->response->redirect($this->model_extension_d_opencart_patch_link->url('sale/order/edit', 'order_id=' . $order_id));
+            $currentOrder = $this->model_extension_module_d_quick_order->getOrderById($orderId);
+            if ($currentOrder && $currentOrder['order_status_id'] == 0) {
+
+//              Create new Order
+                $dataToNewOrder = $this->prepareReplaceOrder($currentOrder);
+                $newOrder = $this->model_extension_module_d_quick_order->replaceOrder($dataToNewOrder);
+                $lastid = $this->db->getLastId();
+
+//              Create new ProductOrders
+                $products = $this->model_extension_module_d_quick_order->getProductsById($orderId);
+                foreach ($products as $product) {
+                    $dataToNewProductOrder = $this->prepareReplaceProductOrder($lastid, $product);
+                    $this->model_extension_module_d_quick_order->replaceProductsOrder($dataToNewProductOrder);
+                }
+
+//              Change status order
+                $this->load->model('setting/setting');
+                $statuses = $this->model_setting_setting->getSetting($this->codename, '_statuses');
+
+                $this->load->model('extension/d_opencart_patch/url');
+                $this->model_extension_module_d_quick_order->updateOrderStatus($orderId, $statuses['d_quick_order_statuses']['processed']['order_status_id']);
+
+//              Redirect
+//                $this->response->redirect($this->model_extension_d_opencart_patch_link->url('sale/order/edit', 'order_id=' . $lastid));
+                $json['redirect'] = $this->model_extension_d_opencart_patch_url->ajax('sale/order/edit/' . "order_id=$lastid");
             } else {
-                $this->session->data['error'] = $this->language->get('text_error_add_order');
+                $json['error'] = $this->language->get('ajax_error_delete_order_status');
             }
-
         } else {
-            $this->session->data['error'] = $this->language->get('text_error_no_quick_order_id');
+            $json['error'] = $this->language->get('ajax_error_delete_empty_orderId');
         }
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function addNecessaryStylesAndScripts()
+    public
+    function addNecessaryStylesAndScripts()
     {
         $this->document->addStyle('view/stylesheet/d_bootstrap_extra/bootstrap.css');
         $this->document->addScript('view/javascript/d_bootstrap_switch/js/bootstrap-switch.min.js');
@@ -310,9 +332,11 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->document->addStyle('view/stylesheet/d_bootstrap_extra/bootstrap.css');
 
         $this->document->addStyle('view/stylesheet/d_admin_style/themes/light/light.css');
+        $this->document->addStyle('view/stylesheet/d_quick_order.css');
     }
 
-    public function setBreadcrumbsData($data)
+    public
+    function setBreadcrumbsData($data)
     {
         $data['breadcrumbs'] = array();
 
@@ -337,7 +361,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $data;
     }
 
-    public function prepareDataToPage($url)
+    public
+    function prepareDataToPage($url)
     {
         // Heading
         $this->document->setTitle($this->language->get('heading_title_main'));
@@ -467,7 +492,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $data;
     }
 
-    public function filterOrdersAjax()
+    public
+    function filterOrdersAjax()
     {
         $json = array();
 
@@ -509,7 +535,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function validateAjaxOrderAndReturnFiltersData($data)
+    public
+    function validateAjaxOrderAndReturnFiltersData($data)
     {
         $filtered = array();
         foreach ($data as $key => $val) {
@@ -525,7 +552,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $filtered;
     }
 
-    public function setup()
+    public
+    function setup()
     {
         $this->load->model('extension/d_opencart_patch/url');
         $this->load->model('setting/setting');
@@ -534,6 +562,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 //      Generate settings
         $setting = array();
         $setting[$this->codename . '_setting'] = $this->config->get($this->codename . '_setting');
+        $setting[$this->codename . '_statuses'] = $this->config->get($this->codename . '_statuses');
         $setting[$this->codename . '_status'] = 1;
         $new_setting = array();
 
@@ -543,6 +572,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
 //        Set new settings
         $this->model_setting_setting->editSetting('module_' . $this->codename, $new_setting, $this->store_id);
+        $this->model_setting_setting->editSetting($this->codename, $setting, $this->store_id);
         $this->model_setting_setting->editSetting($this->codename, $setting, $this->store_id);
 
         $this->createTables();
@@ -555,7 +585,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    public function setupView()
+    public
+    function setupView()
     {
         $this->load->model('extension/d_opencart_patch/load');
         $this->load->model('extension/d_opencart_patch/url');
@@ -624,13 +655,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput($this->model_extension_d_opencart_patch_load->view('extension/' . $this->codename . '/welcome', $data));
     }
 
-    public function settings()
-    {
-        var_dump("settings");
-        die();
-    }
-
-    public function install()
+    public
+    function install()
     {
         if ($this->d_shopunity) {
             $this->load->model('extension/d_shopunity/mbooth');
@@ -657,7 +683,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->permission_handler('all');
     }
 
-    public function installEvents()
+    public
+    function installEvents()
     {
         $this->load->model('extension/module/d_event_manager');
         $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/footer/before', 'extension/module/d_quick_order/catalog_controller_common_footer_before', 0);
@@ -665,7 +692,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/view/product/product/after', 'extension/module/d_quick_order/catalog_view_product_product_after', 0);
     }
 
-    public function installEventsAndEnable()
+    public
+    function installEventsAndEnable()
     {
         $this->load->model('extension/module/d_event_manager');
         $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/footer/before', 'extension/module/d_quick_order/catalog_controller_common_footer_before', 1);
@@ -673,13 +701,15 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/view/product/product/after', 'extension/module/d_quick_order/catalog_view_product_product_after', 1);
     }
 
-    public function uninstallEvents()
+    public
+    function uninstallEvents()
     {
         $this->load->model('extension/module/d_event_manager');
         $this->model_extension_module_d_event_manager->deleteEvent($this->codename);
     }
 
-    private function permission_handler($perm = 'main')
+    private
+    function permission_handler($perm = 'main')
     {
         $this->load->model('user/user_group');
 
@@ -700,7 +730,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
     }
 
-    public function uninstall()
+    public
+    function uninstall()
     {
         $this->load->model($this->route);
         $this->model_extension_module_d_quick_order->uninstallDatabase();
@@ -715,7 +746,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->uninstallEvents();
     }
 
-    public function isSetup()
+    public
+    function isSetup()
     {
         $this->load->model('extension/d_opencart_patch/extension');
         if (!$this->model_extension_d_opencart_patch_extension->isInstalled($this->codename)) {
@@ -729,7 +761,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return true;
     }
 
-    public function createTables()
+    public
+    function createTables()
     {
         $this->load->model($this->route);
 
@@ -737,7 +770,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->model_extension_module_d_quick_order->createOrdersProductTable();
     }
 
-    public function deleteTables()
+    public
+    function deleteTables()
     {
         $this->load->model($this->route);
 
@@ -745,7 +779,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
     }
 
-    public function getSetting()
+    public
+    function getSetting()
     {
         $key = $this->codename . '_setting';
 
@@ -772,7 +807,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $result;
     }
 
-    public function addSettings()
+    public
+    function addSettings()
     {
         $this->load->model('setting/setting');
         $this->load->model('extension/module/d_link_cart');
@@ -787,7 +823,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->response->setOutput($this->model_extension_d_opencart_patch_load->view('extension/module/d_link_cart', $data));
     }
 
-    protected function validate()
+    protected
+    function validate()
     {
         if (!$this->user->hasPermission('modify', $this->route)) {
             $this->error['warning'] = $this->language->get('error_permission');
@@ -800,7 +837,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
     }
 
-    public function delete()
+    public
+    function delete()
     {
         $json = array();
 
@@ -812,46 +850,110 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->model_extension_module_d_quick_order->deleteOrder($orderId);
             $this->model_extension_module_d_quick_order->deleteProductsOrder($orderId);
 
-            $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'));
+            $json['success'] = sprintf($this->language->get('ajax_success_delete'));
         } else {
-            $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
+            $json['error'] = $this->language->get('ajax_error_delete');
         }
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
 
-    public function edit()
+    public
+    function dd($data)
     {
-        $json = array();
-
-        var_dump($this->request->post);
+        highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
         die();
-
-        if ($this->request->post['id']) {
-            $this->load->model($this->route);
-
-            $data = array();
-            $order_id = $this->request->post['id'];
-            $data['firstname'] = $this->request->post['firstname'] ? $this->request->post['firstname'] : '';
-            $data['email'] = $this->request->post['email'] ? $this->request->post['email'] : '';
-            $data['telephone'] = $this->request->post['telephone'] ? $this->request->post['telephone'] : '';
-            $data['comment'] = $this->request->post['comment'] ? $this->request->post['comment'] : '';
-
-            $this->model_extension_module_d_quick_order->editOrder($order_id, $data);
-
-            $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'));
-        } else {
-            $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
-        }
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
     }
 
-    public function edit_comment()
+    public
+    function prepareReplaceOrder($order_data)
     {
-        $this->load->model($this->route);
-        $this->model_extension_module_d_link_cart->edit_comment();
+        $data['store_id'] = $order_data['store_id'];
+        $data['store_url'] = $order_data['store_url'];
+        $data['store_name'] = $order_data['store_name'];
+        $data['invoice_no'] = $order_data['invoice_no'];
+        $data['invoice_prefix'] = $order_data['invoice_prefix'];
+        $data['customer_id'] = $order_data['customer_id'];
+        $data['customer_group_id'] = $order_data['customer_group_id'];
+        $data['firstname'] = $order_data['firstname'];
+        $data['lastname'] = $order_data['lastname'];
+        $data['email'] = $order_data['email'];
+        $data['telephone'] = $order_data['telephone'];
+        $data['fax'] = $order_data['fax'];
+        $data['custom_field'] = $order_data['custom_field'];
+
+        $data['payment_firstname'] = $order_data['payment_firstname'];
+        $data['payment_lastname'] = $order_data['payment_lastname'];
+        $data['payment_company'] = $order_data['payment_company'];
+        $data['payment_address_1'] = $order_data['payment_address_1'];
+        $data['payment_address_2'] = $order_data['payment_address_2'];
+        $data['payment_city'] = $order_data['payment_city'];
+        $data['payment_postcode'] = $order_data['payment_postcode'];
+        $data['payment_zone'] = $order_data['payment_zone'];
+        $data['payment_zone_id'] = $order_data['payment_zone_id'];
+        $data['payment_country'] = $order_data['payment_country'];
+        $data['payment_country_id'] = $order_data['payment_country_id'];
+        $data['payment_address_format'] = $order_data['payment_address_format'];
+        $data['payment_custom_field'] = $order_data['payment_custom_field'];
+        $data['payment_method'] = $order_data['payment_method'];
+        $data['payment_code'] = $order_data['payment_code'];
+
+        $data['shipping_firstname'] = $order_data['shipping_firstname'];
+        $data['shipping_lastname'] = $order_data['shipping_lastname'];
+        $data['shipping_company'] = $order_data['shipping_company'];
+        $data['shipping_address_1'] = $order_data['shipping_address_1'];
+        $data['shipping_address_2'] = $order_data['shipping_address_2'];
+        $data['shipping_postcode'] = $order_data['shipping_postcode'];
+        $data['shipping_city'] = $order_data['shipping_city'];
+        $data['shipping_country'] = $order_data['shipping_country'];
+        $data['shipping_country_id'] = $order_data['shipping_country_id'];
+        $data['shipping_zone'] = $order_data['shipping_zone'];
+        $data['shipping_zone_id'] = $order_data['shipping_zone_id'];
+        $data['shipping_address_format'] = $order_data['shipping_address_format'];
+        $data['shipping_custom_field'] = $order_data['shipping_custom_field'];
+        $data['shipping_method'] = $order_data['shipping_method'];
+        $data['shipping_code'] = $order_data['shipping_code'];
+
+        $data['comment'] = $order_data['comment'];
+        $data['total'] = $order_data['total'];
+
+        $data['order_status_id'] = $order_data['order_status_id'];
+        $data['affiliate_id'] = $order_data['affiliate_id'];
+        $data['commission'] = $order_data['commission'];
+        $data['marketing_id'] = $order_data['marketing_id'];
+        $data['tracking'] = $order_data['tracking'];
+        $data['language_id'] = $order_data['language_id'];
+
+        $data['affiliate_id'] = $order_data['affiliate_id'];
+        $data['commission'] = $order_data['commission'];
+        $data['marketing_id'] = $order_data['marketing_id'];
+        $data['tracking'] = $order_data['tracking'];
+        $data['language_id'] = $order_data['language_id'];
+        $data['currency_id'] = $order_data['currency_id'];
+        $data['currency_code'] = $order_data['currency_code'];
+        $data['currency_value'] = $order_data['currency_value'];
+        $data['ip'] = $order_data['ip'];
+        $data['forwarded_ip'] = $order_data['forwarded_ip'];
+        $data['user_agent'] = $order_data['user_agent'];
+        $data['accept_language'] = $order_data['accept_language'];
+
+        return $data;
+    }
+
+    public
+    function prepareReplaceProductOrder($order_id, $order_product_data)
+    {
+        $data['order_id'] = $order_id;
+        $data['product_id'] = $order_product_data['product_id'];
+        $data['name'] = $order_product_data['name'];
+        $data['model'] = $order_product_data['model'];
+        $data['quantity'] = $order_product_data['quantity'];
+        $data['price'] = $order_product_data['price'];
+        $data['total'] = $order_product_data['total'];
+        $data['tax'] = $order_product_data['tax'];
+        $data['reward'] = $order_product_data['reward'];
+
+        return $data;
     }
 }

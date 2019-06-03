@@ -25,6 +25,13 @@ class ModelExtensionModuleDQuickOrder extends Model
             date_modified = NOW();");
     }
 
+    public function getOrderById($id)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "d_qo_order WHERE quick_order_id = '". $id ."' LIMIT 1");
+
+        return $query->row;
+    }
+
     public function getOrders($data = array())
     {
         $sql = "SELECT ";
@@ -37,16 +44,20 @@ class ModelExtensionModuleDQuickOrder extends Model
 
         $implode = array();
 
-        if (!empty($data['filter_code'])) {
-            $implode[] = "`product_name` LIKE '%" . $this->db->escape($data['filter_code']) . "%'";
+        if (!empty($data['filter_name'])) {
+            $implode[] = "`firstname` LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
         }
 
-        if (!empty($data['filter_trigger'])) {
-            $implode[] = "`customer_phone` LIKE '%" . $this->db->escape($data['filter_trigger']) . "%'";
+        if (!empty($data['filter_email'])) {
+            $implode[] = "`email` LIKE '%" . $this->db->escape($data['filter_email']) . "%'";
         }
 
-        if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
-            $implode[] = "`status` = '" . (int)$data['filter_status'] . "'";
+        if (!empty($data['filter_phone'])) {
+            $implode[] = "`telephone` LIKE '%" . $this->db->escape($data['filter_phone']) . "%'";
+        }
+
+        if (isset($data['filter_status_id']) && !is_null($data['filter_status_id'])) {
+            $implode[] = "`order_status_id` = '" . (int)$data['filter_status_id'] . "'";
         }
 
 
@@ -59,11 +70,17 @@ class ModelExtensionModuleDQuickOrder extends Model
         }
 
         $sort_data = array(
-            'product_name',
-            'customer_phone',
+            'quick_order_id',
+            'firstname',
+            'email',
+            'telephone',
+            'comment',
             'status',
-            'date_added'
+            'date_added',
         );
+
+        var_dump($data['sort']);
+        var_dump(isset($data['sort']) && in_array($data['sort'], $sort_data));
 
         if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
             $sql .= " ORDER BY `" . $data['sort'] . "`";
@@ -71,10 +88,10 @@ class ModelExtensionModuleDQuickOrder extends Model
             $sql .= " ORDER BY `date_added`";
         }
 
-        if (isset($data['order']) && ($data['order'] == 'DESC')) {
-            $sql .= " DESC";
-        } else {
+        if (isset($data['order']) && ($data['order'] == 'ASC')) {
             $sql .= " ASC";
+        } else {
+            $sql .= " DESC";
         }
 
         if (isset($data['start']) || isset($data['limit'])) {
@@ -101,26 +118,33 @@ class ModelExtensionModuleDQuickOrder extends Model
         return $query->rows;
     }
 
+    public function getProductsById($id)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "d_qo_product_to_order WHERE quick_order_id = '". $id ."'");
+
+        return $query->rows;
+    }
+
     public function getTotalOrders($data = array())
     {
         $sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "d_qo_order";
 
         $implode = array();
 
-        if (!empty($data['filter_code'])) {
-            $implode[] = "`code` LIKE '%" . $this->db->escape($data['filter_code']) . "%'";
+        if (!empty($data['filter_name'])) {
+            $implode[] = "`firstname` LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
         }
 
-        if (!empty($data['filter_trigger'])) {
-            $implode[] = "`trigger` LIKE '%" . $this->db->escape($data['filter_trigger']) . "%'";
+        if (!empty($data['filter_email'])) {
+            $implode[] = "`email` LIKE '%" . $this->db->escape($data['filter_email']) . "%'";
         }
 
-        if (!empty($data['filter_action'])) {
-            $implode[] = "`action` LIKE '%" . $this->db->escape($data['filter_action']) . "%'";
+        if (!empty($data['filter_phone'])) {
+            $implode[] = "`telephone` LIKE '%" . $this->db->escape($data['filter_phone']) . "%'";
         }
 
-        if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
-            $implode[] = "`status` = '" . (int)$data['filter_status'] . "'";
+        if (isset($data['filter_status_id']) && !is_null($data['filter_status_id'])) {
+            $implode[] = "`order_status_id` = '" . (int)$data['filter_status_id'] . "'";
         }
 
         if ($implode) {
@@ -201,14 +225,14 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function deleteOrdersTable()
     {
-        $this->db->query("DROP TABLE IF EXISTS `".DB_PREFIX."d_qo_order`");
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order`");
     }
 
     public function createOrdersProductTable()
     {
         $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "d_qo_product_to_order` (
             `product_to_order_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-            `order_id` INT NOT NULL,
+            `quick_order_id` INT NOT NULL,
             `product_id` INT NOT NULL,
             `name` varchar(191) NOT NULL, 
             `model` varchar(191) NULL, 
@@ -222,12 +246,13 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function deleteOrdersProductTable()
     {
-        $this->db->query("DROP TABLE IF EXISTS `".DB_PREFIX."d_qo_product_to_order`");
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_product_to_order`");
     }
 
-    public function uninstallDatabase(){
-        $this->db->query("DROP TABLE IF EXISTS `".DB_PREFIX."d_qo_order`");
-        $this->db->query("DROP TABLE IF EXISTS `".DB_PREFIX."d_qo_product_to_order`");
+    public function uninstallDatabase()
+    {
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order`");
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_product_to_order`");
     }
 
     public function isInstalled()
@@ -250,10 +275,10 @@ class ModelExtensionModuleDQuickOrder extends Model
     public function editOrder($order_id, $data)
     {
         $this->db->query("UPDATE " . DB_PREFIX . "d_qo_order SET 
-            `firstname	` = '" . $this->db->escape($data['firstname'])."',
-            `email` = '" . $this->db->escape($data['email'])."',
-            `telephone` = '". $this->db->escape($data['telephone'])."'
-            `comment` = '". $this->db->escape($data['comment'])."'
+            `firstname	` = '" . $this->db->escape($data['firstname']) . "',
+            `email` = '" . $this->db->escape($data['email']) . "',
+            `telephone` = '" . $this->db->escape($data['telephone']) . "'
+            `comment` = '" . $this->db->escape($data['comment']) . "'
             WHERE quick_order_id = '" . (int)$order_id . "'");
     }
 
@@ -271,6 +296,32 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function deleteProductsOrder($order_id)
     {
-        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_product_to_order` WHERE order_id='" . (int)$order_id . "'");
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_product_to_order` WHERE quick_order_id='" . (int)$order_id . "'");
+    }
+
+    public function replaceOrder($data)
+    {
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET invoice_prefix = '" . $this->db->escape($data['invoice_prefix']) . "', store_id = '" . (int)$data['store_id'] . "', store_name = '" . $this->db->escape($data['store_name']) . "', store_url = '" . $this->db->escape($data['store_url']) . "', customer_id = '" . (int)$data['customer_id'] . "', customer_group_id = '" . (int)$data['customer_group_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', payment_firstname = '" . $this->db->escape($data['payment_firstname']) . "', payment_lastname = '" . $this->db->escape($data['payment_lastname']) . "', payment_company = '" . $this->db->escape($data['payment_company']) . "', payment_address_1 = '" . $this->db->escape($data['payment_address_1']) . "', payment_address_2 = '" . $this->db->escape($data['payment_address_2']) . "', payment_city = '" . $this->db->escape($data['payment_city']) . "', payment_postcode = '" . $this->db->escape($data['payment_postcode']) . "', payment_country = '" . $this->db->escape($data['payment_country']) . "', payment_country_id = '" . (int)$data['payment_country_id'] . "', payment_zone = '" . $this->db->escape($data['payment_zone']) . "', payment_zone_id = '" . (int)$data['payment_zone_id'] . "', payment_address_format = '" . $this->db->escape($data['payment_address_format']) . "', payment_custom_field = '" . $this->db->escape(isset($data['payment_custom_field']) ? json_encode($data['payment_custom_field']) : '') . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', payment_code = '" . $this->db->escape($data['payment_code']) . "', shipping_firstname = '" . $this->db->escape($data['shipping_firstname']) . "', shipping_lastname = '" . $this->db->escape($data['shipping_lastname']) . "', shipping_company = '" . $this->db->escape($data['shipping_company']) . "', shipping_address_1 = '" . $this->db->escape($data['shipping_address_1']) . "', shipping_address_2 = '" . $this->db->escape($data['shipping_address_2']) . "', shipping_city = '" . $this->db->escape($data['shipping_city']) . "', shipping_postcode = '" . $this->db->escape($data['shipping_postcode']) . "', shipping_country = '" . $this->db->escape($data['shipping_country']) . "', shipping_country_id = '" . (int)$data['shipping_country_id'] . "', shipping_zone = '" . $this->db->escape($data['shipping_zone']) . "', shipping_zone_id = '" . (int)$data['shipping_zone_id'] . "', shipping_address_format = '" . $this->db->escape($data['shipping_address_format']) . "', shipping_custom_field = '" . $this->db->escape(isset($data['shipping_custom_field']) ? json_encode($data['shipping_custom_field']) : '') . "', shipping_method = '" . $this->db->escape($data['shipping_method']) . "', shipping_code = '" . $this->db->escape($data['shipping_code']) . "', comment = '" . $this->db->escape($data['comment']) . "', total = '" . (float)$data['total'] . "', affiliate_id = '" . (int)$data['affiliate_id'] . "', commission = '" . (float)$data['commission'] . "', marketing_id = '" . (int)$data['marketing_id'] . "', tracking = '" . $this->db->escape($data['tracking']) . "', language_id = '" . (int)$data['language_id'] . "', currency_id = '" . (int)$data['currency_id'] . "', currency_code = '" . $this->db->escape($data['currency_code']) . "', currency_value = '" . (float)$data['currency_value'] . "', ip = '" . $this->db->escape($data['ip']) . "', forwarded_ip = '" . $this->db->escape($data['forwarded_ip']) . "', user_agent = '" . $this->db->escape($data['user_agent']) . "', accept_language = '" . $this->db->escape($data['accept_language']) . "', date_added = NOW(), date_modified = NOW()");
+
+
+//        return $this->db->query("INSERT INTO oc_order
+//                SELECT * FROM oc_d_qo_order
+//                WHERE oc_d_qo_order.quick_order_id = '" . (int)$order_id . "'");
+    }
+
+    public function replaceProductsOrder($data)
+    {
+        return $this->db->query("INSERT INTO " . DB_PREFIX . "order_product SET order_id = '" . (int)$data['order_id'] . "', product_id = '" . (int)$data['product_id'] . "', name = '" . $this->db->escape($data['name']) . "', model = '" . $this->db->escape($data['model']) . "', quantity = '" . (int)$data['quantity'] . "', price = '" . (float)$data['price'] . "', total = '" . (float)$data['total'] . "', tax = '" . (float)$data['tax'] . "', reward = '" . (int)$data['reward'] . "'");
+
+//        return $this->db->query("INSERT INTO oc_order_product (Col1, Col2, ..., ColN)
+//                SELECT * FROM oc_d_qo_product_to_order
+//                WHERE oc_d_qo_product_to_order.quick_order_id = '" . (int)$order_id . "'");
+    }
+
+    public function updateOrderStatus($order_id, $status)
+    {
+        $this->db->query("UPDATE " . DB_PREFIX . "d_qo_order SET 
+            `order_status_id` = '" . (int)$status . "'
+            WHERE quick_order_id = '" . (int)$order_id . "'");
     }
 }

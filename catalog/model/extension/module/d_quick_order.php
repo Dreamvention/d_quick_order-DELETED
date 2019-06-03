@@ -29,7 +29,7 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function getOrderById($id)
     {
-        $query = $this->db->query("SELECT id  FROM " . DB_PREFIX . "$this->tableName WHERE id = '". $id ."' LIMIT 1");
+        $query = $this->db->query("SELECT id  FROM " . DB_PREFIX . "$this->tableName WHERE order_id = '". $id ."' LIMIT 1");
 
         return $query->row;
     }

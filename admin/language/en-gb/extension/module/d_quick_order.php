@@ -20,6 +20,9 @@ $_['tab_heading_instruction_icon']              = '<span class="fa fa-info-circl
 
 // Ajax responce
 $_['ajax_success_delete']                       = 'Successfully deleted';
+$_['ajax_error_delete']                         = 'Sorry! Something went wrong. If this repeats, contact the support please.';
+$_['ajax_error_delete_empty_orderId']           = "Sorry! Empty order ID.";
+$_['ajax_error_delete_order_status']            = "Sorry! You can't create order with this order ID.";
 
 // tabs in settings tab
 $_['tab_basic_setting']                         = 'Basic Settings';

@@ -20,42 +20,61 @@ $_['tab_heading_instruction_icon']              = '<span class="fa fa-info-circl
 
 // Ajax responce
 $_['ajax_success_delete']                       = 'Successfully deleted';
+$_['ajax_error_delete']                         = 'Sorry! Something went wrong. If this repeats, contact the support please.';
+$_['ajax_error_delete_empty_orderId']           = "Sorry! Empty order ID.";
+$_['ajax_error_delete_order_status']            = "Sorry! You can't create order with this order ID.";
 
 // tabs in settings tab
+$_['tab_basic_setting_enable']                  = 'Enable Module';
+$_['tab_basic_setting_selector']                = 'Choose selector';
+
+
 $_['tab_basic_setting']                         = 'Basic Settings';
+$_['tab_button_setting']                        = 'Button Settings';
 $_['tab_modal_window_setting']                  = 'Modal Window Setting';
 $_['tab_modal_fields_setting']                  = 'Modal Fields Setting';
 
+$_['tab_modal_button_name']                     = 'Text order button';
+$_['tab_modal_button_style_color']              = 'Button color';
+$_['tab_modal_button_style_border']             = 'Button border color';
+$_['tab_modal_button_style_bgColor']            = 'Button background color';
+
+$_['tab_modal_button_style_hover_color']        = 'Button hover color';
+$_['tab_modal_button_style_hover_border']       = 'Button hover border color';
+$_['tab_modal_button_style_hover_bgColor']      = 'Button hover background color';
+
+$_['tab_modal_modal_setting_title']             = 'Text title modal';
+$_['tab_modal_modal_setting_description']       = 'Text description modal';
+$_['tab_modal_modal_setting_button_submit']     = 'Text modal button confirm';
+
+$_['tab_modal_fields_setting_name']             = 'Enable name field in modal window';
+$_['tab_modal_fields_setting_name_require']     = 'Require name';
+$_['tab_modal_fields_setting_email']            = 'Enable modal field in modal window';
+$_['tab_modal_fields_setting_email_require']    = 'Require Email';
+$_['tab_modal_fields_setting_comment']          = 'Enable comment field in modal window';
+$_['tab_modal_fields_setting_comment_require']  = 'Require comment';
+$_['tab_modal_fields_setting_phone_format']     = 'Phone validation format';
 
 
-$_['tab_category']                              = 'Category';
-$_['tab_post_thumb']                            = 'Post thumb';
-$_['tab_post']                                  = 'Post';
-$_['tab_review']                                = 'Review';
-$_['tab_review_thumb']                          = 'Review thumb';
-$_['tab_author']                                = 'Author';
-$_['tab_demo']                                  = 'Demo';
-$_['tab_export']                                = 'Export';
-$_['tab_import']                                = 'Import';
-$_['text_upload']                               = 'File imported successfully';
-$_['error_upload']                              = 'The file can not be imported';
-
+$_['column_order_id_number']                    = '#';
 $_['column_order_id']                           = 'Order ID';
 $_['column_product']                            = 'Product';
 $_['column_product_name']                       = 'Product Name';
 $_['column_product_description']                = "Product Description";
-$_['column_column_qty']                         = "Product Qty";
 $_['column_product_qty']                        = "Product Qty";
 $_['column_product_total']                      = "Total";
 $_['column_product_status']                     = "Status";
 $_['column_products_images']                    = "Products";
 $_['column_product_price']                      = "Product Price";
 $_['column_customer_name']                      = "Name";
+$_['column_customer_name_input']                = "Enter name";
 $_['column_customer_email']                     = "Email";
+$_['column_customer_email_input']               = "Enter Email";
 $_['column_customer_phone']                     = "Phone";
+$_['column_customer_phone_input']               = "Enter phone";
 $_['column_customer_comment']                   = "Comment";
 $_['column_date_added']                         = "Date Added";
-$_['column_sort_order']                         = "Status";
+$_['column_sort_status']                        = "Status";
 $_['column_action']                             = "Actions";
 
 // filters

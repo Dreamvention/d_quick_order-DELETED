@@ -9,6 +9,7 @@
 $_['d_quick_order_setting'] = array(
     'config' => 'd_quick_order',
 
+    'selector' => null,
     'text_button' => array('1' => 'Quick Order'),
     'button_style' => array(
         'color' => 'white',
@@ -18,8 +19,6 @@ $_['d_quick_order_setting'] = array(
         'hover_color' => 'white',
         'hover_border' => 'black',
         'hover_background_color' => '#9a5d5d',
-
-        'additional_class' => null,
     ),
 
     'modal_heading_title' => array('1' => 'Quick Order'),
@@ -37,3 +36,11 @@ $_['d_quick_order_setting'] = array(
         'phone_format' => '+ 9(999)999 - 99 - 99',
     ),
 );
+
+$_['d_quick_order_statuses'] = array(
+    'pending' => array('order_status_id' => '0', 'name' => 'Processing'),
+    'processed' => array('order_status_id' => '1', 'name' => 'Processed'),
+    'canceled' => array('order_status_id' => '2', 'name' => 'Canceled'),
+);
+
+

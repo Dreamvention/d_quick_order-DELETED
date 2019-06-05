@@ -29,7 +29,21 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function getOrderById($id)
     {
-        $query = $this->db->query("SELECT id  FROM " . DB_PREFIX . "$this->tableName WHERE id = '". $id ."' LIMIT 1");
+        $query = $this->db->query("SELECT id  FROM " . DB_PREFIX . "$this->tableName WHERE order_id = '". $id ."' LIMIT 1");
+
+        return $query->row;
+    }
+
+    public function getTaxRule($tax_class_id)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "tax_rule WHERE tax_class_id = '". (int)$tax_class_id ."' LIMIT 1");
+
+        return $query->row;
+    }
+
+    public function getTaxRate($tax_rate_id)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "tax_rate WHERE tax_rate_id = '". (int)$tax_rate_id ."' LIMIT 1");
 
         return $query->row;
     }

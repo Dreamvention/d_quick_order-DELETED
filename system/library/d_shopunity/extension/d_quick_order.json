@@ -68,21 +68,23 @@
     "catalog/model/extension/module/d_quick_order.php",
     "catalog/language/en-gb/extension/module/d_quick_order.php",
 
+    "catalog/view/theme/default/template/extension/module/d_quick_order.twig",
     "catalog/view/theme/default/javascript/d_quick_order/d_quick_order.js",
     "catalog/view/theme/default/javascript/d_quick_order/extra/jquery.maskedinput.min.js",
     "catalog/view/theme/default/stylesheet/d_quick_order/d_quick_order.css"
   ],
   "dirs": [
-    "admin/controller/extension/d_quick_order",
-    "admin/model/extension/d_quick_order",
-    "admin/language/en-gb/extension/d_quick_order",
-    "admin/view/template/extension/d_quick_order",
+    "admin/controller/extension/module/d_quick_order.php",
+    "admin/model/extension/module/d_quick_order.php",
+    "admin/language/en-gb/extension/module/d_quick_order.php",
+    "admin/view/template/extension/module/d_quick_order.twig",
     "admin/view/image/d_quick_order",
 
-    "catalog/controller/extension/d_quick_order",
-    "catalog/model/extension/d_quick_order",
-    "catalog/language/en-gb/extension/d_quick_order",
-    "catalog/view/theme/default/stylesheet/d_quick_order/theme/default"
+    "catalog/controller/extension/module/d_quick_order.php",
+    "catalog/model/extension/module/d_quick_order.php",
+    "catalog/language/en-gb/extension/module/d_quick_order.php",
+    "catalog/view/theme/default/template/extension/module/d_quick_order.twig",
+    "catalog/view/theme/default/stylesheet/d_quick_order"
   ],
   "changelog": [
     {

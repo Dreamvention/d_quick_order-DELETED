@@ -104,6 +104,6 @@
 	margin: 15px 0;
 }
 
-.d-qo-wrapper-image{
-	width: 100px;
+.d_qo_wrapper_image img{
+	width: 100px !important;
 }

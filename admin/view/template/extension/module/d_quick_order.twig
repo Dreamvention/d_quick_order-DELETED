@@ -1,0 +1,896 @@
+{{ header }} {{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="form-inline pull-right">
+                <button id="save_and_stay" data-toggle="tooltip" class="btn btn-success"><i class="fa fa-save"></i></button>
+                <a id="save" href="{{ button_save_action }}" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary save"><i class="fa fa-save"></i></a>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }} {{ version }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error.warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error.warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }} </h3>
+            </div>
+            <div class="panel-body">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_orders" data-toggle="tab">
+                            <span class="fa fa-plug"></span>
+                            {{ tab_heading_orders }}
+                        </a>
+                    </li>
+
+                    <li><a href="#tab_setting" data-toggle="tab">
+                            <span class="fa fa-cog"></span>
+                            {{ tab_heading_setting }}
+                        </a>
+                    </li>
+
+                    <li><a href="#tab_instructions" data-toggle="tab">
+                            <span class="fa fa-cog"></span>
+                            {{ tab_heading_instruction }}
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_orders">
+                        <div class="tab-body">
+                            <div id="filter" class="well">
+
+                                <form action="index.php?route=extension/module/d_quick_order" method="post"
+                                      id="form-filter">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="control-label"
+                                                       for="input-code">{{ column_product_name }}</label>
+                                                <input type="text" name="filter_name" value="{{ filter_name }}"
+                                                       placeholder="{{ column_customer_name_input }}" id="input-code"
+                                                       class="form-control"
+                                                       data-item="code"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="control-label"
+                                                       for="input-trigger">{{ column_customer_email }}</label>
+                                                <input type="text" name="filter_trigger" value="{{ filter_email }}"
+                                                       placeholder="{{ column_customer_email_input }}"
+                                                       id="input-trigger"
+                                                       class="form-control" data-item="trigger"/>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="control-label"
+                                                       for="input-event-action">{{ column_customer_phone }}</label>
+                                                <input type="text" name="filter_action" value="{{ filter_phone }}"
+                                                       placeholder="{{ column_customer_phone_input }}"
+                                                       id="input-event-action"
+                                                       class="form-control" data-item="action"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="control-label"
+                                                       for="input-status">{{ column_product_status }}</label>
+                                                <select name="filter_status" id="input-status" class="form-control">
+                                                    <option value="*"></option>
+
+
+                                                    {% for status in statuses %}
+                                                        {{ product.quantity }}
+                                                    {% endfor %}
+
+                                                    {% if filter_status %}
+                                                        <option value="1"
+                                                                selected="selected">{{ text_enabled }} </option>
+                                                    {% else %}
+                                                        <option value="1">{{ text_enabled }} </option>
+                                                    {% endif %}
+                                                    {% if not filter_status and filter_status is not null %}
+                                                        <option value="0"
+                                                                selected="selected">{{ text_disabled }} </option>
+                                                    {% else %}
+                                                        <option value="0">{{ text_disabled }} </option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                            <button type="button" id="button-filter" class="btn btn-primary pull-right">
+                                                <i
+                                                        class="fa fa-search"></i> {{ button_filter }} </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <form action="{{ delete }}" method="post" enctype="multipart/form-data">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td class="text-left">
+                                                {% if sort == 'quick_order_id' %}
+                                                    <a href="{{ sort_quick_order_id }}"
+                                                       class="{{ order|lower }}">{{ column_order_id_number }}</a>
+                                                {% else %}
+                                                    <a href="{{ sort_quick_order_id }}">{{ column_order_id_number }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort == 'firstname' %}
+                                                    <a href="{{ sort_quick_order_id }}"
+                                                       class="{{ order|lower }}">{{ column_customer_name }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_firstname }}">{{ column_customer_name }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort == 'email' %}
+                                                    <a href="{{ sort_email }}"
+                                                       class="{{ order|lower }}">{{ column_customer_email }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_email }}">{{ column_customer_email }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort == 'telephone' %}
+                                                    <a href="{{ sort_telephone }}"
+                                                       class="{{ order|lower }}">{{ column_customer_phone }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_telephone }}">{{ column_customer_phone }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort ==  'comment' %}
+                                                    <a href="{{ sort_comment }}"
+                                                       class="{{ order|lower }}">{{ column_customer_comment }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_comment }}">{{ column_customer_comment }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {{ column_products_images }}
+                                            </td>
+                                            <td class="text-left">
+                                                {{ column_product_qty }}
+                                            </td>
+                                            <td class="text-left">
+                                                {{ column_product_total }}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort ==  'date_added' %}
+                                                    <a href="{{ sort_date_added }}"
+                                                       class="{{ order|lower }}">{{ column_date_added }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_date_added }}">{{ column_date_added }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-left">
+                                                {% if sort == 'status' %}
+                                                    <a href="{{ sort_status }}"
+                                                       class="{{ order|lower }}">{{ column_sort_status }} </a>
+                                                {% else %}
+                                                    <a href="{{ sort_status }}">{{ column_sort_status }} </a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-right">{{ column_action }} </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if orders %}
+                                            {% for order in orders %}
+                                                <tr id="event_id_{{ order.quick_order_id }}" {% if order.status %} class="enabled" {% endif %}>
+                                                    <td class="text-left">{{ order.id }}</td>
+                                                    <td class="text-left">{{ order.firstname }} </td>
+                                                    <td class="text-left">{{ order.email }} </td>
+                                                    <td class="text-left">{{ order.telephone }} </td>
+                                                    <td class="text-left">{{ order.comment }} </td>
+                                                    <td class="text-left">
+                                                        {% for product in order.products %}
+                                                            <div class="d_qo_wrapper_image">
+                                                                <a href="{{ product.link }}">
+                                                                    <img src="http://opencart/303/d_newquickorder/image/{{ product.image }}"
+                                                                         alt="">
+                                                                </a>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {% for product in order.products %}
+                                                            {{ product.quantity }}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {% for product in order.products %}
+                                                            {{ product.total }}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td class="text-left">{{ order.date_added }}</td>
+                                                    <td class="text-left">
+                                                        {% if(order.status) == 0 %}
+                                                            Processing
+                                                        {% endif %}
+                                                        {% if(order.status) == 1 %}
+                                                            Processed
+                                                        {% endif %}
+                                                        {% if(order.status) == 2 %}
+                                                            Canceled
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <a href="{{ order.create }}" data-toggle="tooltip"
+                                                           title="{{ button_enable }}"
+                                                           data-event_id="{{ order.id }}"
+                                                           class="btn btn-success action create"><i
+                                                                    class="fa fa-shopping-cart"></i></a>
+
+                                                        <a href="{{ order.delete }}" data-toggle="tooltip"
+                                                           title="{{ button_disable }}"
+                                                           data-event_id="{{ order.id }}"
+                                                           class="btn btn-danger action delete"><i
+                                                                    class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="11">{{ text_no_results }} </td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-sm-6 text-left">{{ pagination }} </div>
+                                <div class="col-sm-6 text-right">{{ results }} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_setting">
+                        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form"
+                              class="form-horizontal">
+                            <div class="flex row">
+                                <div class="flex col-sm-3">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active">
+                                            <a href="#vtab_basic_setting" data-toggle="tab"><span
+                                                        class="fa fa-cog"></span> {{ tab_basic_setting }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="#vtab_button_setting" data-toggle="tab"><span
+                                                        class="fa fa-font"></span> {{ tab_button_setting }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_modal_window_setting" data-toggle="tab"><span
+                                                        class="fa fa-window-restore"></span> {{ tab_modal_window_setting }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_modal_fields_setting" data-toggle="tab"><span
+                                                        class="fa fa-file-text-o"></span> {{ tab_modal_fields_setting }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="tab-content">
+                                        <div id="vtab_basic_setting" class="tab-pane active">
+                                            <div class="page-header">
+                                                <h3><strong>{{ tab_basic_setting }}</strong></h3>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_basic_setting_enable }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_status"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_status"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if status %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_basic_setting_selector }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['selector']"
+                                                           value="{{ settings.selector }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-uninstall">{{ entry_uninstall }}</label>
+                                                <div class="col-sm-9">
+                                                    <a action="{{ uninstall }}" id="button_uninstall"
+                                                       class="btn btn-danger"><i class="fa fa-trash"></i><i
+                                                                class="fa fa-refresh rotate hide"></i> {{ button_uninstall }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="vtab_button_setting" class="tab-pane">
+                                            <div class="page-header">
+                                                <h3><strong>{{ tab_button_setting }}</strong></h3>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input_checkbox">{{ tab_modal_button_name }}</label>
+                                                <div class="col-sm-9">
+
+                                                    <div class="input-group">
+                                                        {% for language in languages %}
+                                                            <label class="input-group-addon"
+                                                                   title="{{ language['name'] }}">
+                                                                <img src="{{ language['flag'] }}"
+                                                                     title="{{ language['name'] }}">
+                                                            </label>
+
+                                                            <input type="text"
+                                                                   name="module_{{ codename }}_setting['text_button']{{ language['language_id'] }}"
+                                                                   value="{{ settings.text_button[language['language_id']] }}"
+                                                                   class="form-control">
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_color }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['color']"
+                                                           value="{{ settings.button_style.color }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_border }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['border']"
+                                                           value="{{ settings.button_style.border }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_bgColor }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['background_color']"
+                                                           value="{{ settings.button_style.background_color }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_hover_color }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['hover_color']"
+                                                           value="{{ settings.button_style.hover_color }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_hover_border }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['hover_border']"
+                                                           value="{{ settings.button_style.hover_border }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_button_style_hover_bgColor }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text"
+                                                           name="module_{{ codename }}_setting['button_style']['hover_background_color']"
+                                                           value="{{ settings.button_style.hover_background_color }}"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="tab_modal_window_setting" class="tab-pane">
+                                            <div class="page-header">
+                                                <h3><strong>{{ tab_modal_window_setting }}</strong></h3>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input_checkbox">{{ tab_modal_modal_setting_title }}</label>
+                                                <div class="col-sm-9">
+
+                                                    <div class="input-group">
+                                                        {% for language in languages %}
+                                                            <label class="input-group-addon"
+                                                                   title="{{ language['name'] }}">
+                                                                <img src="{{ language['flag'] }}"
+                                                                     title="{{ language['name'] }}">
+                                                            </label>
+
+                                                            <input type="text"
+                                                                   name="module_{{ codename }}_setting['modal_heading_title']{{ language['language_id'] }}"
+                                                                   value="{{ settings.modal_heading_title[language['language_id']] }}"
+                                                                   class="form-control">
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_modal_setting_description }}</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        {% for language in languages %}
+                                                            <label class="input-group-addon"
+                                                                   title="{{ language['name'] }}">
+                                                                <img src="{{ language['flag'] }}"
+                                                                     title="{{ language['name'] }}">
+                                                            </label>
+
+                                                            <textarea type="text"
+                                                                      name="module_{{ codename }}_setting['modal_description']{{ language['language_id'] }}"
+                                                                      class="form-control">{{ settings.text_modal_button[language['language_id']] }}</textarea>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input_checkbox">{{ tab_modal_modal_setting_button_submit }}</label>
+                                                <div class="col-sm-9">
+
+                                                    <div class="input-group">
+                                                        {% for language in languages %}
+                                                            <label class="input-group-addon"
+                                                                   title="{{ language['name'] }}">
+                                                                <img src="{{ language['flag'] }}"
+                                                                     title="{{ language['name'] }}">
+                                                            </label>
+
+                                                            <input type="text"
+                                                                   name="module_{{ codename }}_setting['text_modal_button']{{ language['language_id'] }}"
+                                                                   value="{{ settings.text_modal_button[language['language_id']] }}"
+                                                                   class="form-control">
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div id="tab_modal_fields_setting" class="tab-pane">
+                                            <div class="page-header">
+                                                <h3><strong>{{ tab_modal_fields_setting }}</strong></h3>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_name }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['name']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['name']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.name %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_name_require }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['name_required']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['name_required']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.name_required %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_email }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['email']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['email']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.email %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_email_require }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['email_required']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['email_required']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.email_required %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_comment }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['comment']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['comment']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.comment %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_comment_require }}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="hidden"
+                                                           name="module_{{ codename }}_setting['modal_field']['comment_required']"
+                                                           value="0"/>
+                                                    <input type="checkbox"
+                                                           name="module_{{ codename }}_setting['modal_field']['comment_required']"
+                                                           value="1"
+                                                           class="switch" data-label-text="{{ text_enabled }}"
+                                                           {% if settings.modal_field.comment_required %}checked="checked"{% endif %} />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"
+                                                       for="input-status">{{ tab_modal_fields_setting_phone_format }}</label>
+                                                <div class="col-sm-9">
+                                                    <input value="{{ settings.modal_field.phone_format }}"
+                                                           type="text"
+                                                           name="module_{{ codename }}_setting['modal_field']['phone_format']"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="tab_instructions">
+                        <div class="tab-body">
+                            <p>{{ tab_instruction }}</p>
+                            <p>{{ text_not_found }}</p>
+                            <p>{{ text_powered_by }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="event_item">
+    <tr id="event_id_{{ event.event_id }}" class="[[text_status]]">
+        <td class="text-center flash"><input type="checkbox" name="event_id[]" value="[[event_id]]"/></td>
+        <td class="text-left flash">[[code]]</td>
+        <td class="text-left flash">[[trigger]]</td>
+        <td class="text-left flash">[[action]]</td>
+        <td class="text-left flash">
+            <span class="label label-success disable">{{ text_enabled }} </span>
+            <span class="label label-danger enable">{{ text_disabled }} </span>
+        </td>
+        <td class="text-left flash">[[sort_order]]</td>
+        <td class="text-right flash">
+            <a href="[[enable]]" data-toggle="tooltip" title="{{ button_enable }}" data-event_id="[[event_id]]"
+               class="btn btn-success action enable"><i class="fa fa-thumbs-o-up"></i></a>
+            <a href="[[disable]]" data-toggle="tooltip" title="{{ button_disable }}" data-event_id="[[event_id]]"
+               class="btn btn-danger action disable"><i class="fa fa-thumbs-o-down"></i></a>
+            <a href="[[edit]]" data-toggle="tooltip" title="{{ button_edit }}" data-event_id="[[event_id]]"
+               class="btn btn-primary edit"><i class="fa fa-pencil"></i></a></td>
+    </tr>
+</template>
+
+<template id="modal">
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit event [[code]]</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="event_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input_text">{{ entry_code }} </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="code" value="[[code]]" placeholder="{{ entry_code }}"
+                                       id="input-width" class="form-control"/>
+                            </div>
+                        </div><!-- //text -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input_text">{{ entry_trigger }} </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="trigger" value="[[trigger]]" placeholder="{{ entry_trigger }}"
+                                       id="input-width" class="form-control"/>
+                            </div>
+                        </div><!-- //text -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input_action">{{ entry_action }} </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="action" value="[[action]]" placeholder="{{ entry_action }}"
+                                       id="input-width" class="form-control"/>
+                            </div>
+                        </div><!-- //text -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input_action">{{ entry_sort_order }} </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="sort_order" value="[[sort_order]]"
+                                       placeholder="{{ entry_sort_order }}" id="input-width" class="form-control"/>
+                            </div>
+                        </div><!-- //text -->
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a type="button" class="btn btn-primary save-event" href="[[save]]" data-event_id="[[event_id]]">Save
+                        changes</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</template>
+
+<script type="text/javascript">
+
+    function showAlert(json) {
+        $('.alert, .text-danger').remove();
+        $('.form-group').removeClass('has-error');
+
+        if (json['error']) {
+            if (json['error']) {
+                $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+
+            for (i in json['error']) {
+                var element = $('#input_' + i);
+
+                if (element.parent().hasClass('input-group')) {
+                    $(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
+                } else {
+                    $(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
+                }
+            }
+
+            $('.text-danger').parentsUntil('.form-group').parent().addClass('has-error');
+        }
+
+        if (json['success']) {
+            $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+        }
+    };
+
+    $('body').on('click', '#save_and_stay', function () {
+        $.ajax({
+            type: 'post',
+            url: $('#form').attr('action'),
+            data: $('#form').serialize(),
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                console.log(json);
+
+                showAlert(json);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $('body').on('click', '#save_and_exit', function () {
+        $.ajax({
+            type: 'post',
+            url: $('#form').attr('action') + '&exit',
+            data: $('#form').serialize(),
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                showAlert(json);
+                location = '{{ get_cancel }}&exit=exit';
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    // $('body').on('click', '#save', function (e) {
+    //     e.preventDefault();
+    //     var href = $(this).attr('href');
+    //
+    //     $.ajax({
+    //         type: 'post',
+    //         url: href,
+    //         data: $('#form').serialize(),
+    //         dataType: 'json',
+    //         beforeSend: function () {
+    //             $('#content').fadeTo('slow', 0.5);
+    //         },
+    //         complete: function () {
+    //             $('#content').fadeTo('slow', 1);
+    //         },
+    //         success: function (json) {
+    //             showAlert(json);
+    //             location = json.redirect.replace("&amp;", "&");
+    //         },
+    //         error: function (xhr, ajaxOptions, thrownError) {
+    //             console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    //         }
+    //     });
+    // });
+
+    // $('body').on('click', '#form-filter', function (e) {
+    //     e.preventDefault();
+    //
+    //     $.ajax({
+    //         url: 'http://opencart/303/d_newquickorder/admin/index.php?route=extension/module/d_quick_order',
+    //         type: 'get',
+    //         data: $(this).serialize(),
+    //         dataType: 'json',
+    //         success: function (json) {
+    //
+    //             setTimeout(function () {
+    //                 showAlert(json);
+    //             }, 500);
+    //         },
+    //         error: function (xhr, ajaxOptions, thrownError) {
+    //             console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    //         }
+    //     });
+    // });
+
+
+
+    $('body').on('click', '.create', function (e) {
+        e.preventDefault();
+        var order_id = $(this).attr('data-event_id');
+        var href = $(this).attr('href');
+
+        $.ajax({
+            type: 'post',
+            url: href,
+            data: {id : order_id} ,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                if (json.error){
+                    showAlert(json);
+                }
+                if (json.redirect){
+                    location = json.redirect.replace("&amp;", "&");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $('body').on('click', '.delete', function (e) {
+        e.preventDefault();
+
+        var order_id = $(this).attr('data-event_id');
+        var href = $(this).attr('href');
+
+        $.ajax({
+            type: 'post',
+            url: href,
+            data: {id : order_id} ,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                if (json.error){
+                    showAlert(json);
+                }
+                if (json.redirect){
+                    location = json.redirect.replace("&amp;", "&");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $("[type='checkbox']").bootstrapSwitch({
+        'onColor': 'success',
+        'onText': '{{ text_yes }}',
+        'offText': '{{ text_no }}'
+    });
+</script>
+
+{{ footer }}

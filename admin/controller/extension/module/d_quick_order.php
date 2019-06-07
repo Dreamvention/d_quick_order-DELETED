@@ -340,10 +340,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 }
             }
 
-
-//            var_dump($url);
-//            die();
-
             $json['redirect'] = $this->model_extension_d_opencart_patch_url->link($this->route, $url);
         } else {
             $json['error'] = $this->language->get('ajax_error_delete_empty_orderId');
@@ -392,9 +388,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 }
 
 //              Change status order
-                $this->load->model('setting/setting');
-                $statuses = $this->config->get($this->codename . '_statuses');
-                $this->dd($statuses);
+                $this->load->config('d_quick_order');
+                $statuses = $this->config->get('d_quick_order_statuses');
 
                 $this->load->model('extension/d_opencart_patch/url');
                 $this->model_extension_module_d_quick_order->updateOrderStatus($orderId, $statuses[1]['order_status_id']);

@@ -36,9 +36,9 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function getTaxRule($tax_class_id)
     {
-        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "tax_rule WHERE tax_class_id = '". (int)$tax_class_id ."' LIMIT 1");
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "tax_rule WHERE tax_class_id = '". (int)$tax_class_id ."'");
 
-        return $query->row;
+        return $query->rows;
     }
 
     public function getTaxRate($tax_rate_id)

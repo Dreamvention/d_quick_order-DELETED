@@ -72,8 +72,8 @@
 
                             {% if(config.modal_field.name) %}
                                 <div class="form-group">
-                                    <label for="d_qo_field_name_selector">First Name</label>
-                                    <input id="d_qo_field_name_selector" {% if(config.modal_field.name_required) %} required {% endif %}
+                                    <label for="d_qo_field_name">First Name</label>
+                                    <input id="d_qo_field_name" {% if(config.modal_field.name_required) %} required {% endif %}
                                            type="text" name="firstname" class="form-control"
                                            aria-describedby="emailHelp" placeholder="Enter email">
                                 </div>
@@ -82,11 +82,11 @@
 
                             {% if(config.modal_field.email) %}
                                 <div class="form-group">
-                                    <label for="d_qo_field_email_selector">Email address</label>
+                                    <label for="d_qo_field_email">Email address</label>
                                     <input type="email"
                                            name="email"
                                            class="form-control"
-                                           id="d_qo_field_email_selector"
+                                           id="d_qo_field_email"
                                            aria-describedby="emailHelp"
                                            placeholder="Enter email"
                                             {% if(config.modal_field.email_required) %} required {% endif %}
@@ -95,16 +95,16 @@
                             {% endif %}
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Phone address</label>
+                                <label for="d_qo_field_telephone">Phone address</label>
                                 <input required type="text" name="telephone" class="form-control"
-                                       id="exampleInputEmail1"
+                                       id="d_qo_field_telephone"
                                        aria-describedby="emailHelp" placeholder="Enter email">
                             </div>
 
                             {% if(config.modal_field.comment) %}
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Comment</label>
-                                    <textarea required name="comment" id="" cols="30" rows="10"
+                                    <label for="d_qo_field_comment">Comment</label>
+                                    <textarea required name="comment" id="d_qo_field_comment" cols="30" rows="10"
                                               placeholder="Enter comment to order" {% if(config.modal_field.comment_required) %} required {% endif %}
                                     ></textarea>
                                 </div>
@@ -125,10 +125,10 @@
 
                                     <div class="d_qo_wrapper_price_quantity">
                                         <div class="d_qo_wrapper_price">
-                                            <span id="d_qo_product_price"></span>
+                                            <p>Total : <span id="d_qo_product_price"></span></p>
                                         </div>
                                         <div class="quantity">
-                                            <input id="d_qo_qty" name="amount" type="number" min="1" max="9" step="1"
+                                            <input id="d_qo_qty" name="quantity" type="number" min="1" max="9" step="1"
                                                    value="1">
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="product_id" value="49">
+                        {#<input id="product_id_hidden" type="hidden" name="product_id" value="">#}
 
                         {% for language in languages %}
                             {% if(config.text_modal_button[language['language_id']]) %}
@@ -153,6 +153,8 @@
     </div>
 </div>
 <script>
+    var form_selector = 'd_qo_form';
+
     $.event.special.inputchange = {
         setup: function () {
             var self = this, val;
@@ -174,30 +176,39 @@
 
     function showAlertError(json) {
         $('#d_qo_form .alert, #d_qo_form .text-danger').remove();
-        $('#d_qo_separator').append('<div class="alert alert-warning alert-dismissible" role="alert"> ' + json['error'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+        $('#d_qo_separator').append('<div class="alert alert-danger alert-dismissible" role="alert"> ' + json['error'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+    }
+
+    function showAlertWarning(json) {
+        $('#d_qo_form .alert, #d_qo_form .text-danger').remove();
+        $('#d_qo_separator').append('<div class="alert alert-danger alert-dismissible" role="alert"> ' + json + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
     }
 
     function showAlertSuccess(json) {
         console.log("showAlertSuccess");
-
-        $('#d_qo_form .alert, #d_qo_form .text-danger').remove();
+        $('#d_qo_form .alert').remove();
         $('#d_qo_separator').append('<div class="alert alert-success alert-dismissible" role="alert"> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
     }
 
     function showWarning(text) {
-        console.log("showAlertSuccess");
+        console.log("showWarning");
 
         $('#d_qo_form .alert, #d_qo_form .text-danger').remove();
         $('#d_qo_separator').append('<div class="alert alert-warning alert-dismissible" role="alert"> ' + text + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
     }
 
     function clearModalForm() {
-        $('#d_qo_form')[0].reset();
-        $('#d_qo_form .alert').remove()
+        // $('#d_qo_form')[0].reset();
+
+        setTimeout(function() {
+            $('#d_qo_form .alert').remove();
+        }, 3000);
     }
     
     function clearAlerts() {
-        $('#d_qo_form .alert').remove()
+        setTimeout(function() {
+            $('#d_qo_form .alert').remove();
+        }, 3000);
     }
 
     function getSearchParams(k) {
@@ -227,11 +238,8 @@
         var product_id_url = null;
         var product_id_page = null;
 
-        if ($('#input-quantity').length) {
-            qty = parseInt($('#input-quantity').val());
-            if (qty) {
-                $('#d_qo_qty').val(qty);
-            }
+        if ($('#d_qo_qty').length) {
+            qty = parseInt($('#d_qo_qty').val());
         }
 
         product_id_url = getSearchParams("product_id");
@@ -243,16 +251,19 @@
             product_id = parseInt(product_id_url);
         }
 
+        // $('#quickorderModal #product_id_hidden').val(product_id);
+        // ,
+
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            data: {product_id: product_id, quantity: qty},
+            data: { product_id: product_id, quantity: qty},
             dataType: 'json',
             success: function (json) {
                 console.log(json);
 
-                if (json.hasOwnProperty('text_info')){
-                    showWarning(json.text_info);
+                if (json.hasOwnProperty('warning')){
+                    showWarning(json.warning);
                 }
 
                 var path = "http://opencart/303/d_newquickorder/image/" + json.product_image;
@@ -281,8 +292,6 @@
         product_id_url = getSearchParams("product_id");
         product_id_page = getProductIdPage();
 
-        console.log(parseInt(product_id_url) == parseInt(product_id_page));
-
         if (parseInt(product_id_url) == parseInt(product_id_page)) {
             product_id = parseInt(product_id_page);
         } else {
@@ -292,13 +301,12 @@
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            data: {product_id: product_id, quantity: qty},
+            // data: {product_id: product_id, quantity: qty},
+            data: { product_id: product_id, quantity: qty},
             dataType: 'json',
             success: function (json) {
-                console.log(json);
-
-                if (json.hasOwnProperty('text_info')){
-                    showWarning(json.text_info);
+                if (json.hasOwnProperty('warning')){
+                    showWarning(json.warning);
                 }else{
                     clearAlerts();
                 }
@@ -314,17 +322,30 @@
     $('#quickorderModal').on('submit', '#d_qo_form', function (e) {
         e.preventDefault();
 
+        product_id_url = getSearchParams("product_id");
+        product_id_page = getProductIdPage();
+
+        if (parseInt(product_id_url) == parseInt(product_id_page)) {
+            product_id = parseInt(product_id_page);
+        } else {
+            product_id = parseInt(product_id_url);
+        }
+
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/addOrderAjax',
             type: 'post',
-            data: $(this).serialize(),
+            // data: $(this).serialize(),
+            data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
-
                 console.log(json);
 
-                showAlertSuccess(json);
-                clearModalForm();
+                if (json.hasOwnProperty('warning')){
+                    showAlertWarning(json.warning);
+                }else{
+                    showAlertSuccess(json);
+                    clearAlerts();
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -365,188 +386,3 @@
 
     });
 </script>
-
-<style>
-    .d_qo_wrapper_order_button {
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-
-    #d_qo_order_button {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 10px 0;
-    }
-
-    #quickorderModal .d_qo_wrapper_all_modal {
-        padding: 0 20px;
-    }
-
-    #quickorderModal .quick-order-wrapper-form textarea {
-        display: block;
-        width: 100%;
-        min-height: 80px;
-        max-height: 80px;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    }
-
-    #quickorderModal .quick-order-wrapper-form {
-        padding: 0;
-    }
-
-    #quickorderModal .modal-header {
-        min-height: 0;
-        padding: 15px;
-        border: none;
-    }
-
-    #quickorderModal .modal-header .close {
-        margin-top: -5px;
-        font-size: 25px;
-    }
-
-    #quickorderModal #dqo_modal_heading_title {
-        text-align: center;
-    }
-
-    #quickorderModal #d_qo_modal_description_text {
-        text-align: justify;
-        width: 100%;
-        height: 100%;
-        max-height: 200px;
-        overflow: hidden;
-    }
-
-    #quickorderModal #d_qo_submit {
-        color: white;
-        width: 125px;
-        display: flex;
-        justify-content: center;
-        right: 0;
-    }
-
-    #quickorderModal .alert {
-        padding: 15px;
-        padding-right: 35px;
-    }
-
-    #quickorderModal .d_qo_product_responce {
-        width: 100%;
-        height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 18px;
-    }
-
-    #quickorderModal .d_qo_wrapper_product {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        height: 180px;
-        flex-direction: column;
-    }
-
-    #quickorderModal .d_qo_wrapper_price_quantity {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    #quickorderModal .d_qo_wrapper_price {
-        padding-left: 20px;
-    }
-
-    #quickorderModal .d_qo_product_image img {
-        width: auto;
-        max-width: 280px;
-        height: 180px;
-        max-height: 180px;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity {
-        position: relative;
-    }
-
-    #quickorderModal .d_qo_wrapper_product input[type=number]::-webkit-inner-spin-button,
-    #quickorderModal .d_qo_wrapper_product input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    #quickorderModal .d_qo_wrapper_product input[type=number] {
-        -moz-appearance: textfield;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity input {
-        width: 60px;
-        height: 40px;
-        line-height: 1.65;
-        float: left;
-        display: block;
-        padding: 0;
-        margin: 0;
-        padding-left: 10px;
-        border: 1px solid #eee;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity input:focus {
-        outline: 0;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity-nav {
-        float: left;
-        position: relative;
-        height: 40px;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity-button {
-        position: relative;
-        cursor: pointer;
-        border-left: 1px solid #eee;
-        width: 20px;
-        text-align: center;
-        color: #333;
-        font-size: 13px;
-        font-family: "Trebuchet MS", Helvetica, sans-serif !important;
-        line-height: 1.7;
-        -webkit-transform: translateX(-100%);
-        transform: translateX(-100%);
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-        user-select: none;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity-button.quantity-up {
-        position: absolute;
-        height: 50%;
-        top: 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    #quickorderModal .d_qo_wrapper_product .quantity-button.quantity-down {
-        position: absolute;
-        bottom: -1px;
-        height: 50%;
-    }
-</style>

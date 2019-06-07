@@ -3,8 +3,12 @@
     <div class="page-header">
         <div class="container-fluid">
             <div class="form-inline pull-right">
-                <button id="save_and_stay" data-toggle="tooltip" class="btn btn-success"><i class="fa fa-save"></i></button>
-                <a id="save" href="{{ button_save_action }}" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary save"><i class="fa fa-save"></i></a>
+                <button id="save_and_stay" data-toggle="tooltip" title="{{ button_save_and_stay }}"
+                        class="btn btn-success"><i class="fa fa-save"></i>
+                </button>
+                <button id="save" data-action="{{ button_save_action }}" data-toggle="tooltip" title="{{ button_save }}"
+                   class="btn btn-primary save"><i class="fa fa-save"></i>
+                </button>
                 <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
                             class="fa fa-reply"></i></a>
             </div>
@@ -59,8 +63,7 @@
                         <div class="tab-body">
                             <div id="filter" class="well">
 
-                                <form action="index.php?route=extension/module/d_quick_order" method="post"
-                                      id="form-filter">
+                                <form action="{{ filter }}" method="get" id="form-filter">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
@@ -76,7 +79,7 @@
                                             <div class="form-group">
                                                 <label class="control-label"
                                                        for="input-trigger">{{ column_customer_email }}</label>
-                                                <input type="text" name="filter_trigger" value="{{ filter_email }}"
+                                                <input type="text" name="filter_email" value="{{ filter_email }}"
                                                        placeholder="{{ column_customer_email_input }}"
                                                        id="input-trigger"
                                                        class="form-control" data-item="trigger"/>
@@ -87,7 +90,7 @@
                                             <div class="form-group">
                                                 <label class="control-label"
                                                        for="input-event-action">{{ column_customer_phone }}</label>
-                                                <input type="text" name="filter_action" value="{{ filter_phone }}"
+                                                <input type="text" name="filter_phone" value="{{ filter_phone }}"
                                                        placeholder="{{ column_customer_phone_input }}"
                                                        id="input-event-action"
                                                        class="form-control" data-item="action"/>
@@ -97,36 +100,25 @@
                                             <div class="form-group">
                                                 <label class="control-label"
                                                        for="input-status">{{ column_product_status }}</label>
-                                                <select name="filter_status" id="input-status" class="form-control">
-                                                    <option value="*"></option>
-
+                                                <select name="filter_order_status_id" id="input-status"
+                                                        class="form-control">
+                                                    <option value="*" {% if not filter_order_status_id or filter_order_status_id is null %} selected {% endif %}></option>
 
                                                     {% for status in statuses %}
-                                                        {{ product.quantity }}
+                                                        <option value="{{ status.order_status_id }}"
+                                                                {% if(filter_order_status_id == status.order_status_id) %} selected {% endif %}>{{ status.name }} </option>
                                                     {% endfor %}
 
-                                                    {% if filter_status %}
-                                                        <option value="1"
-                                                                selected="selected">{{ text_enabled }} </option>
-                                                    {% else %}
-                                                        <option value="1">{{ text_enabled }} </option>
-                                                    {% endif %}
-                                                    {% if not filter_status and filter_status is not null %}
-                                                        <option value="0"
-                                                                selected="selected">{{ text_disabled }} </option>
-                                                    {% else %}
-                                                        <option value="0">{{ text_disabled }} </option>
-                                                    {% endif %}
                                                 </select>
                                             </div>
-                                            <button type="button" id="button-filter" class="btn btn-primary pull-right">
-                                                <i
-                                                        class="fa fa-search"></i> {{ button_filter }} </button>
+                                            <button data-action="{{ button_filter_action }}" type="button"
+                                                    id="button-filter" class="btn btn-primary pull-right">
+                                                <i class="fa fa-search"></i> {{ button_filter }} </button>
                                         </div>
                                     </div>
                                 </form>
-
                             </div>
+
                             <form action="{{ delete }}" method="post" enctype="multipart/form-data">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
@@ -142,7 +134,7 @@
                                             </td>
                                             <td class="text-left">
                                                 {% if sort == 'firstname' %}
-                                                    <a href="{{ sort_quick_order_id }}"
+                                                    <a href="{{ sort_firstname }}"
                                                        class="{{ order|lower }}">{{ column_customer_name }} </a>
                                                 {% else %}
                                                     <a href="{{ sort_firstname }}">{{ column_customer_name }} </a>
@@ -231,22 +223,24 @@
                                                     </td>
                                                     <td class="text-left">{{ order.date_added }}</td>
                                                     <td class="text-left">
-                                                        {% if(order.status) == 0 %}
-                                                            Processing
-                                                        {% endif %}
-                                                        {% if(order.status) == 1 %}
-                                                            Processed
-                                                        {% endif %}
-                                                        {% if(order.status) == 2 %}
-                                                            Canceled
-                                                        {% endif %}
+
+                                                        {% for status in statuses %}
+                                                            {% if(order.order_status_id) == status.order_status_id %}
+                                                                {{ status.name }}
+                                                            {% endif %}
+                                                        {% endfor %}
+
                                                     </td>
                                                     <td class="text-right">
-                                                        <a href="{{ order.create }}" data-toggle="tooltip"
-                                                           title="{{ button_enable }}"
-                                                           data-event_id="{{ order.id }}"
-                                                           class="btn btn-success action create"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
+
+                                                        {% if(order.order_status_id) == 0 %}
+                                                            <a href="{{ order.create }}" data-toggle="tooltip"
+                                                               title="{{ button_enable }}"
+                                                               data-event_id="{{ order.id }}"
+                                                               class="btn btn-success action create"><i
+                                                                        class="fa fa-shopping-cart"></i></a>
+                                                        {% endif %}
+
 
                                                         <a href="{{ order.delete }}" data-toggle="tooltip"
                                                            title="{{ button_disable }}"
@@ -309,10 +303,10 @@
                                                        for="input-status">{{ tab_basic_setting_enable }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_status"
+                                                           name="{{ codename }}_status"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_status"
+                                                           name="{{ codename }}_status"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if status %}checked="checked"{% endif %} />
@@ -324,7 +318,7 @@
                                                        for="input-status">{{ tab_basic_setting_selector }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['selector']"
+                                                           name="{{  codename }}_setting[selector]"
                                                            value="{{ settings.selector }}"
                                                            class="form-control">
                                                 </div>
@@ -332,12 +326,13 @@
 
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label"
-                                                       for="input-uninstall">{{ entry_uninstall }}</label>
+                                                       for="button_uninstall"></label>
                                                 <div class="col-sm-9">
-                                                    <a action="{{ uninstall }}" id="button_uninstall"
-                                                       class="btn btn-danger"><i class="fa fa-trash"></i><i
-                                                                class="fa fa-refresh rotate hide"></i> {{ button_uninstall }}
-                                                    </a>
+                                                    <button data-action="{{ button_uninstall }}" id="button_uninstall"
+                                                            data-toggle="tooltip" title="{{ button_uninstall_text }}"
+                                                            class="btn btn-danger"><i
+                                                                class="fa fa-trash"></i>{{ button_uninstall_text }}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -361,7 +356,7 @@
                                                             </label>
 
                                                             <input type="text"
-                                                                   name="module_{{ codename }}_setting['text_button']{{ language['language_id'] }}"
+                                                                   name="{{ codename }}_setting[text_button][{{ language['language_id'] }}]"
                                                                    value="{{ settings.text_button[language['language_id']] }}"
                                                                    class="form-control">
                                                         {% endfor %}
@@ -374,7 +369,7 @@
                                                        for="input-status">{{ tab_modal_button_style_color }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['color']"
+                                                           name="{{ codename }}_setting[button_style][color]"
                                                            value="{{ settings.button_style.color }}"
                                                            class="form-control">
                                                 </div>
@@ -385,7 +380,7 @@
                                                        for="input-status">{{ tab_modal_button_style_border }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['border']"
+                                                           name="{{ codename }}_setting[button_style][border]"
                                                            value="{{ settings.button_style.border }}"
                                                            class="form-control">
                                                 </div>
@@ -396,7 +391,7 @@
                                                        for="input-status">{{ tab_modal_button_style_bgColor }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['background_color']"
+                                                           name="{{ codename }}_setting[button_style][background_color]"
                                                            value="{{ settings.button_style.background_color }}"
                                                            class="form-control">
                                                 </div>
@@ -407,7 +402,7 @@
                                                        for="input-status">{{ tab_modal_button_style_hover_color }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['hover_color']"
+                                                           name="{{ codename }}_setting[button_style][hover_color]"
                                                            value="{{ settings.button_style.hover_color }}"
                                                            class="form-control">
                                                 </div>
@@ -418,7 +413,7 @@
                                                        for="input-status">{{ tab_modal_button_style_hover_border }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['hover_border']"
+                                                           name="{{ codename }}_setting[button_style][hover_border]"
                                                            value="{{ settings.button_style.hover_border }}"
                                                            class="form-control">
                                                 </div>
@@ -429,7 +424,7 @@
                                                        for="input-status">{{ tab_modal_button_style_hover_bgColor }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="text"
-                                                           name="module_{{ codename }}_setting['button_style']['hover_background_color']"
+                                                           name="{{ codename }}_setting[button_style][hover_background_color]"
                                                            value="{{ settings.button_style.hover_background_color }}"
                                                            class="form-control">
                                                 </div>
@@ -453,9 +448,8 @@
                                                                 <img src="{{ language['flag'] }}"
                                                                      title="{{ language['name'] }}">
                                                             </label>
-
                                                             <input type="text"
-                                                                   name="module_{{ codename }}_setting['modal_heading_title']{{ language['language_id'] }}"
+                                                                   name="{{ codename }}_setting[modal_heading_title][{{ language['language_id'] }}]"
                                                                    value="{{ settings.modal_heading_title[language['language_id']] }}"
                                                                    class="form-control">
                                                         {% endfor %}
@@ -476,7 +470,7 @@
                                                             </label>
 
                                                             <textarea type="text"
-                                                                      name="module_{{ codename }}_setting['modal_description']{{ language['language_id'] }}"
+                                                                      name="{{ codename }}_setting[modal_description][{{ language['language_id'] }}]"
                                                                       class="form-control">{{ settings.text_modal_button[language['language_id']] }}</textarea>
                                                         {% endfor %}
                                                     </div>
@@ -497,7 +491,7 @@
                                                             </label>
 
                                                             <input type="text"
-                                                                   name="module_{{ codename }}_setting['text_modal_button']{{ language['language_id'] }}"
+                                                                   name="{{ codename }}_setting[text_modal_button][{{ language['language_id'] }}]"
                                                                    value="{{ settings.text_modal_button[language['language_id']] }}"
                                                                    class="form-control">
                                                         {% endfor %}
@@ -517,10 +511,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_name }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['name']"
+                                                           name="{{ codename }}_setting[modal_field][name]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['name']"
+                                                           name="{{ codename }}_setting[modal_field][name]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.name %}checked="checked"{% endif %} />
@@ -532,10 +526,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_name_require }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['name_required']"
+                                                           name="{{ codename }}_setting[modal_field][name_required]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['name_required']"
+                                                           name="{{ codename }}_setting[modal_field][name_required]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.name_required %}checked="checked"{% endif %} />
@@ -547,10 +541,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_email }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['email']"
+                                                           name="{{ codename }}_setting[modal_field][email]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['email']"
+                                                           name="{{ codename }}_setting[modal_field][email]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.email %}checked="checked"{% endif %} />
@@ -562,10 +556,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_email_require }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['email_required']"
+                                                           name="{{ codename }}_setting[modal_field][email_required]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['email_required']"
+                                                           name="{{ codename }}_setting[modal_field][email_required]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.email_required %}checked="checked"{% endif %} />
@@ -577,10 +571,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_comment }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['comment']"
+                                                           name="{{ codename }}_setting[modal_field][comment]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['comment']"
+                                                           name="{{ codename }}_setting[modal_field][comment]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.comment %}checked="checked"{% endif %} />
@@ -592,10 +586,10 @@
                                                        for="input-status">{{ tab_modal_fields_setting_comment_require }}</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden"
-                                                           name="module_{{ codename }}_setting['modal_field']['comment_required']"
+                                                           name="{{ codename }}_setting[modal_field][comment_required]"
                                                            value="0"/>
                                                     <input type="checkbox"
-                                                           name="module_{{ codename }}_setting['modal_field']['comment_required']"
+                                                           name="{{ codename }}_setting[modal_field][comment_required]"
                                                            value="1"
                                                            class="switch" data-label-text="{{ text_enabled }}"
                                                            {% if settings.modal_field.comment_required %}checked="checked"{% endif %} />
@@ -608,7 +602,7 @@
                                                 <div class="col-sm-9">
                                                     <input value="{{ settings.modal_field.phone_format }}"
                                                            type="text"
-                                                           name="module_{{ codename }}_setting['modal_field']['phone_format']"
+                                                           name="{{ codename }}_setting[modal_field][phone_format]"
                                                            class="form-control">
                                                 </div>
                                             </div>
@@ -620,9 +614,10 @@
                     </div>
                     <div class="tab-pane" id="tab_instructions">
                         <div class="tab-body">
-                            <p>{{ tab_instruction }}</p>
-                            <p>{{ text_not_found }}</p>
-                            <p>{{ text_powered_by }}</p>
+                            <div class="instructions">
+                                {{ text_instruction }}
+                            </div>
+                            <p class="text-center">{{ text_powered_by }}</p>
                         </div>
                     </div>
                 </div>
@@ -631,80 +626,39 @@
     </div>
 </div>
 
-<template id="event_item">
-    <tr id="event_id_{{ event.event_id }}" class="[[text_status]]">
-        <td class="text-center flash"><input type="checkbox" name="event_id[]" value="[[event_id]]"/></td>
-        <td class="text-left flash">[[code]]</td>
-        <td class="text-left flash">[[trigger]]</td>
-        <td class="text-left flash">[[action]]</td>
-        <td class="text-left flash">
-            <span class="label label-success disable">{{ text_enabled }} </span>
-            <span class="label label-danger enable">{{ text_disabled }} </span>
-        </td>
-        <td class="text-left flash">[[sort_order]]</td>
-        <td class="text-right flash">
-            <a href="[[enable]]" data-toggle="tooltip" title="{{ button_enable }}" data-event_id="[[event_id]]"
-               class="btn btn-success action enable"><i class="fa fa-thumbs-o-up"></i></a>
-            <a href="[[disable]]" data-toggle="tooltip" title="{{ button_disable }}" data-event_id="[[event_id]]"
-               class="btn btn-danger action disable"><i class="fa fa-thumbs-o-down"></i></a>
-            <a href="[[edit]]" data-toggle="tooltip" title="{{ button_edit }}" data-event_id="[[event_id]]"
-               class="btn btn-primary edit"><i class="fa fa-pencil"></i></a></td>
-    </tr>
-</template>
-
-<template id="modal">
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit event [[code]]</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="event_form" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="input_text">{{ entry_code }} </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="code" value="[[code]]" placeholder="{{ entry_code }}"
-                                       id="input-width" class="form-control"/>
-                            </div>
-                        </div><!-- //text -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="input_text">{{ entry_trigger }} </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="trigger" value="[[trigger]]" placeholder="{{ entry_trigger }}"
-                                       id="input-width" class="form-control"/>
-                            </div>
-                        </div><!-- //text -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="input_action">{{ entry_action }} </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="action" value="[[action]]" placeholder="{{ entry_action }}"
-                                       id="input-width" class="form-control"/>
-                            </div>
-                        </div><!-- //text -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="input_action">{{ entry_sort_order }} </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="sort_order" value="[[sort_order]]"
-                                       placeholder="{{ entry_sort_order }}" id="input-width" class="form-control"/>
-                            </div>
-                        </div><!-- //text -->
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a type="button" class="btn btn-primary save-event" href="[[save]]" data-event_id="[[event_id]]">Save
-                        changes</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</template>
-
 <script type="text/javascript">
+    $("[type='checkbox']").bootstrapSwitch({
+        'onColor': 'success',
+        'onText': '{{ text_yes }}',
+        'offText': '{{ text_no }}'
+    });
+
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    };
+
+    function decode(url) {
+        var encodedStr = url;
+        var parser = new DOMParser;
+        var dom = parser.parseFromString(
+            '<!doctype html><body>' + encodedStr,
+            'text/html');
+        return dom.body.textContent;
+    }
+
+    function decodeUrlParameter(param) {
+        return decodeURIComponent(param);
+    }
+
+    function addFilterToData(data, param, value) {
+        return data + "&" + param + "=" + value;
+    }
 
     function showAlert(json) {
         $('.alert, .text-danger').remove();
@@ -731,7 +685,43 @@
         if (json['success']) {
             $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
         }
-    };
+    }
+
+    $('body').on('click', '#button-filter', function (e) {
+        e.preventDefault();
+
+        var data = $('#form-filter').serialize();
+        var href = $(this).attr('data-action');
+
+        $.ajax({
+            type: 'post',
+            url: href,
+            data: data,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                if (json.error) {
+                    showAlert(json);
+                }
+                if (json.redirect) {
+                    var sort = decodeUrlParameter($.urlParam('sort'));
+                    var order = decodeUrlParameter($.urlParam('order'));
+                    var url = addFilterToData(decode(json.redirect), "sort", sort);
+                    url = addFilterToData(url, "order", order);
+
+                    location = url;
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
 
     $('body').on('click', '#save_and_stay', function () {
         $.ajax({
@@ -756,10 +746,13 @@
         });
     });
 
-    $('body').on('click', '#save_and_exit', function () {
+    $('body').on('click', '#save', function (e) {
+        e.preventDefault();
+        var action = $(this).attr('data-action');
+
         $.ajax({
             type: 'post',
-            url: $('#form').attr('action') + '&exit',
+            url: action,
             data: $('#form').serialize(),
             dataType: 'json',
             beforeSend: function () {
@@ -769,61 +762,15 @@
                 $('#content').fadeTo('slow', 1);
             },
             success: function (json) {
+                var url = decode(json.redirect);
                 showAlert(json);
-                location = '{{ get_cancel }}&exit=exit';
+                location = url
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
             }
         });
     });
-
-    // $('body').on('click', '#save', function (e) {
-    //     e.preventDefault();
-    //     var href = $(this).attr('href');
-    //
-    //     $.ajax({
-    //         type: 'post',
-    //         url: href,
-    //         data: $('#form').serialize(),
-    //         dataType: 'json',
-    //         beforeSend: function () {
-    //             $('#content').fadeTo('slow', 0.5);
-    //         },
-    //         complete: function () {
-    //             $('#content').fadeTo('slow', 1);
-    //         },
-    //         success: function (json) {
-    //             showAlert(json);
-    //             location = json.redirect.replace("&amp;", "&");
-    //         },
-    //         error: function (xhr, ajaxOptions, thrownError) {
-    //             console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-    //         }
-    //     });
-    // });
-
-    // $('body').on('click', '#form-filter', function (e) {
-    //     e.preventDefault();
-    //
-    //     $.ajax({
-    //         url: 'http://opencart/303/d_newquickorder/admin/index.php?route=extension/module/d_quick_order',
-    //         type: 'get',
-    //         data: $(this).serialize(),
-    //         dataType: 'json',
-    //         success: function (json) {
-    //
-    //             setTimeout(function () {
-    //                 showAlert(json);
-    //             }, 500);
-    //         },
-    //         error: function (xhr, ajaxOptions, thrownError) {
-    //             console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-    //         }
-    //     });
-    // });
-
-
 
     $('body').on('click', '.create', function (e) {
         e.preventDefault();
@@ -833,7 +780,7 @@
         $.ajax({
             type: 'post',
             url: href,
-            data: {id : order_id} ,
+            data: {id: order_id},
             dataType: 'json',
             beforeSend: function () {
                 $('#content').fadeTo('slow', 0.5);
@@ -842,10 +789,10 @@
                 $('#content').fadeTo('slow', 1);
             },
             success: function (json) {
-                if (json.error){
+                if (json.error) {
                     showAlert(json);
                 }
-                if (json.redirect){
+                if (json.redirect) {
                     location = json.redirect.replace("&amp;", "&");
                 }
             },
@@ -864,7 +811,7 @@
         $.ajax({
             type: 'post',
             url: href,
-            data: {id : order_id} ,
+            data: {id: order_id},
             dataType: 'json',
             beforeSend: function () {
                 $('#content').fadeTo('slow', 0.5);
@@ -873,11 +820,41 @@
                 $('#content').fadeTo('slow', 1);
             },
             success: function (json) {
-                if (json.error){
+                if (json.error) {
                     showAlert(json);
                 }
-                if (json.redirect){
-                    location = json.redirect.replace("&amp;", "&");
+
+                if (json.redirect) {
+                    console.log("responce" + json.redirect);
+
+                    var sort = decodeUrlParameter($.urlParam('sort'));
+                    var order = decodeUrlParameter($.urlParam('order'));
+                    var filter_name = decodeUrlParameter($.urlParam('filter_name'));
+                    var filter_email = decodeUrlParameter($.urlParam('filter_email'));
+                    var filter_phone = decodeUrlParameter($.urlParam('filter_phone'));
+                    var filter_order_status_id = decodeUrlParameter($.urlParam('filter_order_status_id'));
+
+                    var url = decode(json.redirect);
+                    if(sort && sort !== null && sort != 'null'){
+                        url = addFilterToData(url, "sort", sort);
+                    }
+                    if(order && order !== null && order != 'null'){
+                        url = addFilterToData(url, "order", order);
+                    }
+                    if(filter_name && filter_name !== null && filter_name != 'null'){
+                        url = addFilterToData(url, "filter_name", filter_name);
+                    }
+                    if(filter_email && filter_email !== null && filter_email != 'null'){
+                        url = addFilterToData(url, "filter_email", filter_email);
+                    }
+                    if(filter_phone && filter_phone !== null && filter_phone != 'null'){
+                        url = addFilterToData(url, "filter_phone", filter_phone);
+                    }
+                    if(filter_order_status_id && filter_order_status_id){
+                        url = addFilterToData(url, "filter_order_status_id", filter_order_status_id);
+                    }
+
+                    location = url;
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -886,10 +863,33 @@
         });
     });
 
-    $("[type='checkbox']").bootstrapSwitch({
-        'onColor': 'success',
-        'onText': '{{ text_yes }}',
-        'offText': '{{ text_no }}'
+    $('body').on('click', '#button_uninstall', function (e) {
+        e.preventDefault();
+        var href = $(this).attr('data-action');
+
+        $.ajax({
+            type: 'post',
+            url: href,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#content').fadeTo('slow', 0.5);
+            },
+            complete: function () {
+                $('#content').fadeTo('slow', 1);
+            },
+            success: function (json) {
+                if (json.error) {
+                    showAlert(json);
+                }
+                if (json.redirect) {
+                    var url = decode(json.redirect);
+                    location = url;
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
     });
 </script>
 

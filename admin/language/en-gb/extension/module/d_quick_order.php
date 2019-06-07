@@ -20,6 +20,7 @@ $_['tab_heading_instruction_icon']              = '<span class="fa fa-info-circl
 
 // Ajax responce
 $_['ajax_success_delete']                       = 'Successfully deleted';
+$_['ajax_success_uninstall']                    = 'Successfully uninstall module';
 $_['ajax_error_delete']                         = 'Sorry! Something went wrong. If this repeats, contact the support please.';
 $_['ajax_error_delete_empty_orderId']           = "Sorry! Empty order ID.";
 $_['ajax_error_delete_order_status']            = "Sorry! You can't create order with this order ID.";
@@ -105,6 +106,7 @@ $_['button_save_and_stay']                      = 'Save and stay';
 $_['button_enabled_ssl']                        = 'Specify URL';
 $_['button_create_order']                       = 'Create order';
 $_['button_delete_order']                       = 'Delete order';
+$_['button_uninstall']                          = 'Uninstall';
 
 //success
 $_['success_modifed']                           = 'Success: You have modified module Quick Order Module!';
@@ -138,7 +140,7 @@ $_['text_not_found'] = '<div class="jumbotron">
         </div>';
 //welcome
 $_['text_welcome_title']            = 'Quick Order';
-$_['text_welcome_description']      = '84% of people have bought products online based on their description in blogs. Blogs improve SEO and increase your google ranking. This module will install a professional blogging platform on your OpenCart so you could start selling more today.';
+$_['text_welcome_description']      = 'This quick order form, very easy to use, allows your customer to save time while creating their order. They will be able to add all the products they want within the same page. Easy to customize modal window. Increase sales now!';
 
 $_['text_welcome_visual_editor']    = 'Powerfull SEO';
 $_['text_welcome_building_blocks']  = 'Manage Author <br> permissions';

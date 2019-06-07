@@ -9,6 +9,36 @@
 class ModelExtensionModuleDQuickOrder extends Model
 {
     public $table = "d_qo_product_to_order";
+    public $codename = 'd_qo_order';
+
+    private $events = array(
+        array(
+            'trigger' => 'catalog/controller/common/footer/before',
+            'action' => 'extension/module/d_quick_order/catalog_controller_common_footer_before'
+        ),
+        array(
+            'trigger' => 'catalog/controller/common/header/before',
+            'action' => 'extension/module/d_quick_order/catalog_controller_common_header_before'
+        ),
+        array(
+            'trigger' => 'catalog/view/product/product/after',
+            'action' => 'extension/module/d_quick_order/catalog_view_product_product_after'
+        )
+    );
+
+    public function addEvents() {
+        $this->load->model('setting/event');
+
+        foreach ($this->events as $event) {
+            $this->model_setting_event->addEvent($this->codename, $event['trigger'], $event['action']);
+        }
+    }
+
+    public function deleteEvents() {
+        $this->load->model('setting/event');
+
+        $this->model_setting_event->deleteEventByCode($this->codename);
+    }
 
 //    todo: addOrder
     public function store($data)
@@ -56,10 +86,9 @@ class ModelExtensionModuleDQuickOrder extends Model
             $implode[] = "`telephone` LIKE '%" . $this->db->escape($data['filter_phone']) . "%'";
         }
 
-        if (isset($data['filter_status_id']) && !is_null($data['filter_status_id'])) {
-            $implode[] = "`order_status_id` = '" . (int)$data['filter_status_id'] . "'";
+        if (isset($data['filter_order_status_id']) && !is_null($data['filter_order_status_id'])) {
+            $implode[] = "`order_status_id` = '" . (int)$data['filter_order_status_id'] . "'";
         }
-
 
         if ($implode) {
             $sql .= " WHERE " . implode(" AND ", $implode);
@@ -321,4 +350,7 @@ class ModelExtensionModuleDQuickOrder extends Model
             `order_status_id` = '" . (int)$status . "'
             WHERE quick_order_id = '" . (int)$order_id . "'");
     }
+
+
+
 }

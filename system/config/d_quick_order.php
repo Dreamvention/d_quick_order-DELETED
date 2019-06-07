@@ -9,7 +9,7 @@
 $_['d_quick_order_setting'] = array(
     'config' => 'd_quick_order',
 
-    'selector' => null,
+    'selector' => '#button-cart',
     'text_button' => array('1' => 'Quick Order'),
     'button_style' => array(
         'color' => 'white',
@@ -38,9 +38,9 @@ $_['d_quick_order_setting'] = array(
 );
 
 $_['d_quick_order_statuses'] = array(
-    'pending' => array('order_status_id' => '0', 'name' => 'Processing'),
-    'processed' => array('order_status_id' => '1', 'name' => 'Processed'),
-    'canceled' => array('order_status_id' => '2', 'name' => 'Canceled'),
+    '1' => array('order_status_id' => '0', 'name' => 'Processing'),
+    '2' => array('order_status_id' => '1', 'name' => 'Processed'),
+    '3' => array('order_status_id' => '2', 'name' => 'Canceled'),
 );
 
 

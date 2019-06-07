@@ -1,16 +1,22 @@
-#quickorder {
+.d_qo_wrapper_order_button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#d_qo_order_button {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0;
+    margin: 10px 0;
 }
 
-#quickorder button {
-    width: 100%;
-    min-height: 40px;
+#quickorderModal .d_qo_wrapper_all_modal {
+    padding: 0 20px;
 }
 
-.quick-order-wrapper-form textarea{
+#quickorderModal .quick-order-wrapper-form textarea {
     display: block;
     width: 100%;
     min-height: 80px;
@@ -23,93 +29,41 @@
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-.wrapper-product-amount input{
-    width: 100%;
+#quickorderModal .quick-order-wrapper-form {
+    padding: 0;
 }
 
-.wrapper-submit-btn{
-    width: 100%;
-    height: 40px;
-}
-
-#quickorderModal .quick-order-wrapper-form{
-    padding: 0 15px;
-}
-
-#quickorderModal .modal-header{
+#quickorderModal .modal-header {
     min-height: 0;
     padding: 15px;
     border: none;
 }
 
-#quickorderModal .modal-header .close{
+#quickorderModal .modal-header .close {
     margin-top: -5px;
     font-size: 25px;
 }
 
-#quickorderModal #dqo_title{
+#quickorderModal #dqo_modal_heading_title {
     text-align: center;
 }
 
-#quickorderModal #d_qo_modal_description_text{
-
-}
-
-#quickorderModal .wrapper-modal-qty{
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+#quickorderModal #d_qo_modal_description_text {
+    text-align: justify;
+    width: 100%;
     height: 100%;
-    width: 100%;
-    line-height: 1;
-    flex-direction: column;
-    font-size: 18px;
-}
-
-#quickorderModal .d-qo-wrapper-product{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 180px;
-}
-
-#quickorderModal .d-qo-product-image{
-    max-height: 100%;
-    width: 100%;
+    max-height: 200px;
     overflow: hidden;
-    display: flex;
-    justify-content: flex-start;
 }
 
-#quickorderModal .wrapper-modal-qty p{
-    margin: 0;
-    padding: 5px;
-}
-
-#quickorder_form #badge_selector{
-    min-width: 26px;
-    border-radius: 15px;
-    padding: 7px 7px;
-    align-items: center;
-    justify-content: center;
-}
-
-#quickorderModal .q-qo-wrapper-submit-btn{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-}
-
-#quickorderModal #dqo_submit {
+#quickorderModal #d_qo_submit {
     color: white;
     width: 125px;
     display: flex;
@@ -117,20 +71,112 @@
     right: 0;
 }
 
-.d-qo-wrapper-product{
+#quickorderModal .alert {
+    padding: 15px;
+    padding-right: 35px;
+}
+
+#quickorderModal .d_qo_product_responce {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+#quickorderModal .d_qo_wrapper_product {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     height: 180px;
+    flex-direction: column;
 }
 
-.d-qo-product-image img{
+#quickorderModal .d_qo_wrapper_price_quantity {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#quickorderModal .d_qo_wrapper_price {
+    padding-left: 20px;
+}
+
+#quickorderModal .d_qo_product_image img {
     width: auto;
+    max-width: 280px;
     height: 180px;
     max-height: 180px;
 }
 
-.wrapper-modal-qty p{
-    /*display: none;*/
+#quickorderModal .d_qo_wrapper_product .quantity {
+    position: relative;
+}
+
+#quickorderModal .d_qo_wrapper_product input[type=number]::-webkit-inner-spin-button,
+#quickorderModal .d_qo_wrapper_product input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#quickorderModal .d_qo_wrapper_product input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity input {
+    width: 60px;
+    height: 40px;
+    line-height: 1.65;
+    float: left;
+    display: block;
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+    border: 1px solid #eee;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity input:focus {
+    outline: 0;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity-nav {
+    float: left;
+    position: relative;
+    height: 40px;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity-button {
+    position: relative;
+    cursor: pointer;
+    border-left: 1px solid #eee;
+    width: 20px;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+    line-height: 1.7;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity-button.quantity-up {
+    position: absolute;
+    height: 50%;
+    top: 0;
+    border-bottom: 1px solid #eee;
+}
+
+#quickorderModal .d_qo_wrapper_product .quantity-button.quantity-down {
+    position: absolute;
+    bottom: -1px;
+    height: 50%;
 }

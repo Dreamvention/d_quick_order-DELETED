@@ -6,6 +6,9 @@
 //heading
 $_['heading_title']                             = '<span style="color:#449DD0; font-weight:bold">Quick Order</span><span style="font-size:12px; color:#999"> by <a href="http://www.opencart.com/index.php?route=extension/extension&filter_username=Dreamvention" style="font-size:1em; color:#999" target="_blank">Dreamvention</a></span>';
 $_['heading_title_main']                        = 'Quick Order';
+$_['text_order_create']                         = 'Create Order';
+$_['text_order_delete']                         = 'Delete Order';
+$_['text_order_view']                           = 'View Order Info';
 $_['text_edit']                                 = 'Edit Quick Order';
 $_['text_module']                               = 'Modules';
 $_['text_undefined']                            = 'Undefined';
@@ -63,7 +66,11 @@ $_['column_product']                            = 'Product';
 $_['column_product_name']                       = 'Product Name';
 $_['column_product_description']                = "Product Description";
 $_['column_product_qty']                        = "Product Qty";
+$_['column_product_price']                      = "Price";
 $_['column_product_total']                      = "Total";
+$_['column_product_tax']                        = "Tax";
+$_['column_product_price_total_tax']            = "Price | Total | Tax";
+
 $_['column_product_status']                     = "Status";
 $_['column_products_images']                    = "Products";
 $_['column_product_price']                      = "Product Price";
@@ -87,6 +94,7 @@ $_['filter_order_status']                       = 'Status';
 
 // Settings
 $_['entry_design_custom_style']                 = 'Set Custom Class';
+$_['help_module_selector']                      = "In Chrome Dev tools find place to paste Quick Order button and then 'Copy selector' option. Button will be after this selector.";
 
 $_['text_install_twig_support']                 = 'Install Twig';
 $_['text_install_event_support']                = 'Install Events';

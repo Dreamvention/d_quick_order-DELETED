@@ -1,0 +1,223 @@
+<div class="tab-body">
+    <div id="filter" class="well">
+
+        <form action="{{ filter }}" method="get" id="form-filter">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-code">{{ column_product_name }}</label>
+                        <input type="text" name="filter_name" value="{{ filter_name }}"
+                               placeholder="{{ column_customer_name_input }}" id="input-code"
+                               class="form-control"
+                               data-item="code"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-trigger">{{ column_customer_email }}</label>
+                        <input type="text" name="filter_email" value="{{ filter_email }}"
+                               placeholder="{{ column_customer_email_input }}"
+                               id="input-trigger"
+                               class="form-control" data-item="trigger"/>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-event-action">{{ column_customer_phone }}</label>
+                        <input type="text" name="filter_phone" value="{{ filter_phone }}"
+                               placeholder="{{ column_customer_phone_input }}"
+                               id="input-event-action"
+                               class="form-control" data-item="action"/>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="input-status">{{ column_product_status }}</label>
+                        <select name="filter_order_status_id" id="input-status"
+                                class="form-control">
+                            <option value="*" {% if not filter_order_status_id or filter_order_status_id is null %} selected {% endif %}></option>
+
+                            {% for status in statuses %}
+                                <option value="{{ status.order_status_id }}"
+                                        {% if(filter_order_status_id == status.order_status_id) %} selected {% endif %}>{{ status.name }} </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <button data-action="{{ button_filter_action }}" type="button"
+                            id="button-filter" class="btn btn-primary pull-right">
+                        <i class="fa fa-search"></i> {{ button_filter }} </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <form action="{{ delete }}" method="post" enctype="multipart/form-data">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <td class="text-left">
+                        {% if sort == 'quick_order_id' %}
+                            <a href="{{ sort_quick_order_id }}"
+                               class="{{ order|lower }}">{{ column_order_id_number }}</a>
+                        {% else %}
+                            <a href="{{ sort_quick_order_id }}">{{ column_order_id_number }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {% if sort == 'firstname' %}
+                            <a href="{{ sort_firstname }}"
+                               class="{{ order|lower }}">{{ column_customer_name }} </a>
+                        {% else %}
+                            <a href="{{ sort_firstname }}">{{ column_customer_name }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {% if sort == 'email' %}
+                            <a href="{{ sort_email }}"
+                               class="{{ order|lower }}">{{ column_customer_email }} </a>
+                        {% else %}
+                            <a href="{{ sort_email }}">{{ column_customer_email }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {% if sort == 'telephone' %}
+                            <a href="{{ sort_telephone }}"
+                               class="{{ order|lower }}">{{ column_customer_phone }} </a>
+                        {% else %}
+                            <a href="{{ sort_telephone }}">{{ column_customer_phone }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {% if sort ==  'comment' %}
+                            <a href="{{ sort_comment }}"
+                               class="{{ order|lower }}">{{ column_customer_comment }} </a>
+                        {% else %}
+                            <a href="{{ sort_comment }}">{{ column_customer_comment }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {{ column_products_images }}
+                    </td>
+                    <td class="text-left">
+                        {{ column_product_qty }}
+                    </td>
+                    <td class="text-left" style="text-align: center">
+                        {{ column_product_price_total_tax }}
+                    </td>
+                    <td class="text-left">
+                        {% if sort ==  'date_added' %}
+                            <a href="{{ sort_date_added }}"
+                               class="{{ order|lower }}">{{ column_date_added }} </a>
+                        {% else %}
+                            <a href="{{ sort_date_added }}">{{ column_date_added }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-left">
+                        {% if sort == 'status' %}
+                            <a href="{{ sort_status }}"
+                               class="{{ order|lower }}">{{ column_sort_status }} </a>
+                        {% else %}
+                            <a href="{{ sort_status }}">{{ column_sort_status }} </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-right">{{ column_action }} </td>
+                </tr>
+                </thead>
+                <tbody>
+                {% if orders %}
+                    {% for order in orders %}
+                        <tr id="event_id_{{ order.quick_order_id }}" {% if order.status %} class="enabled" {% endif %}>
+                            <td class="text-left">{{ order.id }}</td>
+                            <td class="text-left">{{ order.firstname }} </td>
+                            <td class="text-left">{{ order.email }} </td>
+                            <td class="text-left">{{ order.telephone }} </td>
+                            <td class="text-left">{{ order.comment }} </td>
+                            <td class="text-left">
+                                {% for product in order.products %}
+                                    <div class="d_qo_wrapper_image">
+                                        <a href="{{ product.link }}">
+                                            <img src="http://opencart/303/d_newquickorder/image/{{ product.image }}"
+                                                 alt="">
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            <td class="text-left">
+                                <div class="d_qo_wrapper_qty">
+                                    {% for product in order.products %}
+                                        <p>{{ product.quantity }}</p>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="text-left">
+                                <div class="d_qo_wrapper_qty">
+                                    {% for product in order.products %}
+                                        <p>{{ product.price }} | {{ product.total }} | {{ product.tax }}</p>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="text-left">{{ order.date_added }}</td>
+                            <td class="text-left">
+
+                                {% for status in statuses %}
+                                    {% if(order.order_status_id) == status.order_status_id %}
+                                        {{ status.name }}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td class="text-right">
+
+                                {% if(order.view) %}
+
+                                    <a href="{{ order.view }}" data-toggle="tooltip"
+                                       title="{{ text_order_view }}"
+                                       data-event_id="{{ order.view }}"
+                                       class="btn btn-info action"><i class="fa fa-eye"></i>
+                                    </a>
+
+                                {% else %}
+
+                                    {% if(order.order_status_id) == 0 %}
+                                        <a href="{{ order.create }}" data-toggle="tooltip"
+                                           title="{{ text_order_create }}"
+                                           data-event_id="{{ order.id }}"
+                                           class="btn btn-success action create"><i
+                                                    class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    {% endif %}
+
+
+                                    <a href="{{ order.delete }}" data-toggle="tooltip"
+                                       title="{{ text_order_delete }}"
+                                       data-event_id="{{ order.id }}"
+                                       class="btn btn-danger action delete"><i
+                                                class="fa fa-trash"></i>
+                                    </a>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td class="text-center" colspan="12">{{ text_no_results }} </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }} </div>
+        <div class="col-sm-6 text-right">{{ results }} </div>
+    </div>
+</div>

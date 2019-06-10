@@ -16,6 +16,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->d_opencart_patch = (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_opencart_patch.json'));
         $this->d_shopunity = (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_shopunity.json'));
         $this->d_twig_manager = (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_twig_manager.json'));
+        $this->d_event_manager = (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_event_manager.json'));
         $this->extension = json_decode(file_get_contents(DIR_SYSTEM . 'library/d_shopunity/extension/' . $this->codename . '.json'), true);
         $this->store_id = (isset($this->request->get['store_id'])) ? $this->request->get['store_id'] : 0;
         $this->load->language($this->route);
@@ -31,6 +32,11 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         if ($this->d_twig_manager) {
             $this->load->model('extension/module/d_twig_manager');
             $this->model_extension_module_d_twig_manager->installCompatibility();
+        }
+
+        if ($this->d_event_manager) {
+            $this->load->model('extension/module/d_event_manager');
+            $this->model_extension_module_d_event_manager->installCompatibility();
         }
 
         if (!$this->isSetup()) {
@@ -61,7 +67,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             }
             $this->model_setting_setting->editSetting('module_' . $this->codename, $new_setting, $this->store_id);
 
-            $json['success'] = $this->language->get('success_modifed');
+            $this->load->model('extension/d_opencart_patch/url');
+            $json['redirect'] = $this->model_extension_d_opencart_patch_url->getExtensionLink('module');
             $this->response->addHeader('Content-Type: application/json');
             $this->response->setOutput(json_encode($json));
             return;
@@ -159,7 +166,16 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $products = $this->model_extension_module_d_quick_order->getProductsByOrderId($order['quick_order_id']);
 
             foreach ($products as &$product) {
+                $product['price'] = number_format($product['price'], 2);
+                $product['total'] = number_format($product['total'], 2);
+                $product['tax'] = number_format($product['tax'], 2);
                 $product['link'] = $this->model_extension_d_opencart_patch_url->link('catalog/product/edit', 'product_id=' . $product['product_id'], 'SSL');
+            }
+
+            if (!empty($order['order_id'])){
+                $view = $this->model_extension_d_opencart_patch_url->link('sale/order/edit/' . 'order_id=' . $order['order_id']);
+            }else{
+                $view = null;
             }
 
             $data['orders'][] = array(
@@ -175,6 +191,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 'delete_ajax' => $disable,
                 'create' => $this->model_extension_d_opencart_patch_url->link($this->route . '/createOrder', 'id=' . $order['quick_order_id'] . $url),
                 'delete' => $this->model_extension_d_opencart_patch_url->link($this->route . '/delete', 'id=' . $order['quick_order_id'] . $url),
+                'view' => $view,
                 'products' => $products
             );
         }
@@ -351,17 +368,17 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function tabOrders($data)
     {
-        return $this->load->view($this->route . '/tab_orders', $data);
+        return $this->load->view('extension/' . $this->codename . '/tab_orders', $data);
     }
 
     public function tabSetting($data)
     {
-        return $this->load->view($this->route . '/tab_setting', $data);
+        return $this->load->view('extension/' . $this->codename . '/tab_setting', $data);
     }
 
     public function tabInstructions($data)
     {
-        return $this->load->view($this->route . '/tab_instruction', $data);
+        return $this->load->view('extension/' . $this->codename . '/tab_instruction', $data);
     }
 
     public function createOrder()
@@ -376,9 +393,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             if ($currentOrder && $currentOrder['order_status_id'] == 0) {
 
 //              Create new Order
-                $dataToNewOrder = $this->prepareReplaceOrder($currentOrder);
-                $newOrder = $this->model_extension_module_d_quick_order->replaceOrder($dataToNewOrder);
-                $lastid = $this->db->getLastId();
+                unset($currentOrder['order_id']);
+                $currentOrder['custom_field'] = array();
+                $currentOrder['payment_custom_field'] = array();
+                $currentOrder['shipping_custom_field'] = array();
+
+                $lastid = $this->model_extension_module_d_quick_order->replaceOrder($currentOrder);
 
 //              Create new ProductOrders
                 $products = $this->model_extension_module_d_quick_order->getProductsById($orderId);
@@ -387,12 +407,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                     $this->model_extension_module_d_quick_order->replaceProductsOrder($dataToNewProductOrder);
                 }
 
-//              Change status order
-                $this->load->config('d_quick_order');
-                $statuses = $this->config->get('d_quick_order_statuses');
+//              Change status order and set real order_id
+//                $this->load->config('d_quick_order');
+//                $statuses = $this->config->get('d_quick_order_statuses');
 
                 $this->load->model('extension/d_opencart_patch/url');
-                $this->model_extension_module_d_quick_order->updateOrderStatus($orderId, $statuses[1]['order_status_id']);
+                $this->model_extension_module_d_quick_order->updateOrderStatusAndSetRealOrder($orderId, 1, $lastid);
 
 //              Redirect
                 $json['redirect'] = $this->model_extension_d_opencart_patch_url->link('sale/order/edit/' . "order_id=$lastid");
@@ -423,6 +443,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->document->addStyle('view/stylesheet/d_admin_style/themes/light/light.css');
         $this->document->addStyle('view/stylesheet/d_quick_order.css');
+
+        $this->document->addStyle('view/javascript/d_bootstrap_colorpicker/css/bootstrap-colorpicker.css');
+        $this->document->addScript('view/javascript/d_bootstrap_colorpicker/js/bootstrap-colorpicker.js');
     }
 
     public
@@ -510,6 +533,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         // Button Events
         $data['button_save'] = $this->language->get('button_save');
         $data['button_save_action'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/save', $url);
+        $data['button_save_and_stay_action'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/save', $url);
         $data['button_save_and_stay'] = $this->language->get('button_save_and_stay');
         $data['button_filter_action'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/filter', $url);
         $data['button_create'] = $this->language->get('button_create');
@@ -518,9 +542,13 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['button_uninstall'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/uninstallModule', $url);
         $data['button_uninstall_text'] = $this->language->get('button_uninstall');
 
+
         // Entry
         $data['entry_compatibility'] = $this->language->get('entry_compatibility');
         $data['entry_skipped_models'] = $this->language->get('entry_skipped_models');
+        $data['text_order_create'] = $this->language->get('text_order_create');
+        $data['text_order_delete'] = $this->language->get('text_order_delete');
+        $data['text_order_view'] = $this->language->get('text_order_view');
         $data['help_skipped_models'] = $this->language->get('help_skipped_models');
         $data['entry_test_toggle'] = $this->language->get('entry_test_toggle');
         $data['entry_test'] = $this->language->get('entry_test');
@@ -702,9 +730,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             return false;
         }
 
-        if (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_event_manager.json')) {
+        if ($this->d_event_manager) {
             $this->load->model('extension/module/d_event_manager');
-            $this->model_extension_module_d_event_manager->installDatabase();
+            $this->createTables();
         }
 
         if ($this->d_shopunity) {
@@ -712,7 +740,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->model_extension_d_shopunity_mbooth->installDependencies($this->codename . '_admin');
         }
 
-        if (file_exists(DIR_SYSTEM . 'library/d_shopunity/extension/d_twig_manager.json')) {
+        if ($this->d_twig_manager) {
             $this->load->model('extension/module/d_twig_manager');
             $this->model_extension_module_d_twig_manager->installCompatibility();
         }
@@ -723,55 +751,34 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public
     function installEvents()
     {
-        $this->load->model('extension/module/d_event_manager');
-        $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/footer/before', 'extension/module/d_quick_order/catalog_controller_common_footer_before', 0);
-        $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/header/before', 'extension/module/d_quick_order/catalog_controller_common_header_before', 0);
-        $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/view/product/product/after', 'extension/module/d_quick_order/catalog_view_product_product_after', 0);
+        if ($this->d_event_manager) {
+            $this->load->model('extension/module/d_event_manager');
+
+            $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/footer/before', 'extension/module/d_quick_order/catalog_controller_common_footer_before', 0);
+            $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/header/before', 'extension/module/d_quick_order/catalog_controller_common_header_before', 0);
+            $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/view/product/product/after', 'extension/module/d_quick_order/catalog_view_product_product_after', 0);
+        }
     }
 
     public
     function installEventsAndEnable()
     {
-        $this->load->model($this->route);
+        if ($this->d_event_manager) {
+            $this->load->model('extension/module/d_event_manager');
 
-        if ($this->load->model('extension/module/d_event_manager')) {
             $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/footer/before', 'extension/module/d_quick_order/catalog_controller_common_footer_before', 1);
             $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/controller/common/header/before', 'extension/module/d_quick_order/catalog_controller_common_header_before', 1);
             $this->model_extension_module_d_event_manager->addEvent($this->codename, 'catalog/view/product/product/after', 'extension/module/d_quick_order/catalog_view_product_product_after', 1);
-        } else {
-            $this->model_extension_module_d_quick_order->addEvents();
         }
     }
 
     public
     function uninstallEvents()
     {
-        if ($this->load->model('extension/module/d_event_manager')){
+        if ($this->d_event_manager) {
+            $this->load->model('extension/module/d_event_manager');
+
             $this->model_extension_module_d_event_manager->deleteEvent($this->codename);
-        }else{
-            $this->model_extension_module_d_quick_order->deleteEvents();
-        }
-    }
-
-    private
-    function permission_handler($perm = 'main')
-    {
-        $this->load->model('user/user_group');
-
-        $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename);
-        $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename);
-
-        if ($perm == 'all') {
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename . '/category');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename . '/category');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename . '/post');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename . '/post');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename . '/review');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename . '/review');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename . '/author');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename . '/author');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'access', 'extension/' . $this->codename . '/author_group');
-            $this->model_user_user_group->addPermission($this->model_extension_module_d_quick_order->getGroupId(), 'modify', 'extension/' . $this->codename . '/author_group');
         }
     }
 
@@ -890,9 +897,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         foreach ($this->request->post as $k => $v) {
             $new_setting['module_' . $k] = $v;
         }
-        $this->model_setting_setting->editSetting('module_' . $this->codename, $new_setting, $this->store_id);
-        $json['redirect'] = $this->model_extension_d_opencart_patch_url->getExtensionLink('module');
 
+        $json['success'] = $this->language->get('success_modifed');
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }

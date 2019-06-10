@@ -107,3 +107,16 @@
 .d_qo_wrapper_image img{
 	width: 100px !important;
 }
+
+.d_qo_wrapper_qty{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+}
+
+.d_qo_wrapper_qty p{
+	padding: 20px;
+}

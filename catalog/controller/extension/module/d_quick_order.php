@@ -201,7 +201,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                         }
 
                         foreach ($this->request->post['option'] as $key => $value) {
-                            foreach ($this->orderProductOptions as $option){
+                            foreach ($this->orderProductOptions as $option) {
                                 $data = array();
 
                                 $data['quick_order_id'] = $orderId;
@@ -339,11 +339,19 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function getTotalSum($product_info)
     {
+        // Save and store current cart
         $tempProducts = $this->cart->getProducts();
 
-        foreach ($tempProducts as $tempProduct) {
-            $this->cart->remove($tempProduct['cart_id']);
+        if (VERSION >= '3.0.0.0') {
+            foreach ($tempProducts as $key => $tempProduct) {
+                $this->cart->remove(isset($tempProduct['cart_id']) ? $tempProduct['cart_id'] : null);
+            }
+        } else {
+            foreach ($tempProducts as $key => $tempProduct) {
+                $this->cart->remove($key);
+            }
         }
+
 
         if (isset($this->request->post['option'])) {
             $option = array_filter($this->request->post['option']);
@@ -352,20 +360,16 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
 
         $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
-        $myProductCartId = $this->db->getLastId();
 
-        // Unset all shipping and payment methods
-        unset($this->session->data['shipping_method']);
-        unset($this->session->data['shipping_methods']);
-        unset($this->session->data['payment_method']);
-        unset($this->session->data['payment_methods']);
+        if (VERSION >= '3.0.0.0') {
+            $myProductCartId = $this->db->getLastId();
+        } else {
+            $myProductCartId = key($this->cart->getProducts());
+        }
 
-
+        $option_data = array();
         foreach ($this->cart->getProducts() as $product) {
-            $option_data = array();
-
             foreach ($product['option'] as $option) {
-
                 if ($option['type'] != 'file') {
                     $value = $option['value'];
                 } else {
@@ -379,18 +383,19 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 }
 
                 $option_data[] = array(
-                    'product_option_id'       => $option['product_option_id'],
+                    'product_option_id' => $option['product_option_id'],
                     'product_option_value_id' => $option['product_option_value_id'],
-                    'option_id'               => $option['option_id'],
-                    'option_value_id'         => $option['option_value_id'],
-                    'name'                    => $option['name'],
-                    'value'                   => $option['value'],
-                    'type'                    => $option['type']
+                    'option_id' => $option['option_id'],
+                    'option_value_id' => $option['option_value_id'],
+                    'name' => $option['name'],
+                    'value' => $option['value'],
+                    'type' => $option['type']
                 );
             }
         }
 
-        $this->orderProductOptions = $option_data;
+        $this->orderProductOptions = $option_data ? $option_data : null;
+
 
         // Totals
         $this->load->model('setting/extension');
@@ -436,6 +441,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             array_multisort($sort_order, SORT_ASC, $totals);
         }
 
+
         foreach ($tempProducts as $tempProduct) {
             $this->cart->add($tempProduct['product_id'], $tempProduct['quantity'], $tempProduct['option'], $tempProduct['recurring']);
         }
@@ -445,7 +451,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         unset($this->session->data['payment_method']);
         unset($this->session->data['payment_methods']);
 
-        $this->cart->remove((int)$myProductCartId);
+        $this->cart->remove($myProductCartId);
 
         $return['total'] = $total;
         $return['tax'] = $taxes;

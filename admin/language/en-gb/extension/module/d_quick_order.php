@@ -156,5 +156,5 @@ $_['text_welcome_mobile_ready']     = 'Choose different <br> layouts and themes'
 $_['text_welcome_increase_sales']   = 'Add Dozens <br> of modules';
 
 $_['button_setup']                  = 'Setup';
-$_['success_setup']                 = 'Success: You have now setup Quick Order Module! You should now see the blog link in the frontend category menu';
+$_['success_setup']                 = 'Success: You have now setup Quick Order Module!';
 $_['text_pro']                      = '<a href="https://dream.page.link/tc4X" target="_blank">For SEO Urls and Quick Order Modules get the Quick Order Module Pro</a>';

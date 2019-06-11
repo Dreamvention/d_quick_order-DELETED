@@ -156,9 +156,11 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         );
 
         $event_total = $this->model_extension_module_d_quick_order->getTotalOrders($filter_data);
-
         $orders = $this->model_extension_module_d_quick_order->getOrders($filter_data);
+
         $data['orders'] = array();
+        $this->load->model('localisation/currency');
+
         foreach ($orders as $key => $order) {
             $enable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/enable', 'id=' . $order['quick_order_id'] . $url);
             $disable = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/delete', 'id=' . $order['quick_order_id'] . $url);
@@ -170,13 +172,16 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product['total'] = number_format($product['total'], 2);
                 $product['tax'] = number_format($product['tax'], 2);
                 $product['link'] = $this->model_extension_d_opencart_patch_url->link('catalog/product/edit', 'product_id=' . $product['product_id'], 'SSL');
+                $product['options'] = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $order['quick_order_id']);
             }
 
             if (!empty($order['order_id'])){
-                $view = $this->model_extension_d_opencart_patch_url->link('sale/order/edit/' . 'order_id=' . $order['order_id']);
+                $view = $this->model_extension_d_opencart_patch_url->link('sale/order/info&order_id=' . $order['order_id']);
             }else{
                 $view = null;
             }
+
+            $currency = $this->model_localisation_currency->getCurrency($order['currency_id']);
 
             $data['orders'][] = array(
                 'id' => $order['quick_order_id'],
@@ -192,9 +197,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 'create' => $this->model_extension_d_opencart_patch_url->link($this->route . '/createOrder', 'id=' . $order['quick_order_id'] . $url),
                 'delete' => $this->model_extension_d_opencart_patch_url->link($this->route . '/delete', 'id=' . $order['quick_order_id'] . $url),
                 'view' => $view,
-                'products' => $products
+                'products' => $products,
+                'currency' => $currency['symbol_left'],
             );
         }
+
+//        $this->dd($data['orders']);
 
         //sort
         $order = (isset($this->request->get['order'])) ? $this->request->get['order'] : '';
@@ -397,6 +405,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $currentOrder['custom_field'] = array();
                 $currentOrder['payment_custom_field'] = array();
                 $currentOrder['shipping_custom_field'] = array();
+                $currentOrder['order_status_id'] = 2;
 
                 $lastid = $this->model_extension_module_d_quick_order->replaceOrder($currentOrder);
 
@@ -405,6 +414,19 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 foreach ($products as $product) {
                     $dataToNewProductOrder = $this->prepareReplaceProductOrder($lastid, $product);
                     $this->model_extension_module_d_quick_order->replaceProductsOrder($dataToNewProductOrder);
+
+                    $productOptions = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $orderId);
+                    foreach ($productOptions as &$productOption) {
+                        $data['order_id'] = $lastid;
+                        $data['order_product_id'] = $productOption['product_to_order_id'];
+                        $data['product_option_id'] = $productOption['product_option_id'];
+                        $data['product_option_value_id'] = $productOption['product_option_value_id'];
+                        $data['name'] = $productOption['name'];
+                        $data['value'] = $productOption['value'];
+                        $data['type'] = $productOption['type'];
+
+                        $this->model_extension_module_d_quick_order->replaceProductOptionsOrder($data);
+                    }
                 }
 
 //              Change status order and set real order_id
@@ -790,8 +812,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('extension/d_opencart_patch/modification');
         $this->load->model('setting/setting');
 
-        $this->model_extension_module_d_quick_order->deleteOrdersTable();
-        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
+        $this->deleteTables();
+//        $this->model_extension_module_d_quick_order->deleteOrdersTable();
+//        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
+//        $this->model_extension_module_d_quick_order->deleteOrdersOptionTable();
 
         $this->uninstallEvents();
 
@@ -818,8 +842,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('extension/d_opencart_patch/modification');
         $this->load->model('setting/setting');
 
-        $this->model_extension_module_d_quick_order->deleteOrdersTable();
-        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
+        $this->deleteTables();
+//        $this->model_extension_module_d_quick_order->deleteOrdersTable();
+//        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
+//        $this->model_extension_module_d_quick_order->deleteOrdersOptionTable();
 
         $this->uninstallEvents();
 
@@ -859,6 +885,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->model_extension_module_d_quick_order->createOrdersTable();
         $this->model_extension_module_d_quick_order->createOrdersProductTable();
+        $this->model_extension_module_d_quick_order->createOrdersOptionTable();
     }
 
     public
@@ -868,6 +895,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->model_extension_module_d_quick_order->deleteOrdersTable();
         $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
+        $this->model_extension_module_d_quick_order->deleteOrdersOptionTable();
     }
 
     public
@@ -930,6 +958,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
             $this->model_extension_module_d_quick_order->deleteOrder($orderId);
             $this->model_extension_module_d_quick_order->deleteProductsOrder($orderId);
+            $this->model_extension_module_d_quick_order->deleteProductOptions($orderId);
 
             $json['redirect'] = $this->model_extension_d_opencart_patch_url->link($this->route);
         } else {

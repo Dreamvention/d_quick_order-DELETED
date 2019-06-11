@@ -14,6 +14,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     private $codename = 'd_quick_order';
     private $route = 'extension/module/d_quick_order';
     private $setting;
+    private $orderProductOptions;
 
     public function __construct($registry)
     {
@@ -123,7 +124,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
             $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
             if ($product_info) {
-                $totalSum = $this->getTotalSum($product_info);
+                $result = $this->getTotalSum($product_info);
+
+                $totalSum = $result['total'];
                 $total = $this->currency->format($totalSum, $this->session->data['currency']);
 
                 $json['product_image'] = $product_info['image'];
@@ -158,7 +161,15 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
 
                 if ($this->cartValidate($product_info)) {
-                    $totalSum = $this->getTotalSum($product_info);
+                    $result = $this->getTotalSum($product_info);
+
+                    $totalSum = $result['total'];
+                    $totalTaxArray = $result['tax'];
+                    $totalTax = 0;
+
+                    foreach ($totalTaxArray as $tax) {
+                        $totalTax = $totalTax + $tax;
+                    }
 
                     $order = $this->checkUserBuySomething($this->request->post['telephone']);
                     if ($order) {
@@ -167,14 +178,43 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                         $orderId = $this->createOrder($this->request->post);
                     }
 
-                    $product = $this->checkUserBuyProduct($this->request->post['product_id']);
+//                  Chk product in cart
+                    $buyProduct = $this->model_extension_module_d_quick_order->getProductById($this->request->post['product_id']);
+                    if ($buyProduct) {
+                        $qty = (int)$buyProduct['quantity'] + (int)$this->request->post['quantity'];
+                        $tax = $buyProduct['tax'] + $totalTax;
+                        $total = $buyProduct['price'] * $qty;
 
-                    if ($product) {
-                        $qty = (int)$product['quantity'] + (int)$this->request->post['quantity'];
-
-                        $this->productToOrderUpdate($product_info, $orderId, $qty, $totalSum);
+                        $this->productToOrderUpdate($product_info, $orderId, $qty, $total, $tax);
                     } else {
-                        $this->productToOrder($product_info, $orderId, (int)$this->request->post['quantity'], $totalSum);
+                        $totalSum = $totalSum - $totalTax;
+
+                        $this->productToOrder($product_info, $orderId, (int)$this->request->post['quantity'], $totalSum, $totalTax);
+                    }
+
+//                  Chk product option
+                    if (isset($this->request->post['option'])) {
+                        $options = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($this->request->post['product_id'], $orderId);
+
+                        if ($options) {
+                            $this->model_extension_module_d_quick_order->deleteOptionsByProductIdAndOrderId($this->request->post['product_id'], $orderId);
+                        }
+
+                        foreach ($this->request->post['option'] as $key => $value) {
+                            foreach ($this->orderProductOptions as $option){
+                                $data = array();
+
+                                $data['quick_order_id'] = $orderId;
+                                $data['product_to_order_id'] = $this->request->post['product_id'];
+                                $data['product_option_id'] = $option['product_option_id'];
+                                $data['product_option_value_id'] = $option['product_option_value_id'];
+                                $data['name'] = $option['name'];
+                                $data['value'] = $option['value'];
+                                $data['type'] = $option['type'];
+
+                                $this->model_extension_module_d_quick_order->createOptionsByProductIdAndOrderId($data);
+                            }
+                        }
                     }
 
                     $this->persistData($this->request->post);
@@ -272,8 +312,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
         foreach ($product_options as $product_option) {
             if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
-                $this->errorValidationCart = $this->language->get('d_quick_order_error_item');
-                break;
+//                $this->errorValidationCart = $this->language->get('d_quick_order_error_item');
+                $this->errorValidationCart['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
             }
         }
 
@@ -305,7 +345,13 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->cart->remove($tempProduct['cart_id']);
         }
 
-        $this->cart->add($product_info['product_id'], $this->request->post['quantity']);
+        if (isset($this->request->post['option'])) {
+            $option = array_filter($this->request->post['option']);
+        } else {
+            $option = array();
+        }
+
+        $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
         $myProductCartId = $this->db->getLastId();
 
         // Unset all shipping and payment methods
@@ -313,6 +359,38 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         unset($this->session->data['shipping_methods']);
         unset($this->session->data['payment_method']);
         unset($this->session->data['payment_methods']);
+
+
+        foreach ($this->cart->getProducts() as $product) {
+            $option_data = array();
+
+            foreach ($product['option'] as $option) {
+
+                if ($option['type'] != 'file') {
+                    $value = $option['value'];
+                } else {
+                    $upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+                    if ($upload_info) {
+                        $value = $upload_info['name'];
+                    } else {
+                        $value = '';
+                    }
+                }
+
+                $option_data[] = array(
+                    'product_option_id'       => $option['product_option_id'],
+                    'product_option_value_id' => $option['product_option_value_id'],
+                    'option_id'               => $option['option_id'],
+                    'option_value_id'         => $option['option_value_id'],
+                    'name'                    => $option['name'],
+                    'value'                   => $option['value'],
+                    'type'                    => $option['type']
+                );
+            }
+        }
+
+        $this->orderProductOptions = $option_data;
 
         // Totals
         $this->load->model('setting/extension');
@@ -369,34 +447,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->cart->remove((int)$myProductCartId);
 
-        return $total;
+        $return['total'] = $total;
+        $return['tax'] = $taxes;
 
-
-//        $totalPrice = $product_info['price'];
-//        $totalF = 0;
-//        $totalP = 0;
-//
-//        $taxRules = $this->model_extension_module_d_quick_order->getTaxRule($product_info['tax_class_id']);
-//        foreach ($taxRules as $key => $taxRule) {
-//            $tax_rate = $this->model_extension_module_d_quick_order->getTaxRate($taxRule['tax_rate_id']);
-//
-//            if ($tax_rate['type'] == 'P') {
-//                $percent = round(floatval(floatval($totalPrice) * floatval($tax_rate['rate']) / 100), 2);
-//                $totalP = $totalP + $percent;
-//            }
-//            if ($tax_rate['type'] == 'F') {
-//                $totalF = $totalF + $tax_rate['rate'];
-//            }
-//        }
-//
-//        $totalPrice = $totalPrice + $totalF + $totalP;
-//        round(floatval($totalPrice), 2);
-//
-//
-//        var_dump($totalPrice);
-//        die();
-
-//        return $totalPrice;
+        return $return;
     }
 
 
@@ -623,7 +677,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     }
 
     public
-    function productToOrder($product, $orderId, $qty, $total)
+    function productToOrder($product, $orderId, $qty, $total, $tax)
     {
         $data['quick_order_id'] = $orderId;
         $data['product_id'] = $product['product_id'];
@@ -631,8 +685,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['model'] = $product['model'];
         $data['quantity'] = $qty;
         $data['price'] = $product['price'];
-        $data['total'] = floatval($product['price'] * floatval($qty));
-        $data['tax'] = $total;
+        $data['total'] = $total;
+        $data['tax'] = $tax;
         $data['reward'] = "0";
 
         $this->load->model('extension/module/d_quick_order');
@@ -640,7 +694,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     }
 
     public
-    function productToOrderUpdate($product, $orderid, $qty, $total)
+    function productToOrderUpdate($product, $orderid, $qty, $total, $tax)
     {
         $data['quick_order_id'] = $orderid;
         $data['product_id'] = $product['product_id'];
@@ -648,8 +702,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['model'] = $product['model'];
         $data['quantity'] = $qty;
         $data['price'] = $product['price'];
-        $data['total'] = floatval($product['price'] * floatval($qty));
-        $data['tax'] = number_format($total, 4);
+        $data['total'] = $total;
+        $data['tax'] = $tax;
         $data['reward'] = "0";
 
         $this->load->model('extension/module/d_quick_order');

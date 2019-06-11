@@ -10,6 +10,7 @@ class ModelExtensionModuleDQuickOrder extends Model
 {
     public $table = "d_qo_product_to_order";
     public $codename = 'd_quick_order';
+    public $tableOrderOption = "d_qo_order_option";
 
     private $events = array(
         array(
@@ -53,6 +54,30 @@ class ModelExtensionModuleDQuickOrder extends Model
             status = 'open',
             date_added = NOW(), 
             date_modified = NOW();");
+    }
+
+    public function getOptionsByProductIdAndOrderId($product_id, $order_id)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "$this->tableOrderOption WHERE product_to_order_id = '" . (int)$product_id . "' AND quick_order_id = '" . (int)$order_id . "'");
+
+        return $query->rows;
+    }
+
+    public function replaceProductOptionsOrder($data)
+    {
+        return $this->db->query("INSERT INTO " . DB_PREFIX . "order_option SET
+        order_id = '" . (int)$data['order_id'] . "',
+        order_product_id = '" . (int)$data['order_product_id'] . "',
+        product_option_id = '" . (int)$data['product_option_id'] . "',
+        product_option_value_id = '" . (int)$data['product_option_value_id'] . "',
+        name = '" . $this->db->escape($data['name']) . "',
+        value = '" . $this->db->escape($data['value']) . "',
+        type = '" . $this->db->escape($data['type']) . "'");
+    }
+
+    public function deleteProductOptions($order_id)
+    {
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "d_qo_order_option` WHERE quick_order_id='" . (int)$order_id . "'");
     }
 
     public function getOrderById($id)
@@ -250,11 +275,6 @@ class ModelExtensionModuleDQuickOrder extends Model
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;");
     }
 
-    public function deleteOrdersTable()
-    {
-        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order`");
-    }
-
     public function createOrdersProductTable()
     {
         $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "d_qo_product_to_order` (
@@ -271,15 +291,40 @@ class ModelExtensionModuleDQuickOrder extends Model
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;");
     }
 
+    public function createOrdersOptionTable()
+    {
+        $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "d_qo_order_option` (
+            `order_option_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+            `quick_order_id` INT NOT NULL,
+            `product_to_order_id` INT NOT NULL,
+            `product_option_id` INT NOT NULL,
+            `product_option_value_id` varchar(191) NULL, 
+            `name` varchar(191) NOT NULL,
+            `value` text NOT NULL,
+            `type` varchar(32) NOT NULL
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;");
+    }
+
     public function deleteOrdersProductTable()
     {
         $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_product_to_order`");
+    }
+
+    public function deleteOrdersTable()
+    {
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order`");
+    }
+
+    public function deleteOrdersOptionTable()
+    {
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order_option`");
     }
 
     public function uninstallDatabase()
     {
         $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order`");
         $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_product_to_order`");
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "d_qo_order_option`");
     }
 
     public function isInstalled()

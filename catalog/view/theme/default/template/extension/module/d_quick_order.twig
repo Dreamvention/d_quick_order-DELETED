@@ -7,28 +7,28 @@
 
         #d_qo_order_button {
             color: {{ config.button_style.color }};
-        {% if(config.button_style.border) %} border: 1px solid {{ config.button_style.border }};
+        {% if(config.button_style.border) %} border: 1px solid{{ config.button_style.border }};
         {% endif %} background-color: {{ config.button_style.background_color }};
         {% if(config.button_style.background_color) %} background-image: none{% endif %}
         }
 
         #d_qo_order_button:hover {
             color: {{ config.button_style.hover_color }};
-        {% if(config.button_style.hover_border) %} border: 1px solid {{ config.button_style.hover_border }};
+        {% if(config.button_style.hover_border) %} border: 1px solid{{ config.button_style.hover_border }};
         {% endif %} background-color: {{ config.button_style.hover_background_color }};
         {% if(config.button_style.hover_background_color) %} background-image: none{% endif %}
         }
 
         #d_qo_submit_btn {
             color: {{ config.button_style.color }};
-        {% if(config.button_style.border) %} border: 1px solid {{ config.button_style.border }};
+        {% if(config.button_style.border) %} border: 1px solid{{ config.button_style.border }};
         {% endif %} background-color: {{ config.button_style.background_color }};
         {% if(config.button_style.background_color) %} background-image: none{% endif %}
         }
 
         #d_qo_submit_btn:hover {
             color: {{ config.button_style.hover_color }};
-        {% if(config.button_style.hover_border) %} border: 1px solid {{ config.button_style.hover_border }};
+        {% if(config.button_style.hover_border) %} border: 1px solid{{ config.button_style.hover_border }};
         {% endif %} background-color: {{ config.button_style.hover_background_color }};
         {% if(config.button_style.hover_background_color) %} background-image: none{% endif %}
         }
@@ -82,7 +82,6 @@
                                 </div>
                             {% endif %}
 
-
                             {% if(config.modal_field.email) %}
                                 <div class="form-group {% if(config.modal_field.email_required) %} required {% endif %}">
                                     <label class="control-label" for="d_qo_field_email">Email address</label>
@@ -106,7 +105,8 @@
 
                             {% if(config.modal_field.comment) %}
                                 <div class="form-group {% if(config.modal_field.comment_required) %} required {% endif %}">
-                                    <label class="control-label" for="d_qo_field_comment {% if(config.modal_field.comment_required) %} required {% endif %}">Comment</label>
+                                    <label class="control-label"
+                                           for="d_qo_field_comment {% if(config.modal_field.comment_required) %} required {% endif %}">Comment</label>
                                     <textarea required name="comment" id="d_qo_field_comment" cols="30" rows="10"
                                               placeholder="Enter comment to order" {% if(config.modal_field.comment_required) %} required {% endif %}
                                     ></textarea>
@@ -131,7 +131,7 @@
                                             <p>Total : <span id="d_qo_product_price"></span></p>
                                         </div>
                                         <div class="quantity">
-                                            <input id="d_qo_qty" name="quantity" type="number" min="1" max="9" step="1"
+                                            <input id="d_qo_qty" name="quantity" type="number" min="1" max="999" step="1"
                                                    value="1">
                                         </div>
                                     </div>
@@ -144,7 +144,8 @@
 
                         {% for language in languages %}
                             {% if(config.text_modal_button[language['language_id']]) %}
-                                <button type="submit" id="d_qo_submit_btn" class="btn btn-primary">{{ config.text_modal_button[language['language_id']] }}</button>
+                                <button type="submit" id="d_qo_submit_btn"
+                                        class="btn btn-primary">{{ config.text_modal_button[language['language_id']] }}</button>
                             {% endif %}
                         {% endfor %}
 
@@ -203,13 +204,13 @@
     function clearModalForm() {
         // $('#d_qo_form')[0].reset();
 
-        setTimeout(function() {
+        setTimeout(function () {
             $('#d_qo_form .alert').remove();
         }, 3000);
     }
-    
+
     function clearAlerts() {
-        setTimeout(function() {
+        setTimeout(function () {
             $('#d_qo_form .alert').remove();
         }, 3000);
     }
@@ -254,18 +255,15 @@
             product_id = parseInt(product_id_url);
         }
 
-        // $('#quickorderModal #product_id_hidden').val(product_id);
-        // ,
-
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            data: { product_id: product_id, quantity: qty},
+            data: {product_id: product_id, quantity: qty},
             dataType: 'json',
             success: function (json) {
                 console.log(json);
 
-                if (json.hasOwnProperty('warning')){
+                if (json.hasOwnProperty('warning')) {
                     showWarning(json.warning);
                 }
 
@@ -304,13 +302,12 @@
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            // data: {product_id: product_id, quantity: qty},
-            data: { product_id: product_id, quantity: qty},
+            data: {product_id: product_id, quantity: qty},
             dataType: 'json',
             success: function (json) {
-                if (json.hasOwnProperty('warning')){
+                if (json.hasOwnProperty('warning')) {
                     showWarning(json.warning);
-                }else{
+                } else {
                     clearAlerts();
                 }
 
@@ -328,7 +325,7 @@
         product_id_url = getSearchParams("product_id");
         product_id_page = getProductIdPage();
 
-        if (parseInt(product_id_url) == parseInt(product_id_page)) {
+        if (product_id_page) {
             product_id = parseInt(product_id_page);
         } else {
             product_id = parseInt(product_id_url);
@@ -337,15 +334,32 @@
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/addOrderAjax',
             type: 'post',
-            // data: $(this).serialize(),
             data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
                 console.log(json);
 
-                if (json.hasOwnProperty('warning')){
-                    showAlertWarning(json.warning);
-                }else{
+                if (json.hasOwnProperty('warning')) {
+                    if (json.warning.hasOwnProperty('option')) {
+
+                        $('#quickorderModal').modal('toggle');
+
+                        for (i in json['warning']['option']) {
+                            var element = $('#input-option' + i.replace('_', '-'));
+
+                            if (element.parent().hasClass('input-group')) {
+                                element.parent().after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
+                            } else {
+                                element.after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
+                            }
+                        }
+
+                        $('.text-danger').parent().addClass('has-error');
+                        element.focus();
+                    } else {
+                        showAlertWarning(json.warning);
+                    }
+                } else {
                     showAlertSuccess(json);
                     clearAlerts();
                 }

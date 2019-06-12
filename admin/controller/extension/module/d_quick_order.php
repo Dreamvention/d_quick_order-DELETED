@@ -544,6 +544,29 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['tab_modal_window_setting'] = $this->language->get('tab_modal_window_setting');
         $data['tab_modal_fields_setting'] = $this->language->get('tab_modal_fields_setting');
 
+        $data['tab_basic_setting_enable'] = $this->language->get('tab_basic_setting_enable');
+        $data['help_module_selector'] = $this->language->get('help_module_selector');
+        $data['tab_basic_setting_selector'] = $this->language->get('tab_basic_setting_selector');
+        $data['tab_modal_button_name'] = $this->language->get('tab_modal_button_name');
+        $data['tab_modal_button_style_color'] = $this->language->get('tab_modal_button_style_color');
+        $data['tab_modal_button_style_border'] = $this->language->get('tab_modal_button_style_border');
+        $data['tab_modal_button_style_bgColor'] = $this->language->get('tab_modal_button_style_bgColor');
+        $data['tab_modal_button_style_hover_color'] = $this->language->get('tab_modal_button_style_hover_color');
+        $data['tab_modal_button_style_hover_border'] = $this->language->get('tab_modal_button_style_hover_border');
+        $data['tab_modal_button_style_hover_bgColor'] = $this->language->get('tab_modal_button_style_hover_bgColor');
+
+        $data['tab_modal_modal_setting_title'] = $this->language->get('tab_modal_modal_setting_title');
+        $data['tab_modal_modal_setting_description'] = $this->language->get('tab_modal_modal_setting_description');
+        $data['tab_modal_modal_setting_button_submit'] = $this->language->get('tab_modal_modal_setting_button_submit');
+
+        $data['tab_modal_fields_setting_name'] = $this->language->get('tab_modal_fields_setting_name');
+        $data['tab_modal_fields_setting_name_require'] = $this->language->get('tab_modal_fields_setting_name_require');
+        $data['tab_modal_fields_setting_email'] = $this->language->get('tab_modal_fields_setting_email');
+        $data['tab_modal_fields_setting_email_require'] = $this->language->get('tab_modal_fields_setting_email_require');
+        $data['tab_modal_fields_setting_comment'] = $this->language->get('tab_modal_fields_setting_comment');
+        $data['tab_modal_fields_setting_comment_require'] = $this->language->get('tab_modal_fields_setting_comment_require');
+        $data['tab_modal_fields_setting_phone_format'] = $this->language->get('tab_modal_fields_setting_phone_format');
+
 
         $data['text_list'] = $this->language->get('text_list');
         $data['text_enabled'] = $this->language->get('text_enabled');

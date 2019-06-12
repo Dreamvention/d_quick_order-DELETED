@@ -105,12 +105,6 @@
                     <td class="text-left">
                         {{ column_products_images }}
                     </td>
-                    {#<td class="text-left">#}
-                    {#{{ column_product_qty }}#}
-                    {#</td>#}
-                    {#<td class="text-left" style="text-align: center">#}
-                    {#{{ column_product_price_total_tax }}#}
-                    {#</td>#}
                     <td class="text-left">
                         {% if sort ==  'date_added' %}
                             <a href="{{ sort_date_added }}"
@@ -158,32 +152,17 @@
                                                 </div>
 
                                                 <div class="d_qo_product_totals">
-                                                    <p>Price: {{ product.quantity }} * {{ order.currency }}{{ product.price }}</p>
-                                                    <p>Sub total: {{ order.currency }}{{ product.total }}</p>
-                                                    <p>Tax: {{ product.tax }} {{ order.currency }}</p>
+                                                    <p>Price: {{ product.quantity }} * <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.price }}</span></p>
+                                                    <p>Sub total: <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.total }}</span></p>
+                                                    <p>Tax: <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.tax }}</span></p>
                                                     <hr>
-                                                    <p>Total: <span class="d_qo_product_total_price">{{ order.currency }}{{ product.total + product.tax }}</span></p>
+                                                    <p>Total: <span class="d_qo_product_total_price d_qo_product_totals_right">{{ order.currency }}{{ product.total_price }}</span></p>
                                                 </div>
                                             </div>
                                         </div>
                                     {% endfor %}
                                 </div>
                             </td>
-
-                            {#<td class="text-left">#}
-                            {#<div class="d_qo_wrapper_qty">#}
-                            {#{% for product in order.products %}#}
-                            {#<p>{{ product.quantity }}</p>#}
-                            {#{% endfor %}#}
-                            {#</div>#}
-                            {#</td>#}
-                            {#<td class="text-left">#}
-                            {#<div class="d_qo_wrapper_qty">#}
-                            {#{% for product in order.products %}#}
-                            {#<p>{{ product.price }} | {{ product.total }} | {{ product.tax }}</p>#}
-                            {#{% endfor %}#}
-                            {#</div>#}
-                            {#</td>#}
                             <td class="text-left">{{ order.date_added }}</td>
                             <td class="text-left">
 

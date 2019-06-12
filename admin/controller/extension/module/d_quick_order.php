@@ -171,6 +171,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product['price'] = number_format($product['price'], 2);
                 $product['total'] = number_format($product['total'], 2);
                 $product['tax'] = number_format($product['tax'], 2);
+                $product['total_price'] = number_format($product['total'] + $product['tax'], 2);
                 $product['link'] = $this->model_extension_d_opencart_patch_url->link('catalog/product/edit', 'product_id=' . $product['product_id'], 'SSL');
                 $product['options'] = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $order['quick_order_id']);
             }
@@ -566,6 +567,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['tab_modal_fields_setting_comment'] = $this->language->get('tab_modal_fields_setting_comment');
         $data['tab_modal_fields_setting_comment_require'] = $this->language->get('tab_modal_fields_setting_comment_require');
         $data['tab_modal_fields_setting_phone_format'] = $this->language->get('tab_modal_fields_setting_phone_format');
+        $data['tab_modal_fields_setting_phone_format_help'] = $this->language->get('tab_modal_fields_setting_phone_format_help');
 
 
         $data['text_list'] = $this->language->get('text_list');

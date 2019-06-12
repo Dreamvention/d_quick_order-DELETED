@@ -117,7 +117,7 @@
                                 <input type="text"
                                        name="{{ codename }}_setting[button_style][border]"
                                        value="{{ settings.button_style.border }}"
-                                       class="form-control">
+                                       class="form-control color-picker">
                             </div>
                         </div>
 
@@ -128,7 +128,7 @@
                                 <input type="text"
                                        name="{{ codename }}_setting[button_style][background_color]"
                                        value="{{ settings.button_style.background_color }}"
-                                       class="form-control">
+                                       class="form-control color-picker">
                             </div>
                         </div>
 
@@ -139,7 +139,7 @@
                                 <input type="text"
                                        name="{{ codename }}_setting[button_style][hover_color]"
                                        value="{{ settings.button_style.hover_color }}"
-                                       class="form-control">
+                                       class="form-control color-picker">
                             </div>
                         </div>
 
@@ -150,7 +150,7 @@
                                 <input type="text"
                                        name="{{ codename }}_setting[button_style][hover_border]"
                                        value="{{ settings.button_style.hover_border }}"
-                                       class="form-control">
+                                       class="form-control color-picker">
                             </div>
                         </div>
 
@@ -161,7 +161,7 @@
                                 <input type="text"
                                        name="{{ codename }}_setting[button_style][hover_background_color]"
                                        value="{{ settings.button_style.hover_background_color }}"
-                                       class="form-control">
+                                       class="form-control color-picker">
                             </div>
                         </div>
                     </div>
@@ -333,10 +333,11 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label"
-                                   for="input-status">{{ tab_modal_fields_setting_phone_format }}</label>
+                                   for="input-status">
+                                <span data-toggle="tooltip" title="{{ tab_modal_fields_setting_phone_format_help }}">{{ tab_modal_fields_setting_phone_format }}</span>
+                            </label>
                             <div class="col-sm-9">
-                                <input value="{{ settings.modal_field.phone_format }}"
-                                       type="text"
+                                <input value="{{ settings.modal_field.phone_format }}" type="text"
                                        name="{{ codename }}_setting[modal_field][phone_format]"
                                        class="form-control">
                             </div>

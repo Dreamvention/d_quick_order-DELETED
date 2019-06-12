@@ -58,7 +58,7 @@ $_['tab_modal_fields_setting_email_require']    = 'Require Email';
 $_['tab_modal_fields_setting_comment']          = 'Enable comment field in modal window';
 $_['tab_modal_fields_setting_comment_require']  = 'Require comment';
 $_['tab_modal_fields_setting_phone_format']     = 'Phone validation format';
-
+$_['tab_modal_fields_setting_phone_format_help']= 'The following mask definitions are predefined: 9 - Represents a numeric character (0-9). Example: (999) 999-9999';
 
 $_['column_order_id_number']                    = '#';
 $_['column_order_id']                           = 'Order ID';

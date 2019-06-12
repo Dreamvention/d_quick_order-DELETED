@@ -173,6 +173,13 @@
 }
 
 .d_qo_product_total_price{
-	font-size: larger;
+	font-size: 14px;
 	color: #2478cd;
+}
+
+.d_qo_product_totals_right{
+	min-width: 60px;
+	display: block;
+	float: right;
+	text-align: right;
 }

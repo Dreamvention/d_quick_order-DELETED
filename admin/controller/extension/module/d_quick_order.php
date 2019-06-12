@@ -49,7 +49,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $this->load->model('setting/setting');
 
             if (VERSION < '2.3.0.0') {
-                if ($this->request->post[$this->codename . '_setting']['skipped_models']) {
+                if (isset($this->request->post[$this->codename . '_setting']['skipped_models'])) {
                     $this->request->post[$this->codename . '_setting']['skipped_models'] = explode(",", $this->request->post[$this->codename . '_setting']['skipped_models']);
                 } else {
                     $this->request->post[$this->codename . '_setting']['skipped_models'] = array();

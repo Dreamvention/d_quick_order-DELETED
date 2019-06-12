@@ -342,16 +342,16 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         // Save and store current cart
         $tempProducts = $this->cart->getProducts();
 
-        if (VERSION >= '3.0.0.0') {
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2') {
             foreach ($tempProducts as $key => $tempProduct) {
                 $this->cart->remove(isset($tempProduct['cart_id']) ? $tempProduct['cart_id'] : null);
             }
-        } else {
+        }
+        else {
             foreach ($tempProducts as $key => $tempProduct) {
                 $this->cart->remove($key);
             }
         }
-
 
         if (isset($this->request->post['option'])) {
             $option = array_filter($this->request->post['option']);
@@ -361,7 +361,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
 
-        if (VERSION >= '3.0.0.0') {
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2') {
             $myProductCartId = $this->db->getLastId();
         } else {
             $myProductCartId = key($this->cart->getProducts());
@@ -478,7 +478,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
 
 
-//      Add temp to cart and clean session
+        // Delete my custom product and add temp to cart then clean session
+        $this->cart->remove($myProductCartId);
+
         foreach ($tempProducts as $tempProduct) {
             $this->cart->add($tempProduct['product_id'], $tempProduct['quantity'], $tempProduct['option'], $tempProduct['recurring']);
         }
@@ -487,8 +489,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         unset($this->session->data['shipping_methods']);
         unset($this->session->data['payment_method']);
         unset($this->session->data['payment_methods']);
-
-        $this->cart->remove($myProductCartId);
 
         $return['total'] = $total;
         $return['tax'] = $taxes;
@@ -780,5 +780,11 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     {
         highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
         die();
+    }
+
+    public
+    function dump($data)
+    {
+        highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
     }
 }

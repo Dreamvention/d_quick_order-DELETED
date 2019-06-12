@@ -114,27 +114,27 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function AddToCartQuickOrderCartAjax()
     {
+        $this->load->model('setting/setting');
         $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
             $json = array();
             $this->load->language('extension/module/' . $this->codename);
-            $this->load->language('checkout/cart');
             $this->load->model('catalog/product');
 
             $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
             if ($product_info) {
-                $result = $this->getTotalSum($product_info);
+                $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
 
-                $totalSum = $result['total'];
-                $total = $this->currency->format($totalSum, $this->session->data['currency']);
+                $total = $result['total'];
+                $totalToView = $this->currency->format($total, $this->session->data['currency']);
 
                 $json['product_image'] = $product_info['image'];
                 $json['product_name'] = $product_info['name'];
                 $json['product_model'] = $product_info['model'];
                 $json['product_price'] = $product_info['price'];
                 $json['product_quantity'] = $product_info['quantity'];
-                $json['product_total_price'] = $total;
+                $json['product_total_price'] = $totalToView;
                 $json['success'] = true;
             } else {
                 $json['error'] = $this->language->get('d_quick_order_error_incorrect_product_id');
@@ -148,12 +148,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public function addOrderAjax()
     {
         $this->load->model('setting/setting');
-        $this->load->language('extension/module/' . $this->codename);
-
         $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
+            $this->load->language('extension/module/' . $this->codename);
             $json = array();
+
             if ($this->validateAjaxOrder($this->request->post)) {
                 $this->load->model('extension/module/d_quick_order');
                 $this->load->model('catalog/product');
@@ -161,62 +161,36 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
 
                 if ($this->cartValidate($product_info)) {
-                    $result = $this->getTotalSum($product_info);
+//                  Get totals
+                    $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
 
                     $totalSum = $result['total'];
-                    $totalTaxArray = $result['tax'];
                     $totalTax = 0;
-
-                    foreach ($totalTaxArray as $tax) {
-                        $totalTax = $totalTax + $tax;
+                    foreach ($result['tax'] as $key => $tax) {
+                        $totalTax += $tax;
                     }
 
-                    $order = $this->checkUserBuySomething($this->request->post['telephone']);
-                    if ($order) {
-                        $orderId = $order['quick_order_id'];
-                    } else {
-                        $orderId = $this->createOrder($this->request->post);
-                    }
+                    // Chk user buy something and get orderId
+                    $orderId = $this->getOrderIdToPreorder($this->request->post['telephone']);
 
 //                  Chk product in cart
                     $buyProduct = $this->model_extension_module_d_quick_order->getProductById($this->request->post['product_id']);
                     if ($buyProduct) {
                         $qty = (int)$buyProduct['quantity'] + (int)$this->request->post['quantity'];
-                        $tax = $buyProduct['tax'] + $totalTax;
+                        $tax = number_format($buyProduct['tax'] + $totalTax, 2);
                         $total = $buyProduct['price'] * $qty;
 
                         $this->productToOrderUpdate($product_info, $orderId, $qty, $total, $tax);
                     } else {
-                        $totalSum = $totalSum - $totalTax;
-
                         $this->productToOrder($product_info, $orderId, (int)$this->request->post['quantity'], $totalSum, $totalTax);
                     }
 
 //                  Chk product option
                     if (isset($this->request->post['option'])) {
-                        $options = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($this->request->post['product_id'], $orderId);
-
-                        if ($options) {
-                            $this->model_extension_module_d_quick_order->deleteOptionsByProductIdAndOrderId($this->request->post['product_id'], $orderId);
-                        }
-
-                        foreach ($this->request->post['option'] as $key => $value) {
-                            foreach ($this->orderProductOptions as $option) {
-                                $data = array();
-
-                                $data['quick_order_id'] = $orderId;
-                                $data['product_to_order_id'] = $this->request->post['product_id'];
-                                $data['product_option_id'] = $option['product_option_id'];
-                                $data['product_option_value_id'] = $option['product_option_value_id'];
-                                $data['name'] = $option['name'];
-                                $data['value'] = $option['value'];
-                                $data['type'] = $option['type'];
-
-                                $this->model_extension_module_d_quick_order->createOptionsByProductIdAndOrderId($data);
-                            }
-                        }
+                        $this->createOptionsToOrder($this->request->post['option'], $orderId, $this->request->post['product_id']);
                     }
 
+//                  Save User details to Session
                     $this->persistData($this->request->post);
 
                     $json['success'] = sprintf($this->language->get('d_quick_order_success_submit'), $orderId);
@@ -312,12 +286,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
         foreach ($product_options as $product_option) {
             if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
-//                $this->errorValidationCart = $this->language->get('d_quick_order_error_item');
                 $this->errorValidationCart['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
             }
         }
 
         $qtyMinStatus = $this->validateMinQtyRequirements($product_info, (int)$this->request->post['quantity']);
+
         $qtyMaxStatus = $this->validateMaxQtyRequirements($product_info, (int)$this->request->post['quantity']);
 
         //product check price
@@ -337,165 +311,70 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return !$this->errorValidationCart;
     }
 
-    public function getTotalSum($product_info)
+    public function getTotalSum($product, $quantity)
     {
-        // Save and store current cart
-        $tempProducts = $this->cart->getProducts();
+        $total = 0;
 
-        if (VERSION >= '3.0.0.0') {
-            foreach ($tempProducts as $key => $tempProduct) {
-                $this->cart->remove(isset($tempProduct['cart_id']) ? $tempProduct['cart_id'] : null);
-            }
-        } else {
-            foreach ($tempProducts as $key => $tempProduct) {
-                $this->cart->remove($key);
-            }
-        }
+        $total += $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $quantity;
 
+        $tax_data = array();
 
-        if (isset($this->request->post['option'])) {
-            $option = array_filter($this->request->post['option']);
-        } else {
-            $option = array();
-        }
+        if ($product['tax_class_id']) {
+            $tax_rates = $this->tax->getRates($product['price'], $product['tax_class_id']);
 
-        $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
-
-        if (VERSION >= '3.0.0.0') {
-            $myProductCartId = $this->db->getLastId();
-        } else {
-            $myProductCartId = key($this->cart->getProducts());
-        }
-
-        $option_data = array();
-        foreach ($this->cart->getProducts() as $product) {
-            foreach ($product['option'] as $option) {
-                if ($option['type'] != 'file') {
-                    $value = $option['value'];
+            foreach ($tax_rates as $tax_rate) {
+                if (!isset($tax_data[$tax_rate['tax_rate_id']])) {
+                    $tax_data[$tax_rate['tax_rate_id']] = ($tax_rate['amount'] * $quantity);
                 } else {
-                    $upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
-
-                    if ($upload_info) {
-                        $value = $upload_info['name'];
-                    } else {
-                        $value = '';
-                    }
+                    $tax_data[$tax_rate['tax_rate_id']] += ($tax_rate['amount'] * $quantity);
                 }
-
-                $option_data[] = array(
-                    'product_option_id' => $option['product_option_id'],
-                    'product_option_value_id' => $option['product_option_value_id'],
-                    'option_id' => $option['option_id'],
-                    'option_value_id' => $option['option_value_id'],
-                    'name' => $option['name'],
-                    'value' => $option['value'],
-                    'type' => $option['type']
-                );
             }
         }
 
-        $this->orderProductOptions = $option_data ? $option_data : null;
-
-        // Totals
-        if (VERSION >= '3.0.0.0') {
-            $this->load->model('setting/extension');
-
-            $totals = array();
-            $taxes = $this->cart->getTaxes();
-            $total = 0;
-
-            // Because __call can not keep var references so we put them into an array.
-            $total_data = array(
-                'totals' => &$totals,
-                'taxes' => &$taxes,
-                'total' => &$total
-            );
-
-            // Display prices
-            if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-                $sort_order = array();
-
-                $results = $this->model_setting_extension->getExtensions('total');
-
-                foreach ($results as $key => $value) {
-                    $sort_order[$key] = $this->config->get('total_' . $value['code'] . '_sort_order');
-                }
-
-                array_multisort($sort_order, SORT_ASC, $results);
-
-                foreach ($results as $result) {
-                    if ($this->config->get('total_' . $result['code'] . '_status')) {
-                        $this->load->model('extension/total/' . $result['code']);
-
-                        // We have to put the totals in an array so that they pass by reference.
-                        $this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
-                    }
-                }
-
-                $sort_order = array();
-
-                foreach ($totals as $key => $value) {
-                    $sort_order[$key] = $value['sort_order'];
-                }
-
-                array_multisort($sort_order, SORT_ASC, $totals);
-            }
-        } else {
-            $this->load->model('extension/extension');
-
-            $total_data = array();
-            $total = 0;
-            $taxes = $this->cart->getTaxes();
-
-            // Display prices
-            if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
-                $sort_order = array();
-
-                $results = $this->model_extension_extension->getExtensions('total');
-
-                foreach ($results as $key => $value) {
-                    $sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
-                }
-
-                array_multisort($sort_order, SORT_ASC, $results);
-
-                foreach ($results as $result) {
-                    if ($this->config->get($result['code'] . '_status')) {
-                        $this->load->model('total/' . $result['code']);
-
-                        $this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
-                    }
-                }
-
-                $sort_order = array();
-
-                foreach ($total_data as $key => $value) {
-                    $sort_order[$key] = $value['sort_order'];
-                }
-
-                array_multisort($sort_order, SORT_ASC, $total_data);
-            }
-        }
-
-
-//      Add temp to cart and clean session
-        foreach ($tempProducts as $tempProduct) {
-            $this->cart->add($tempProduct['product_id'], $tempProduct['quantity'], $tempProduct['option'], $tempProduct['recurring']);
-        }
-
-        unset($this->session->data['shipping_method']);
-        unset($this->session->data['shipping_methods']);
-        unset($this->session->data['payment_method']);
-        unset($this->session->data['payment_methods']);
-
-        $this->cart->remove($myProductCartId);
-
-        $return['total'] = $total;
-        $return['tax'] = $taxes;
-
-        return $return;
+        return array(
+            'total' => $total,
+            'tax' => $tax_data
+        );
     }
 
+    public function getOrderIdToPreorder($phone)
+    {
+        $order = $this->model_extension_module_d_quick_order->getOrderByTelephone($phone);
+        if ($order) {
+            $orderId = $order['quick_order_id'];
+        } else {
+            $orderId = $this->createOrder($this->request->post);
+        }
+
+        return $orderId;
+    }
+
+    public function createOptionsToOrder($postOptions, $orderId, $productId)
+    {
+        $this->load->model('catalog/product');
+
+        $option_data = array();
+        $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
+        foreach ($product_options as $product_option) {
+
+            $i = 0;
+            foreach ($postOptions as $key => $postOption) {
+                if ($key == $product_option['product_option_id']) {
+
+                    $option_data[$i] = array(
+                        'product_option_id' => $product_option['product_option_id'],
+                        'product_option_value_id' => isset($product_option['product_option_value_id']),
+                        'option_id' => $product_option['option_id'],
+                        'option_value_id' => isset($postOption['option_value_id']),
+                        'name' => $product_option['name'],
+                        'value' => $postOption,
+                        'type' => $product_option['type']
+                    );
+                }
+                $i++;
+            }
+        }
+    }
 
     public
     function validateMinQtyRequirements($product, $quantity)
@@ -780,5 +659,17 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     {
         highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
         die();
+    }
+
+    public
+    function dump($data)
+    {
+        highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
+    }
+
+    public function addOrder2()
+    {
+
+
     }
 }

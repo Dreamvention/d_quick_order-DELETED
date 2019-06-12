@@ -70,7 +70,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public function catalog_view_product_product_after(&$route, &$data, &$output)
     {
         $this->load->model('setting/setting');
-        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+
+
+//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+        $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
             $this->load->language($this->route);
@@ -113,8 +116,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function AddToCartQuickOrderCartAjax()
     {
-        $this->load->model('setting/setting');
-        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+//        $this->load->model('setting/setting');
+//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+        $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
             $json = array();
@@ -150,7 +154,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('setting/setting');
         $this->load->language('extension/module/' . $this->codename);
 
-        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
+        $status = $this->config->get($this->codename . '_statuses');
 
         if ($status) {
             $json = array();
@@ -396,52 +401,89 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->orderProductOptions = $option_data ? $option_data : null;
 
-
         // Totals
-        $this->load->model('setting/extension');
+        if (VERSION >= '3.0.0.0') {
+            $this->load->model('setting/extension');
 
-        $totals = array();
-        $taxes = $this->cart->getTaxes();
-        $total = 0;
+            $totals = array();
+            $taxes = $this->cart->getTaxes();
+            $total = 0;
 
-        // Because __call can not keep var references so we put them into an array.
-        $total_data = array(
-            'totals' => &$totals,
-            'taxes' => &$taxes,
-            'total' => &$total
-        );
+            // Because __call can not keep var references so we put them into an array.
+            $total_data = array(
+                'totals' => &$totals,
+                'taxes' => &$taxes,
+                'total' => &$total
+            );
 
-        // Display prices
-        if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-            $sort_order = array();
+            // Display prices
+            if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+                $sort_order = array();
 
-            $results = $this->model_setting_extension->getExtensions('total');
+                $results = $this->model_setting_extension->getExtensions('total');
 
-            foreach ($results as $key => $value) {
-                $sort_order[$key] = $this->config->get('total_' . $value['code'] . '_sort_order');
-            }
-
-            array_multisort($sort_order, SORT_ASC, $results);
-
-            foreach ($results as $result) {
-                if ($this->config->get('total_' . $result['code'] . '_status')) {
-                    $this->load->model('extension/total/' . $result['code']);
-
-                    // We have to put the totals in an array so that they pass by reference.
-                    $this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+                foreach ($results as $key => $value) {
+                    $sort_order[$key] = $this->config->get('total_' . $value['code'] . '_sort_order');
                 }
+
+                array_multisort($sort_order, SORT_ASC, $results);
+
+                foreach ($results as $result) {
+                    if ($this->config->get('total_' . $result['code'] . '_status')) {
+                        $this->load->model('extension/total/' . $result['code']);
+
+                        // We have to put the totals in an array so that they pass by reference.
+                        $this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+                    }
+                }
+
+                $sort_order = array();
+
+                foreach ($totals as $key => $value) {
+                    $sort_order[$key] = $value['sort_order'];
+                }
+
+                array_multisort($sort_order, SORT_ASC, $totals);
             }
+        } else {
+            $this->load->model('extension/extension');
 
-            $sort_order = array();
+            $total_data = array();
+            $total = 0;
+            $taxes = $this->cart->getTaxes();
 
-            foreach ($totals as $key => $value) {
-                $sort_order[$key] = $value['sort_order'];
+            // Display prices
+            if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+                $sort_order = array();
+
+                $results = $this->model_extension_extension->getExtensions('total');
+
+                foreach ($results as $key => $value) {
+                    $sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+                }
+
+                array_multisort($sort_order, SORT_ASC, $results);
+
+                foreach ($results as $result) {
+                    if ($this->config->get($result['code'] . '_status')) {
+                        $this->load->model('total/' . $result['code']);
+
+                        $this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
+                    }
+                }
+
+                $sort_order = array();
+
+                foreach ($total_data as $key => $value) {
+                    $sort_order[$key] = $value['sort_order'];
+                }
+
+                array_multisort($sort_order, SORT_ASC, $total_data);
             }
-
-            array_multisort($sort_order, SORT_ASC, $totals);
         }
 
 
+//      Add temp to cart and clean session
         foreach ($tempProducts as $tempProduct) {
             $this->cart->add($tempProduct['product_id'], $tempProduct['quantity'], $tempProduct['option'], $tempProduct['recurring']);
         }

@@ -71,8 +71,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     {
         $this->load->model('setting/setting');
 
-
-//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
         $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
@@ -116,8 +114,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function AddToCartQuickOrderCartAjax()
     {
-//        $this->load->model('setting/setting');
-//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
         $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
@@ -154,8 +150,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('setting/setting');
         $this->load->language('extension/module/' . $this->codename);
 
-//        $status = $this->model_setting_setting->getSettingValue($this->codename . '_status');
-        $status = $this->config->get($this->codename . '_statuses');
+        $status = $this->config->get($this->codename . '_status');
 
         if ($status) {
             $json = array();

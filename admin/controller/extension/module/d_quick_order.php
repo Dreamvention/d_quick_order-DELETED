@@ -175,9 +175,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product['options'] = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $order['quick_order_id']);
             }
 
-            if (!empty($order['order_id'])){
+            if (!empty($order['order_id'])) {
                 $view = $this->model_extension_d_opencart_patch_url->link('sale/order/info&order_id=' . $order['order_id']);
-            }else{
+            } else {
                 $view = null;
             }
 
@@ -201,8 +201,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 'currency' => $currency['symbol_left'],
             );
         }
-
-//        $this->dd($data['orders']);
 
         //sort
         $order = (isset($this->request->get['order'])) ? $this->request->get['order'] : '';
@@ -518,6 +516,35 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         // Customer
         $data['tab_event'] = $this->language->get('tab_event');
 
+        $data['tab_heading_orders'] = $this->language->get('tab_heading_orders');
+        $data['tab_heading_setting'] = $this->language->get('tab_heading_setting');
+        $data['tab_heading_instruction'] = $this->language->get('tab_heading_instruction');
+
+        // Tab orders: filters
+        $data['column_product_name'] = $this->language->get('column_product_name');
+        $data['column_customer_email'] = $this->language->get('column_customer_email');
+        $data['column_customer_phone'] = $this->language->get('column_customer_phone');
+        $data['column_product_status'] = $this->language->get('column_product_status');
+
+        // Tab orders: sort columns
+        $data['column_order_id_number'] = $this->language->get('column_order_id_number');
+        $data['column_customer_name'] = $this->language->get('column_customer_name');
+        $data['column_customer_email'] = $this->language->get('column_customer_email');
+        $data['column_customer_phone'] = $this->language->get('column_customer_phone');
+        $data['column_customer_comment'] = $this->language->get('column_customer_comment');
+        $data['column_products_images'] = $this->language->get('column_products_images');
+        $data['column_date_added'] = $this->language->get('column_date_added');
+        $data['column_sort_status'] = $this->language->get('column_sort_status');
+        $data['column_action'] = $this->language->get('column_action');
+
+
+        // Tab settings: tabs
+        $data['tab_basic_setting'] = $this->language->get('tab_basic_setting');
+        $data['tab_button_setting'] = $this->language->get('tab_button_setting');
+        $data['tab_modal_window_setting'] = $this->language->get('tab_modal_window_setting');
+        $data['tab_modal_fields_setting'] = $this->language->get('tab_modal_fields_setting');
+
+
         $data['text_list'] = $this->language->get('text_list');
         $data['text_enabled'] = $this->language->get('text_enabled');
         $data['text_disabled'] = $this->language->get('text_disabled');
@@ -813,10 +840,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('setting/setting');
 
         $this->deleteTables();
-//        $this->model_extension_module_d_quick_order->deleteOrdersTable();
-//        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
-//        $this->model_extension_module_d_quick_order->deleteOrdersOptionTable();
-
         $this->uninstallEvents();
 
         $this->model_setting_setting->deleteSetting($this->codename, $this->store_id);
@@ -843,10 +866,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $this->load->model('setting/setting');
 
         $this->deleteTables();
-//        $this->model_extension_module_d_quick_order->deleteOrdersTable();
-//        $this->model_extension_module_d_quick_order->deleteOrdersProductTable();
-//        $this->model_extension_module_d_quick_order->deleteOrdersOptionTable();
-
         $this->uninstallEvents();
 
         $this->model_setting_setting->deleteSetting($this->codename, $this->store_id);

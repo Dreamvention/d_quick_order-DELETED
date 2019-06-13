@@ -180,7 +180,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                         $tax = number_format($buyProduct['tax'] + $totalTax, 2);
                         $total = $buyProduct['price'] * $qty;
 
-                        $product_to_order_id = $this->productToOrderUpdate($product_info, $orderId, $qty, $total, $tax);
+                        $product_to_order_id = $product_to_order_id = $this->productToOrderUpdate($product_info, $orderId, $qty, $total, $tax);
                     } else {
                         $product_to_order_id = $this->productToOrder($product_info, $orderId, (int)$this->request->post['quantity'], $totalSum, $totalTax);
                     }
@@ -352,14 +352,10 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     public function createOptionsToOrder($postOptions, $orderId, $product_to_order_id)
     {
         $this->model_extension_module_d_quick_order->deleteOptionsByProductIdAndOrderId($product_to_order_id, $orderId);
-
         $this->load->model('catalog/product');
-
         $option_data = array();
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
-
         foreach ($postOptions as $key => $postOption) {
-
             if (is_array($postOption)) {
                 foreach ($postOption as $item) {
                     foreach ($product_options as $product_option) {
@@ -367,30 +363,24 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                             if (($product_option['product_option_value'])) {
                                 foreach ($product_option['product_option_value'] as $option_value) {
                                     if ($item == $option_value['product_option_value_id']) {
-
                                         if ($product_option['type'] != 'file') {
                                             $value = $option_value['name'];
                                         } else {
                                             $this->load->model('tool/upload');
                                             $upload_info = $this->model_tool_upload->getUploadByCode($product_option['value']);
-
                                             if ($upload_info) {
                                                 $value = $upload_info['name'];
                                             } else {
                                                 $value = '';
                                             }
                                         }
-
                                         $product_option_value_id = $option_value['product_option_value_id'];
                                     }
                                 }
-
                             } else {
                                 $value = $postOption;
                                 $product_option_value_id = (int)$item;
                             }
-
-
                             $option_data['options'][] = array(
                                 'quick_order_id' => (int)$orderId,
                                 'product_to_order_id' => (int)$product_to_order_id,
@@ -407,33 +397,26 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 foreach ($product_options as $product_option) {
                     if ($key == $product_option['product_option_id']) {
                         if (($product_option['product_option_value'])) {
-
                             foreach ($product_option['product_option_value'] as $option_value) {
                                 if ($postOption == $option_value['product_option_value_id']) {
-
                                     if ($product_option['type'] != 'file') {
                                         $value = $option_value['name'];
                                     } else {
                                         $this->load->model('tool/upload');
                                         $upload_info = $this->model_tool_upload->getUploadByCode($product_option['value']);
-
                                         if ($upload_info) {
                                             $value = $upload_info['name'];
                                         } else {
                                             $value = '';
                                         }
                                     }
-
                                     $product_option_value_id = $option_value['product_option_value_id'];
                                 }
                             }
-
                         } else {
                             $value = $postOption;
                             $product_option_value_id = 0;
                         }
-
-
                         $option_data['options'][] = array(
                             'quick_order_id' => (int)$orderId,
                             'product_to_order_id' => (int)$product_to_order_id,
@@ -447,7 +430,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 }
             }
         }
-
         foreach ($option_data['options'] as $option) {
             $this->model_extension_module_d_quick_order->createOptionsByProductIdAndOrderId($option);
         }
@@ -481,14 +463,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         return $this->model_catalog_product->getProduct($id);
     }
 
-    public
-    function checkUserBuySomething($telephone)
+    public function checkUserBuySomething($telephone)
     {
         return $this->model_extension_module_d_quick_order->getOrderByTelephone($telephone);
     }
 
-    public
-    function checkUserBuyProduct($product_id)
+    public function checkUserBuyProduct($product_id)
     {
         return $this->model_extension_module_d_quick_order->getProductById($product_id);
     }
@@ -747,12 +727,5 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     function dump($data)
     {
         highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
-    }
-
-    public
-    function addOrder2()
-    {
-
-
     }
 }

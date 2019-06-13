@@ -258,7 +258,7 @@
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            data: {product_id: product_id, quantity: qty},
+            data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
                 console.log(json);
@@ -302,7 +302,7 @@
         $.ajax({
             url: 'index.php?route=extension/module/d_quick_order/AddToCartQuickOrderCartAjax',
             type: 'post',
-            data: {product_id: product_id, quantity: qty},
+            data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
                 if (json.hasOwnProperty('warning')) {

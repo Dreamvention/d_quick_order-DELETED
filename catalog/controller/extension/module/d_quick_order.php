@@ -124,7 +124,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
             $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
             if ($product_info) {
-                $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
+//                $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
+                $result = $this->getTotalSumByCart($product_info);
 
                 $total = $result['total'];
                 $totalToView = $this->currency->format($total, $this->session->data['currency']);
@@ -162,7 +163,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
                 if ($this->cartValidate($product_info)) {
 //                  Get totals
-                    $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
+//                    $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
+                    $result = $this->getTotalSumByCart($product_info);
 
                     $totalSum = $result['total'];
                     $totalTax = 0;
@@ -337,6 +339,167 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         );
     }
 
+    public function getTotalSumByCart($product_info)
+    {
+        $this->load->model('tool/upload');
+
+        // Save and store current cart
+        $tempProducts = $this->cart->getProducts();
+
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2') {
+            foreach ($tempProducts as $key => $tempProduct) {
+                $this->cart->remove(isset($tempProduct['cart_id']) ? $tempProduct['cart_id'] : null);
+            }
+        }
+        else {
+            foreach ($tempProducts as $key => $tempProduct) {
+                $this->cart->remove($key);
+            }
+        }
+
+        if (isset($this->request->post['option'])) {
+            $option = array_filter($this->request->post['option']);
+        } else {
+            $option = array();
+        }
+
+        $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
+
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2') {
+            $myProductCartId = $this->db->getLastId();
+        } else {
+            $myProductCartId = key($this->cart->getProducts());
+        }
+
+        $option_data = array();
+        foreach ($this->cart->getProducts() as $product) {
+            foreach ($product['option'] as $option) {
+                if ($option['type'] != 'file') {
+                    $value = $option['value'];
+                } else {
+                    $upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+                    if ($upload_info) {
+                        $value = $upload_info['name'];
+                    } else {
+                        $value = '';
+                    }
+                }
+
+                $option_data[] = array(
+                    'product_option_id' => $option['product_option_id'],
+                    'product_option_value_id' => $option['product_option_value_id'],
+                    'option_id' => $option['option_id'],
+                    'option_value_id' => $option['option_value_id'],
+                    'name' => $option['name'],
+                    'value' => $option['value'],
+                    'type' => $option['type']
+                );
+            }
+        }
+
+        $this->orderProductOptions = $option_data ? $option_data : null;
+
+        // Totals
+        if (VERSION >= '3.0.0.0') {
+            $this->load->model('setting/extension');
+
+            $totals = array();
+            $taxes = $this->cart->getTaxes();
+            $total = 0;
+
+            // Because __call can not keep var references so we put them into an array.
+            $total_data = array(
+                'totals' => &$totals,
+                'taxes' => &$taxes,
+                'total' => &$total
+            );
+
+            // Display prices
+            if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+                $sort_order = array();
+
+                $results = $this->model_setting_extension->getExtensions('total');
+
+                foreach ($results as $key => $value) {
+                    $sort_order[$key] = $this->config->get('total_' . $value['code'] . '_sort_order');
+                }
+
+                array_multisort($sort_order, SORT_ASC, $results);
+
+                foreach ($results as $result) {
+                    if ($this->config->get('total_' . $result['code'] . '_status')) {
+                        $this->load->model('extension/total/' . $result['code']);
+
+                        // We have to put the totals in an array so that they pass by reference.
+                        $this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+                    }
+                }
+
+                $sort_order = array();
+
+                foreach ($totals as $key => $value) {
+                    $sort_order[$key] = $value['sort_order'];
+                }
+
+                array_multisort($sort_order, SORT_ASC, $totals);
+            }
+        } else {
+            $this->load->model('extension/extension');
+
+            $total_data = array();
+            $total = 0;
+            $taxes = $this->cart->getTaxes();
+
+            // Display prices
+            if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+                $sort_order = array();
+
+                $results = $this->model_extension_extension->getExtensions('total');
+
+                foreach ($results as $key => $value) {
+                    $sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+                }
+
+                array_multisort($sort_order, SORT_ASC, $results);
+
+                foreach ($results as $result) {
+                    if ($this->config->get($result['code'] . '_status')) {
+                        $this->load->model('total/' . $result['code']);
+
+                        $this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
+                    }
+                }
+
+                $sort_order = array();
+
+                foreach ($total_data as $key => $value) {
+                    $sort_order[$key] = $value['sort_order'];
+                }
+
+                array_multisort($sort_order, SORT_ASC, $total_data);
+            }
+        }
+
+
+        // Delete my custom product and add temp to cart then clean session
+        $this->cart->remove($myProductCartId);
+
+        foreach ($tempProducts as $tempProduct) {
+            $this->cart->add($tempProduct['product_id'], $tempProduct['quantity'], $tempProduct['option'], $tempProduct['recurring']);
+        }
+
+        unset($this->session->data['shipping_method']);
+        unset($this->session->data['shipping_methods']);
+        unset($this->session->data['payment_method']);
+        unset($this->session->data['payment_methods']);
+
+        $return['total'] = $total;
+        $return['tax'] = $taxes;
+
+        return $return;
+    }
+
     public function getOrderIdToPreorder($phone)
     {
         $order = $this->model_extension_module_d_quick_order->getOrderByTelephone($phone);
@@ -351,9 +514,14 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
     public function createOptionsToOrder($postOptions, $orderId, $product_to_order_id)
     {
-        $this->model_extension_module_d_quick_order->deleteOptionsByProductIdAndOrderId($product_to_order_id, $orderId);
+        $this->load->model('extension/module/d_quick_order');
         $this->load->model('catalog/product');
+        $this->load->model('tool/upload');
+
+        $this->model_extension_module_d_quick_order->deleteOptionsByProductIdAndOrderId($product_to_order_id, $orderId);
+
         $option_data = array();
+
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
         foreach ($postOptions as $key => $postOption) {
             if (is_array($postOption)) {
@@ -366,7 +534,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                                         if ($product_option['type'] != 'file') {
                                             $value = $option_value['name'];
                                         } else {
-                                            $this->load->model('tool/upload');
                                             $upload_info = $this->model_tool_upload->getUploadByCode($product_option['value']);
                                             if ($upload_info) {
                                                 $value = $upload_info['name'];

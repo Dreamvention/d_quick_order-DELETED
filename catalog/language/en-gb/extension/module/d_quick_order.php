@@ -12,7 +12,8 @@ $_['d_quick_order_error_incorrect_product_id'] = 'Please add to quick card corre
 $_['d_quick_order_error_incorrect_min_qty'] = 'Please increase quantity to order this product!';
 $_['d_quick_order_error_incorrect_min_qty_normal'] = 'Minimal is ';
 $_['d_quick_order_error_incorrect_max_qty'] = 'Please decrease quantity to order this product!';
-$_['d_quick_order_error_item'] = 'Please fill all necessary product fields!';
+$_['d_quick_order_error_item'] = 'Please fill fields!';
+$_['d_quick_order_error_require_item'] = 'Require';
 $_['d_quick_order_error_incorrect_max_qty_normal'] = 'Maximum is ';
 
 $_['d_quick_order_success_submit'] = 'Thank you! We will contact you shortly for more details. Your request ID is: %s';

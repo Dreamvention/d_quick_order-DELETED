@@ -288,7 +288,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
         foreach ($product_options as $product_option) {
             if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
-                $this->errorValidationCart['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
+                $text = $this->language->get('d_quick_order_error_require_item') . " " . sprintf( $product_option['name']);
+                $this->errorValidationCart['option'][$product_option['product_option_id']] = $text;
             }
         }
 
@@ -346,7 +347,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         // Save and store current cart
         $tempProducts = $this->cart->getProducts();
 
-        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2' || VERSION == '2.2.0.0') {
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2' || VERSION == '2.2.0.0' || VERSION == '2.3.0.2') {
             foreach ($tempProducts as $key => $tempProduct) {
                 $this->cart->remove(isset($tempProduct['cart_id']) ? $tempProduct['cart_id'] : null);
             }
@@ -364,7 +365,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->cart->add($product_info['product_id'], $this->request->post['quantity'], $option);
 
-        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2' || VERSION == '2.2.0.0') {
+        if (VERSION >= '3.0.0.0' || VERSION == '2.1.0.2' || VERSION == '2.3.0.2') {
             $myProductCartId = $this->db->getLastId();
         } else {
             $myProductCartId = key($this->cart->getProducts());
@@ -415,7 +416,52 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
                 array_multisort($sort_order, SORT_ASC, $totals);
             }
-        } elseif (VERSION >= '3.0.0.0') {
+        }
+        elseif (VERSION == '2.3.0.2'){
+            $this->load->model('extension/extension');
+
+            $totals = array();
+            $taxes = $this->cart->getTaxes();
+            $total = 0;
+
+            // Because __call can not keep var references so we put them into an array.
+            $total_data = array(
+                'totals' => &$totals,
+                'taxes'  => &$taxes,
+                'total'  => &$total
+            );
+
+            // Display prices
+            if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+                $sort_order = array();
+
+                $results = $this->model_extension_extension->getExtensions('total');
+
+                foreach ($results as $key => $value) {
+                    $sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+                }
+
+                array_multisort($sort_order, SORT_ASC, $results);
+
+                foreach ($results as $result) {
+                    if ($this->config->get($result['code'] . '_status')) {
+                        $this->load->model('extension/total/' . $result['code']);
+
+                        // We have to put the totals in an array so that they pass by reference.
+                        $this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+                    }
+                }
+
+                $sort_order = array();
+
+                foreach ($totals as $key => $value) {
+                    $sort_order[$key] = $value['sort_order'];
+                }
+
+                array_multisort($sort_order, SORT_ASC, $totals);
+            }
+        }
+        elseif (VERSION >= '3.0.0.0') {
             $this->load->model('setting/extension');
 
             $totals = array();
@@ -495,6 +541,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             }
         }
 
+
         // Delete my custom product and add temp to cart then clean session
         $this->cart->remove($myProductCartId);
 
@@ -536,6 +583,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $option_data = array();
 
         $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
+
         foreach ($postOptions as $key => $postOption) {
             if (is_array($postOption)) {
                 foreach ($postOption as $item) {

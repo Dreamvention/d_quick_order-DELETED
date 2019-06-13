@@ -173,7 +173,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product['tax'] = number_format($product['tax'], 2);
                 $product['total_price'] = number_format(floatval($product['total']) + floatval($product['tax']), 2);
                 $product['link'] = $this->model_extension_d_opencart_patch_url->link('catalog/product/edit', 'product_id=' . $product['product_id'], 'SSL');
-                $product['options'] = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $order['quick_order_id']);
+                $product['options'] = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_to_order_id'], $order['quick_order_id']);
             }
 
             if (!empty($order['order_id'])) {
@@ -414,7 +414,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                     $dataToNewProductOrder = $this->prepareReplaceProductOrder($lastid, $product);
                     $this->model_extension_module_d_quick_order->replaceProductsOrder($dataToNewProductOrder);
 
-                    $productOptions = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_id'], $orderId);
+                    $productOptions = $this->model_extension_module_d_quick_order->getOptionsByProductIdAndOrderId($product['product_to_order_id'], $orderId);
                     foreach ($productOptions as &$productOption) {
                         $data['order_id'] = $lastid;
                         $data['order_product_id'] = $productOption['product_to_order_id'];
@@ -427,10 +427,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                         $this->model_extension_module_d_quick_order->replaceProductOptionsOrder($data);
                     }
                 }
-
-//              Change status order and set real order_id
-//                $this->load->config('d_quick_order');
-//                $statuses = $this->config->get('d_quick_order_statuses');
 
                 $this->load->model('extension/d_opencart_patch/url');
                 $this->model_extension_module_d_quick_order->updateOrderStatusAndSetRealOrder($orderId, 1, $lastid);

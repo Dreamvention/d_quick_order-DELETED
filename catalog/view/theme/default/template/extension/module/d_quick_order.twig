@@ -131,7 +131,8 @@
                                             <p>Total : <span id="d_qo_product_price"></span></p>
                                         </div>
                                         <div class="quantity">
-                                            <input id="d_qo_qty" name="quantity" type="number" min="1" max="999" step="1"
+                                            <input id="d_qo_qty" name="quantity" type="number" min="1" max="999"
+                                                   step="1"
                                                    value="1">
                                         </div>
                                     </div>
@@ -213,6 +214,26 @@
         setTimeout(function () {
             $('#d_qo_form .alert').remove();
         }, 3000);
+    }
+
+    function displayOptionsErrors(json) {
+        for (i in json['warning']['option']) {
+            var element = $('#input-option' + i.replace('_', '-'));
+
+            if (element.parent().hasClass('input-group')) {
+                element.parent().after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
+            } else {
+                element.after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
+            }
+        }
+
+        $('.text-danger').parent().addClass('has-error');
+        element.focus();
+    }
+
+    function removeOptionsErrors(json) {
+        $('form-group.required').removeClass('has-error');
+        $('form-group required').find('div.text-danger').remove();
     }
 
     function getSearchParams(k) {
@@ -337,31 +358,17 @@
             data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
-                console.log(json);
-
                 if (json.hasOwnProperty('warning')) {
                     if (json.warning.hasOwnProperty('option')) {
-
                         $('#quickorderModal').modal('toggle');
-
-                        for (i in json['warning']['option']) {
-                            var element = $('#input-option' + i.replace('_', '-'));
-
-                            if (element.parent().hasClass('input-group')) {
-                                element.parent().after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
-                            } else {
-                                element.after('<div class="text-danger">' + json['warning']['option'][i] + '</div>');
-                            }
-                        }
-
-                        $('.text-danger').parent().addClass('has-error');
-                        element.focus();
+                        displayOptionsErrors(json);
                     } else {
                         showAlertWarning(json.warning);
                     }
                 } else {
                     showAlertSuccess(json);
                     clearAlerts();
+                    removeOptionsErrors(json);
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

@@ -1,6 +1,5 @@
 <div class="tab-body">
     <div id="filter" class="well">
-
         <form action="{{ filter }}" method="get" id="form-filter">
             <div class="row">
                 <div class="col-sm-3">
@@ -22,7 +21,6 @@
                                id="input-trigger"
                                class="form-control" data-item="trigger"/>
                     </div>
-
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
@@ -41,12 +39,16 @@
                         <select name="filter_order_status_id" id="input-status"
                                 class="form-control">
                             <option value="*" {% if not filter_order_status_id or filter_order_status_id is null %} selected {% endif %}></option>
-
-                            {% for status in statuses %}
-                                <option value="{{ status.order_status_id }}"
-                                        {% if(filter_order_status_id == status.order_status_id) %} selected {% endif %}>{{ status.name }} </option>
-                            {% endfor %}
-
+                            {% if filter_order_status_id %}
+                                <option value="1" selected="selected">Processed</option>
+                            {% else %}
+                                <option value="1">Processed</option>
+                            {% endif %}
+                            {% if not filter_order_status_id and filter_order_status_id is not null %}
+                                <option value="0" selected="selected">Processing</option>
+                            {% else %}
+                                <option value="0">Processing</option>
+                            {% endif %}
                         </select>
                     </div>
                     <button data-action="{{ button_filter_action }}" type="button"
@@ -183,7 +185,6 @@
                                                 class="fa fa-shopping-cart"></i>
                                     </a>
                                 {% endif %}
-
 
                                 <a href="{{ order.delete }}" data-toggle="tooltip"
                                    title="{{ text_order_delete }}"

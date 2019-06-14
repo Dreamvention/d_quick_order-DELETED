@@ -112,7 +112,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         }
 
         if (isset($this->request->get['filter_order_status_id'])) {
-            $url_params['filter_order_status_id'] = (int)urlencode(html_entity_decode($this->request->get['filter_order_status_id'], ENT_QUOTES, 'UTF-8'));
+            $url_params['filter_order_status_id'] = urlencode(html_entity_decode($this->request->get['filter_order_status_id'], ENT_QUOTES, 'UTF-8'));
         }
 
         if (isset($this->request->get['sort'])) {
@@ -138,7 +138,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $filter_name = (isset($this->request->get['filter_name'])) ? $this->request->get['filter_name'] : null;
         $filter_email = (isset($this->request->get['filter_email'])) ? $this->request->get['filter_email'] : null;
         $filter_phone = (isset($this->request->get['filter_phone'])) ? $this->request->get['filter_phone'] : null;
-        $filter_order_status_id = (isset($this->request->get['filter_order_status_id'])) ? (int)$this->request->get['filter_order_status_id'] : null;
+        $filter_order_status_id = (isset($this->request->get['filter_order_status_id'])) ? $this->request->get['filter_order_status_id'] : null;
 
         $sort = (isset($this->request->get['sort'])) ? $this->request->get['sort'] : '';
         $order = (isset($this->request->get['order'])) ? $this->request->get['order'] : '';
@@ -148,7 +148,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             'filter_name' => $filter_name,
             'filter_email' => $filter_email,
             'filter_phone' => $filter_phone,
-            'filter_order_status_id' => (int)$filter_order_status_id,
+            'filter_order_status_id' => $filter_order_status_id,
             'sort' => $sort,
             'order' => $order,
             'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -251,7 +251,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['filter_name'] = $filter_name;
         $data['filter_email'] = $filter_email;
         $data['filter_phone'] = $filter_phone;
-        $data['filter_order_status_id'] = (int)$filter_order_status_id;
+        $data['filter_order_status_id'] = $filter_order_status_id;
 
         $this->load->model('setting/store');
 
@@ -281,10 +281,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['status'] = $settings[$this->codename . '_status'];
         $data['statuses'] = $this->config->get('d_quick_order_statuses');
 
-
-        $data['tab_orders'] = $this->tabOrders($data);
-        $data['tab_settings'] = $this->tabSetting($data);
-        $data['tab_instructions'] = $this->tabInstructions($data);
+        $data['tab_orders'] = $this->load->view('extension/' . $this->codename . '/tab_orders', $data);
+        $data['tab_settings'] = $this->load->view('extension/' . $this->codename . '/tab_setting', $data);
+        $data['tab_instructions'] = $this->load->view('extension/' . $this->codename . '/tab_instruction', $data);
 
         $this->addNecessaryStylesAndScripts();
         $this->load->model('localisation/language');
@@ -334,32 +333,13 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
                 if ($key == 'filter_order_status_id') {
                     if ($filter == "*") {
-                        if ($filter == $lastElement) {
-                            $url = substr($url, 0, -1);
-                        } else {
-                            $url .= $key . "=" . $filter . "&";
-                        }
+                        continue;
                     }
-                    if ($filter == "0") {
-                        if ($filter == $lastElement) {
-                            $url .= $key . "=" . $filter;
-                        } else {
-                            $url .= $key . "=" . $filter . "&";
-                        }
-                    }
-                    if ($filter == "1") {
-                        if ($filter == $lastElement) {
-                            $url .= $key . "=" . $filter;
-                        } else {
-                            $url .= $key . "=" . $filter . "&";
-                        }
-                    }
-                    if ($filter == "2") {
-                        if ($filter == $lastElement) {
-                            $url .= $key . "=" . $filter;
-                        } else {
-                            $url .= $key . "=" . $filter . "&";
-                        }
+
+                    if ($filter == $lastElement) {
+                        $url .= $key . "=" . $filter;
+                    } else {
+                        $url .= $key . "=" . $filter . "&";
                     }
                 }
             }
@@ -371,21 +351,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
-    }
-
-    public function tabOrders($data)
-    {
-        return $this->load->view('extension/' . $this->codename . '/tab_orders', $data);
-    }
-
-    public function tabSetting($data)
-    {
-        return $this->load->view('extension/' . $this->codename . '/tab_setting', $data);
-    }
-
-    public function tabInstructions($data)
-    {
-        return $this->load->view('extension/' . $this->codename . '/tab_instruction', $data);
     }
 
     public function createOrder()
@@ -529,7 +494,7 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['column_customer_email'] = $this->language->get('column_customer_email');
         $data['column_customer_phone'] = $this->language->get('column_customer_phone');
         $data['column_customer_comment'] = $this->language->get('column_customer_comment');
-        $data['column_products_images'] = $this->language->get('column_products_images');
+        $data['filter_phone'] = $this->language->get('column_products_images');
         $data['column_date_added'] = $this->language->get('column_date_added');
         $data['column_sort_status'] = $this->language->get('column_sort_status');
         $data['column_action'] = $this->language->get('column_action');
@@ -576,7 +541,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['text_confirm'] = $this->language->get('text_confirm');
 
         $data['column_code'] = $this->language->get('column_code');
-        $data['column_trigger'] = $this->language->get('column_trigger');
         $data['column_action'] = $this->language->get('column_action');
         $data['column_status'] = $this->language->get('column_status');
         $data['column_date_added'] = $this->language->get('column_date_added');
@@ -614,16 +578,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
 
         // Entry
-        $data['entry_compatibility'] = $this->language->get('entry_compatibility');
-        $data['entry_skipped_models'] = $this->language->get('entry_skipped_models');
         $data['text_order_create'] = $this->language->get('text_order_create');
         $data['text_order_delete'] = $this->language->get('text_order_delete');
         $data['text_order_view'] = $this->language->get('text_order_view');
-        $data['help_skipped_models'] = $this->language->get('help_skipped_models');
-        $data['entry_test_toggle'] = $this->language->get('entry_test_toggle');
-        $data['entry_test'] = $this->language->get('entry_test');
-        $data['text_install'] = $this->language->get('text_install');
-        $data['text_uninstall'] = $this->language->get('text_uninstall');
 
         $data['entry_status'] = $this->language->get('entry_status');
         $data['entry_config_files'] = $this->language->get('entry_config_files');
@@ -632,8 +589,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['entry_radio'] = $this->language->get('entry_radio');
         $data['entry_checkbox'] = $this->language->get('entry_checkbox');
         $data['entry_color'] = $this->language->get('entry_color');
-        $data['entry_image'] = $this->language->get('entry_image');
-        $data['entry_textarea'] = $this->language->get('entry_textarea');
 
         // Text
         $data['text_enabled'] = $this->language->get('text_enabled');
@@ -649,11 +604,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['filter'] = $this->model_extension_d_opencart_patch_url->link($this->route, $url);
         $data['create'] = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/create', $url);
         $data['delete'] = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/delete', $url);
-        $data['install_test'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/install_test', $url);
-        $data['uninstall_test'] = $this->model_extension_d_opencart_patch_url->link($this->route . '/uninstall_test', $url);
-        $data['install_compatibility'] = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/install_compatibility', $url);
-        $data['uninstall_compatibility'] = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/uninstall_compatibility', $url);
-        $data['autocomplete'] = $this->model_extension_d_opencart_patch_url->ajax($this->route . '/autocomplete');
         $data['cancel'] = $this->model_extension_d_opencart_patch_url->getExtensionLink('module');
 
         //instruction
@@ -1098,6 +1048,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['reward'] = $order_product_data['reward'];
 
         return $data;
+    }
+
+    public
+    function dump($data)
+    {
+        highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
     }
 
     public

@@ -20,13 +20,14 @@ php.ini
 !admin/language/en-gb/extension/module/d_quick_order.php
 !admin/view/stylesheet/d_quick_order.css
 
+!admin/view/image/d_quick_order/find-selector.png
 !admin/view/image/d_quick_order/bg.svg
 !admin/view/image/d_quick_order/logo.svg
 !admin/view/image/d_quick_order/welcome.png
 
 !admin/view/template/extension/d_quick_order/welcome.twig
 !admin/view/template/extension/module/d_quick_order.twig
-!
+
 !admin/view/template/extension/d_quick_order/tab_orders.twig
 !admin/view/template/extension/d_quick_order/tab_setting.twig
 !admin/view/template/extension/d_quick_order/tab_instruction.twig

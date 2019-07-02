@@ -183,3 +183,37 @@
 	float: right;
 	text-align: right;
 }
+
+.instructions{
+	padding: 50px 0;
+}
+
+.instruction-intro{
+	font-weight: bold;
+	font-size: 15px;
+	margin-top: 20px;
+}
+
+.instruction-list{
+	line-height: 22px;
+	font-size: 15px;
+}
+
+.instruction-descr{
+	font-style: italic;
+	font-size: 16px;
+	padding: 5px 0;
+}
+
+.instruction-wrapper-image{
+	width: 100%;
+	height: auto;
+	max-width: 100%;
+	margin-top: 30px;
+}
+
+.instruction-wrapper-image img{
+	width: 100%;
+	height: auto;
+	max-width: 1000px;
+}

@@ -185,27 +185,24 @@
     }
 
     function showAlertSuccess(json) {
-        console.log("showAlertSuccess");
         $('#d_qo_form .alert').remove();
         $('#d_qo_separator').append('<div class="alert alert-success alert-dismissible" role="alert"> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
     }
 
     function showWarning(text) {
-        console.log("showWarning");
-
         $('#d_qo_form .alert, #d_qo_form .text-danger').remove();
         $('#d_qo_separator').append('<div class="alert alert-warning alert-dismissible" role="alert"> ' + text + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
     }
 
     function clearModalForm() {
         setTimeout(function () {
-            $('#d_qo_form .alert').remove();
+            $('.form-group.required.has-error').removeClass('has-error');
         }, 3000);
     }
 
     function clearAlerts() {
         setTimeout(function () {
-            $('#d_qo_form .alert').remove();
+            $('.form-group.required.has-error').find('.text-danger').remove();
         }, 3000);
     }
 
@@ -249,6 +246,7 @@
 
     $('body').on('click', '#d_qo_order_button', function (e) {
         e.preventDefault();
+        clearAlerts();
         clearModalForm();
 
         var qty = 1;
@@ -321,6 +319,7 @@
                     showWarning(json.warning);
                 } else {
                     clearAlerts();
+                    clearModalForm();
                 }
 
                 $('#d_qo_product_price').text(json.product_total_price);

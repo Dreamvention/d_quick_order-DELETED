@@ -770,7 +770,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
             $data['telephone'] = "";
         }
 
-        $data['payment_firstname'] = '';
+        if ($request['firstname']) {
+            $data['payment_firstname'] = $request['firstname'];
+        } else {
+            $data['payment_firstname'] = "";
+        }
+
         $data['payment_lastname'] = '';
         $data['payment_company'] = '';
 
@@ -787,8 +792,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['payment_method'] = '';
         $data['payment_code'] = 'cod';
 
+        if ($request['firstname']) {
+            $data['shipping_firstname'] = $request['firstname'];
+        } else {
+            $data['shipping_firstname'] = "";
+        }
 
-        $data['shipping_firstname'] = isset($this->session->data['shipping_address']['firstname']) ? $this->session->data['shipping_address']['firstname'] : '';
         $data['shipping_lastname'] = isset($this->session->data['shipping_address']['lastname']) ? $this->session->data['shipping_address']['lastname'] : '';
         $data['shipping_company'] = isset($this->session->data['shipping_address']['company']) ? $this->session->data['shipping_address']['company'] : '';
         $data['shipping_address_1'] = isset($this->session->data['shipping_address']['address_1']) ? $this->session->data['shipping_address']['address_1'] : '';

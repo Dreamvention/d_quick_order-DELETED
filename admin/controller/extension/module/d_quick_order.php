@@ -371,7 +371,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $currentOrder['custom_field'] = array();
                 $currentOrder['payment_custom_field'] = array();
                 $currentOrder['shipping_custom_field'] = array();
-                $currentOrder['order_status_id'] = 2;
+                $currentOrder['shipping_custom_field'] = array();
+
+                $currentOrder['order_status_id'] = 1;
 
                 $lastid = $this->model_extension_module_d_quick_order->replaceOrder($currentOrder);
 
@@ -396,10 +398,15 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 }
 
                 $this->load->model('extension/d_opencart_patch/url');
+                $this->model_extension_module_d_quick_order->setRealOrderHistory($lastid, 1, 0, '');
+
+                $this->model_extension_module_d_quick_order->setRealOrderTotalSubtotal($lastid, 'sub_total', 'Sub-Total', 101.0000, 1);
+                $this->model_extension_module_d_quick_order->setRealOrderTotalSubtotal($lastid, 'total', 'Total', 101.0000, 1);
+
                 $this->model_extension_module_d_quick_order->updateOrderStatusAndSetRealOrder($orderId, 1, $lastid);
 
 //              Redirect
-                $json['redirect'] = $this->model_extension_d_opencart_patch_url->link('sale/order/edit/' . "order_id=$lastid");
+                $json['redirect'] = $this->model_extension_d_opencart_patch_url->link('sale/order/' . "edit&order_id=$lastid");
 
             } else {
                 $json['error'] = $this->language->get('ajax_error_delete_order_status');
@@ -978,8 +985,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['fax'] = $order_data['fax'];
         $data['custom_field'] = $order_data['custom_field'];
 
-        $data['payment_firstname'] = $order_data['payment_firstname'];
-        $data['payment_lastname'] = $order_data['payment_lastname'];
+        $data['payment_firstname'] = $order_data['firstname'];
+        $data['payment_lastname'] = $order_data['lastname'];
         $data['payment_company'] = $order_data['payment_company'];
         $data['payment_address_1'] = $order_data['payment_address_1'];
         $data['payment_address_2'] = $order_data['payment_address_2'];
@@ -994,8 +1001,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $data['payment_method'] = $order_data['payment_method'];
         $data['payment_code'] = $order_data['payment_code'];
 
-        $data['shipping_firstname'] = $order_data['shipping_firstname'];
-        $data['shipping_lastname'] = $order_data['shipping_lastname'];
+        $data['shipping_firstname'] = $order_data['firstname'];
+        $data['shipping_lastname'] = $order_data['lastname'];
         $data['shipping_company'] = $order_data['shipping_company'];
         $data['shipping_address_1'] = $order_data['shipping_address_1'];
         $data['shipping_address_2'] = $order_data['shipping_address_2'];

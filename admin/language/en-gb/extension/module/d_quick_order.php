@@ -51,11 +51,11 @@ $_['tab_modal_modal_setting_title']             = 'Text title modal';
 $_['tab_modal_modal_setting_description']       = 'Text description modal';
 $_['tab_modal_modal_setting_button_submit']     = 'Text modal button confirm';
 
-$_['tab_modal_fields_setting_name']             = 'Enable name field in modal window';
+$_['tab_modal_fields_setting_name']             = 'Enable "name" field in modal window';
 $_['tab_modal_fields_setting_name_require']     = 'Require name';
-$_['tab_modal_fields_setting_email']            = 'Enable modal field in modal window';
+$_['tab_modal_fields_setting_email']            = 'Enable "email" field in modal window';
 $_['tab_modal_fields_setting_email_require']    = 'Require Email';
-$_['tab_modal_fields_setting_comment']          = 'Enable comment field in modal window';
+$_['tab_modal_fields_setting_comment']          = 'Enable "comment" field in modal window';
 $_['tab_modal_fields_setting_comment_require']  = 'Require comment';
 $_['tab_modal_fields_setting_phone_format']     = 'Phone validation format';
 $_['tab_modal_fields_setting_phone_format_help']= 'The following mask definitions are predefined: 9 - Represents a numeric character (0-9). Example: (999) 999-9999';
@@ -90,7 +90,6 @@ $_['filter_customer_name']                      = 'Enter name';
 $_['filter_customer_email']                     = 'Enter email';
 $_['filter_product_phone']                      = 'Enter phone';
 $_['filter_order_status']                       = 'Status';
-
 
 // Settings
 $_['entry_design_custom_style']                 = 'Set Custom Class';
@@ -148,13 +147,11 @@ $_['text_not_found'] = '<div class="jumbotron">
         </div>';
 //welcome
 $_['text_welcome_title']            = 'Quick Order';
-$_['text_welcome_description']      = 'This quick order form, very easy to use, allows your customer to save time while creating their order. They will be able to add all the products they want within the same page. Easy to customize modal window. Increase sales now!';
+$_['text_welcome_description']      = 'This quick order form, very easy to use, allows your customer to save time when creating an order. Customers buy any products they need. Modal purchase window is very easy to configure. You can add the necessary fields, if necessary. The speed and convenience of placing an order directly affects conversion. Increase your sales now!';
 
-$_['text_welcome_visual_editor']    = 'Powerfull SEO';
 $_['text_welcome_building_blocks']  = 'Manage Author <br> permissions';
 $_['text_welcome_mobile_ready']     = 'Choose different <br> layouts and themes';
 $_['text_welcome_increase_sales']   = 'Add Dozens <br> of modules';
 
 $_['button_setup']                  = 'Setup';
 $_['success_setup']                 = 'Success: You have now setup Quick Order Module!';
-$_['text_pro']                      = '<a href="https://dream.page.link/tc4X" target="_blank">For SEO Urls and Quick Order Modules get the Quick Order Module Pro</a>';

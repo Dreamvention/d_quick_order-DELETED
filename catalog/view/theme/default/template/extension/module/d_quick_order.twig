@@ -1,5 +1,4 @@
 <div class="d_qo_wrapper_order_button">
-
     <style>
         #d_qo_order_button:focus {
             outline: none;
@@ -78,7 +77,7 @@
                                     <label class="control-label" for="d_qo_field_name">First Name</label>
                                     <input id="d_qo_field_name" {% if(config.modal_field.name_required) %} required {% endif %}
                                            type="text" name="firstname" class="form-control"
-                                           aria-describedby="emailHelp" placeholder="Enter email">
+                                           aria-describedby="emailHelp" placeholder="Enter first name">
                                 </div>
                             {% endif %}
 
@@ -97,17 +96,17 @@
                             {% endif %}
 
                             <div class="form-group required">
-                                <label class="control-label" for="d_qo_field_telephone">Phone address</label>
+                                <label class="control-label" for="d_qo_field_telephone">Mobile Phone</label>
                                 <input required type="text" name="telephone" class="form-control"
                                        id="d_qo_field_telephone"
-                                       aria-describedby="emailHelp" placeholder="Enter email">
+                                       aria-describedby="emailHelp" placeholder="Enter telephone">
                             </div>
 
                             {% if(config.modal_field.comment) %}
                                 <div class="form-group {% if(config.modal_field.comment_required) %} required {% endif %}">
                                     <label class="control-label"
-                                           for="d_qo_field_comment {% if(config.modal_field.comment_required) %} required {% endif %}">Comment</label>
-                                    <textarea required name="comment" id="d_qo_field_comment" cols="30" rows="10"
+                                           for="d_qo_field_comment">Comment</label>
+                                    <textarea {% if(config.modal_field.comment_required) %} required {% endif %} name="comment" id="d_qo_field_comment" cols="30" rows="10"
                                               placeholder="Enter comment to order" {% if(config.modal_field.comment_required) %} required {% endif %}
                                     ></textarea>
                                 </div>
@@ -141,16 +140,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        {#<input id="product_id_hidden" type="hidden" name="product_id" value="">#}
-
                         {% for language in languages %}
                             {% if(config.text_modal_button[language['language_id']]) %}
                                 <button type="submit" id="d_qo_submit_btn"
                                         class="btn btn-primary">{{ config.text_modal_button[language['language_id']] }}</button>
                             {% endif %}
                         {% endfor %}
-
-
                     </div>
                 </form>
             </div>
@@ -203,8 +198,6 @@
     }
 
     function clearModalForm() {
-        // $('#d_qo_form')[0].reset();
-
         setTimeout(function () {
             $('#d_qo_form .alert').remove();
         }, 3000);
@@ -282,13 +275,11 @@
             data: $(form_selector + ', #product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea, #d_qo_field_name, #d_qo_field_email, #d_qo_field_telephone, #d_qo_field_comment, #d_qo_qty').serialize(),
             dataType: 'json',
             success: function (json) {
-                console.log(json);
-
                 if (json.hasOwnProperty('warning')) {
                     showWarning(json.warning);
                 }
 
-                var path = "http://opencart/303/d_newquickorder/image/" + json.product_image;
+                var path = json.product_image;
                 $('#d_qo_product_image_src').attr('src', path);
                 $('#d_qo_wrapper_product_name').text(json.product_name);
                 $('#d_qo_product_price').text(json.product_total_price);

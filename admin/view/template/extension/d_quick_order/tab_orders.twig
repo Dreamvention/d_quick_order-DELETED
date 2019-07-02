@@ -141,8 +141,8 @@
                                         <div class="d_qo_product_item {% if (loop.last) %} {% else %} border-bottom {% endif %}">
                                             <div class="d_qo_wrapper_image">
                                                 <a href="{{ product.link }}">
-                                                    <img src="http://opencart/303/d_newquickorder/image/{{ product.image }}"
-                                                         alt="">
+                                                    <img src="{{ product.image }}"
+                                                         alt="{{  product.image_title }}">
                                                 </a>
                                             </div>
 

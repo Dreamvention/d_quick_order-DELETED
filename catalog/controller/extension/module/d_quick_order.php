@@ -14,7 +14,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
     private $codename = 'd_quick_order';
     private $route = 'extension/module/d_quick_order';
     private $setting;
-    private $orderProductOptions;
 
     public function __construct($registry)
     {
@@ -124,13 +123,12 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
             $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
             if ($product_info) {
-//                $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
                 $result = $this->getTotalSumByCart($product_info);
 
                 $total = $result['total'];
                 $totalToView = $this->currency->format($total, $this->session->data['currency']);
 
-                $json['product_image'] = $product_info['image'];
+                $json['product_image'] = HTTP_SERVER . "image/" . $product_info['image'];
                 $json['product_name'] = $product_info['name'];
                 $json['product_model'] = $product_info['model'];
                 $json['product_price'] = $product_info['price'];
@@ -162,8 +160,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                 $product_info = $this->model_catalog_product->getProduct((int)$this->request->post['product_id']);
 
                 if ($this->cartValidate($product_info)) {
-//                  Get totals
-//                    $result = $this->getTotalSum($product_info, (int)$this->request->post['quantity']);
                     $result = $this->getTotalSumByCart($product_info);
 
                     $totalSum = $result['total'];
@@ -298,7 +294,6 @@ class ControllerExtensionModuleDQuickOrder extends Controller
         $qtyMaxStatus = $this->validateMaxQtyRequirements($product_info, (int)$this->request->post['quantity']);
 
         //product check price
-
         if (!$qtyMinStatus) {
             $this->errorValidationCart =
                 $this->language->get('d_quick_order_error_incorrect_min_qty') . " " .

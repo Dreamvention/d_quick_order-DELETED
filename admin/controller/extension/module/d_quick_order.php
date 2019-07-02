@@ -169,6 +169,8 @@ class ControllerExtensionModuleDQuickOrder extends Controller
 
             foreach ($products as &$product) {
                 $product['price'] = number_format($product['price'], 2);
+                $product['image'] = "../image/" . $product['image'];
+                $product['image_title'] = $product['name'];
                 $product['total'] = number_format($product['total'], 2);
                 $product['tax'] = number_format($product['tax'], 2);
                 $product['total_price'] = number_format(floatval($product['total']) + floatval($product['tax']), 2);

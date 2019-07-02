@@ -22,8 +22,8 @@ $_['d_quick_order_setting'] = array(
     ),
 
     'modal_heading_title' => array('1' => 'Quick Order'),
-    'modal_description' => array('1' => 'Quick Order description'),
-    'text_modal_button' => array('1' => 'Quick Order Now'),
+    'modal_description' => array('1' => 'Please fill out all required field before the order.'),
+    'text_modal_button' => array('1' => 'Order Now'),
 
     'modal_field' => array(
         'name' => true,

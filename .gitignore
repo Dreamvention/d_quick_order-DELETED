@@ -24,6 +24,7 @@ php.ini
 !admin/view/image/d_quick_order/bg.svg
 !admin/view/image/d_quick_order/logo.svg
 !admin/view/image/d_quick_order/welcome.png
+!admin/view/image/d_quick_order/background.svg
 
 !admin/view/template/extension/d_quick_order/welcome.twig
 !admin/view/template/extension/module/d_quick_order.twig

@@ -96,7 +96,7 @@
   "changelog": [
     {
       "version": "1.0.0",
-      "change": "create extension"
+      "change": "add background to setup extension"
     }
   ]
 }

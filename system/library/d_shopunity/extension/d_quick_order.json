@@ -9,7 +9,7 @@
     "email": "info@dreamvention.com",
     "url": "https://dreamvention.com"
   },
-  "opencart_version": "~2",
+  "opencart_version": "~2,~3",
   "type": "module",
   "license": {
     "type": "free",

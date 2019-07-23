@@ -217,3 +217,9 @@
 	height: auto;
 	max-width: 1000px;
 }
+
+@media (max-width: 1500px){
+	.table a.create{
+		margin-bottom: 10px;
+	}
+}

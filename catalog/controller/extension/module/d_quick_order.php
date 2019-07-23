@@ -172,8 +172,9 @@ class ControllerExtensionModuleDQuickOrder extends Controller
                     $orderId = $this->getOrderIdToPreorder($this->request->post['telephone']);
 
 //                  Chk product in cart
-                    $buyProduct = $this->model_extension_module_d_quick_order->getProductById($this->request->post['product_id']);
-                    if ($buyProduct) {
+                    $buyProduct = $this->model_extension_module_d_quick_order->getProductByIdAndOrderId($this->request->post['product_id'], $orderId);
+
+                    if ($orderId && $buyProduct) {
                         $qty = (int)$buyProduct['quantity'] + (int)$this->request->post['quantity'];
                         $tax = number_format($buyProduct['tax'] + $totalTax, 2);
                         $total = $buyProduct['price'] * $qty;

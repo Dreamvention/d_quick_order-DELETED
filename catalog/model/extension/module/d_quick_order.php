@@ -37,7 +37,7 @@ class ModelExtensionModuleDQuickOrder extends Model
             `price` = '" . $this->db->escape($product['price']) . "',
             `total` = '" . $this->db->escape($product['total']) . "',
             `tax` = '" . $product['tax'] . "'
-            WHERE product_id = '" . (int)$product['product_id'] . "'");
+            WHERE quick_order_id = '" . $product['quick_order_id'] . "' AND product_id = '" . (int)$product['product_id'] . "'");
 
         $product_id = $this->db->getLastId();
 
@@ -47,6 +47,13 @@ class ModelExtensionModuleDQuickOrder extends Model
     public function getOrderById($id)
     {
         $query = $this->db->query("SELECT id  FROM " . DB_PREFIX . "$this->tableName WHERE order_id = '" . $id . "' LIMIT 1");
+
+        return $query->row;
+    }
+
+    public function getProductByIdAndOrderId($id, $orderId)
+    {
+        $query = $this->db->query("SELECT *  FROM " . DB_PREFIX . "$this->tableProductToOrder WHERE quick_order_id = '" . (int)$orderId . "' AND product_id = '" . (int)$id . "' LIMIT 1");
 
         return $query->row;
     }

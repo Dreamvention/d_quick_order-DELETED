@@ -154,11 +154,10 @@
                                                 </div>
 
                                                 <div class="d_qo_product_totals">
-                                                    <p>Price: {{ product.quantity }} * <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.price }}</span></p>
-                                                    <p>Sub total: <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.total }}</span></p>
+                                                    <p>Price: <span class="d_qo_qty">{{ product.quantity }}</span> * <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.price }}</span></p>
                                                     <p>Tax: <span class="d_qo_product_totals_right">{{ order.currency }}{{ product.tax }}</span></p>
                                                     <hr>
-                                                    <p>Total: <span class="d_qo_product_total_price d_qo_product_totals_right">{{ order.currency }}{{ product.total_price }}</span></p>
+                                                    <p>Total: <span class="d_qo_product_total_price d_qo_product_totals_right">{{ order.currency }}{{ product.total }}</span></p>
                                                 </div>
                                             </div>
                                         </div>

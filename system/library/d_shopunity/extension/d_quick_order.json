@@ -68,7 +68,6 @@
     "catalog/controller/extension/module/d_quick_order.php",
     "catalog/model/extension/module/d_quick_order.php",
     "catalog/language/en-gb/extension/module/d_quick_order.php",
-
     "catalog/view/theme/default/template/extension/module/d_quick_order.twig",
     "catalog/view/theme/default/javascript/d_quick_order/d_quick_order.js",
     "catalog/view/theme/default/javascript/d_quick_order/extra/jquery.maskedinput.min.js",

@@ -395,7 +395,7 @@ class ModelExtensionModuleDQuickOrder extends Model
 
     public function updateOrderStatusAndSetRealOrder($order_id, $status, $realOrderId)
     {
-        $this->db->query("UPDATE " . DB_PREFIX . "d_qo_order SET 
+        return $this->db->query("UPDATE " . DB_PREFIX . "d_qo_order SET 
             `order_status_id` = '" . (int)$status . "',
             `order_id` = '" . (int)$realOrderId . "'
             WHERE quick_order_id = '" . (int)$order_id . "'");

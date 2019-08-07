@@ -8,6 +8,7 @@
 
 class ModelExtensionModuleDQuickOrder extends Model
 {
+
     public $table = "d_qo_product_to_order";
     public $codename = 'd_quick_order';
     public $tableOrderOption = "d_qo_order_option";

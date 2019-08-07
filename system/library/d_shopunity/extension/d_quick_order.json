@@ -38,6 +38,7 @@
   "files": [
     "system/library/d_shopunity/extension/d_quick_order.json",
     "system/config/d_quick_order.php",
+
     "admin/controller/extension/module/d_quick_order.php",
     "admin/model/extension/module/d_quick_order.php",
     "admin/language/en-gb/extension/module/d_quick_order.php",
@@ -50,6 +51,7 @@
     "admin/view/template/extension/d_quick_order/tab_orders.twig",
     "admin/view/template/extension/d_quick_order/tab_setting.twig",
     "admin/view/template/extension/d_quick_order/tab_instruction.twig",
+
     "catalog/controller/extension/module/d_quick_order.php",
     "catalog/model/extension/module/d_quick_order.php",
     "catalog/language/en-gb/extension/module/d_quick_order.php",

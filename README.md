@@ -1,6 +1,6 @@
 # Quick Order
 
-[![N|Solid](https://www.opencart.com/application/view/image/icon/opencart-logo.png)](https://dreamvention.ee/live-ajax-search)
+[![N|Solid](https://www.opencart.com/application/view/image/icon/opencart-logo.png)](https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=37423)
 
 # Features:
 

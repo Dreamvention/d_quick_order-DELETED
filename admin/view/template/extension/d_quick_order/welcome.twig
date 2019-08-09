@@ -19,15 +19,12 @@
     </div>
     <div class="container-fluid">
         <div class="panel panel-default panel-d-quick-order">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-pencil"></i> {{ text_edit }}</h3>
-            </div>
             <div class="panel-body">
                 <style>
-                    .panel-d-quick-order{
-                        background: url('view/image/d_quick_order/background.svg');
-                        background-color: #f8f9fc;
+                    .panel-d-quick-order {
+                        background-color: #ffffff;
+                        background-position: bottom;
+                        background-repeat: no-repeat;
                     }
 
                     a#button-menu {
@@ -38,19 +35,44 @@
                         background-position: bottom;
                         background-repeat: repeat-x;
                         background-size: 100%;
-                        min-height: 1025px;
-                        padding-top: 50px;
-                        padding-bottom: 32%;
+                        padding-top: 30px;
+                        /*padding-bottom: 100px;*/
                     }
 
                     .welcome-into {
                         text-align: center;
-                        max-width: 500px;
+                        max-width: 900px;
                         margin: auto;
                     }
 
                     .welcome-into-logo {
                         padding-bottom: 15px;
+                    }
+
+                    .welcome-into-logo img {
+                        width: auto;
+                        height: 240px;
+                    }
+
+                    .welcome-into-wrapper-item-image {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-around;
+                    }
+
+                    .welcome-into-item-image {
+                        width: 130px;
+                        height: 130px;
+                    }
+
+                    .welcome-into-wrapper-item-image h4 {
+                        width: 100%;
+                        text-align: center;
+                        padding-top: 30px;
+                        color: #545454;
+                        font-weight: bold;
                     }
 
                     .welcome-into-heading {
@@ -60,30 +82,67 @@
                     }
 
                     .welcome-into-text {
-                        font-size: 18px;
-                        padding-bottom: 30px;
+                        font-size: 17px;
+                        text-align: center;
                     }
 
                     .welcome-into-start {
-                        padding-bottom: 30px;
+                        padding: 70px 0 50px 0;
                     }
 
                     .panel .panel-body {
                         padding: 0;
                     }
+
+                    .footer-image {
+                        margin-top: 150px;
+                        width: 100%;
+                    }
+
+                    @media (max-width: 600px) {
+                        .welcome-into-wrapper-item-image {
+                            flex-direction: column;
+                        }
+                    }
                 </style>
                 <div class="welcome">
                     <div class="welcome-into">
                         <div class="welcome-into-logo">
-                            <img src="view/image/d_quick_order/logo.svg"/>
+                            <img src="view/image/d_quick_order/Icon_admin.svg"/>
                         </div>
                         <div class="welcome-into-heading">{{ text_welcome_title }}</div>
                         <div class="welcome-into-text">{{ text_welcome_description }}</div>
 
-                        <div class="welcome-into-start">
-                            <a class="btn btn-primary btn-lg addSetting">{{ button_setup }}</a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="welcome-into-start">
+                                    <a class="btn btn-primary btn-lg addSetting">{{ button_setup }}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="welcome-into-wrapper-item-image">
+                                <div class="col-md-4">
+                                    <img class="welcome-into-item-image improves_conversion"
+                                         src="view/image/d_quick_order/Improves_conversion.svg"/>
+                                    <h4>Improves conversion</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <img class="welcome-into-item-image customizable"
+                                         src="view/image/d_quick_order/Customizable.svg"/>
+                                    <h4>Customizable</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <img class="welcome-into-item-image easy_install"
+                                         src="view/image/d_quick_order/Easy_install.svg"/>
+                                    <h4>Easy to install</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <img class="footer-image" src="view/image/d_quick_order/background.svg" alt="">
                 </div>
             </div>
         </div>

@@ -147,7 +147,7 @@ $_['text_not_found'] = '<div class="jumbotron">
         </div>';
 //welcome
 $_['text_welcome_title']            = 'Quick Order';
-$_['text_welcome_description']      = 'This quick order form, very easy to use, allows your customer to save time when creating an order. Customers buy any products they need. Modal purchase window is very easy to configure. You can add the necessary fields, if necessary. The speed and convenience of placing an order directly affects conversion. Increase your sales now!';
+$_['text_welcome_description']      = '75% of your visitors never reach the checkout. Offer a quick order button directly on your product page and let your customers checkout immediately with their name and mobile and watch your conversion improve!';
 
 $_['text_welcome_building_blocks']  = 'Manage Author <br> permissions';
 $_['text_welcome_mobile_ready']     = 'Choose different <br> layouts and themes';

@@ -1,181 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.2" baseProfile="tiny" id="Isolation_Mode"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1140px" height="965px"
-	 viewBox="535 -447 1140 965" xml:space="preserve">
-<g>
-	<rect x="535" y="-447" fill="#ECF1FB" width="1140" height="965"/>
-	<g id="XMLID_49_">
-		
-			<line id="XMLID_62_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="915.2" y1="59.9" x2="928.4" y2="62.3"/>
-		
-			<line id="XMLID_2_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1584.6" y1="-161.7" x2="1597.5" y2="-167.9"/>
-		
-			<line id="XMLID_70_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1565.1" y1="-374.7" x2="1578" y2="-380.9"/>
-		
-			<line id="XMLID_71_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="849.2" y1="334.9" x2="860" y2="325.5"/>
-		
-			<line id="XMLID_35_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="899" y1="199.5" x2="912.2" y2="193.9"/>
-		
-			<line id="XMLID_74_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="639.5" y1="261" x2="646.6" y2="265"/>
-		
-			<line id="XMLID_75_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="805.3" y1="470.6" x2="812.4" y2="474.6"/>
-		
-			<line id="XMLID_68_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="700.3" y1="347.6" x2="713.5" y2="342"/>
-		
-			<line id="XMLID_3_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1403.4" y1="-281.8" x2="1398.6" y2="-279.7"/>
-		
-			<line id="XMLID_52_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1294.5" y1="267.4" x2="1289.8" y2="269.6"/>
-		
-			<line id="XMLID_28_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1650.2" y1="-195.9" x2="1645.9" y2="-198.8"/>
-		
-			<line id="XMLID_83_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1524.5" y1="476.9" x2="1532.8" y2="488.6"/>
-		<g id="XMLID_528_">
-			
-				<circle id="XMLID_534_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1252.8" cy="-386.1" r="11"/>
-			
-				<line id="XMLID_533_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1256.6" y1="-375.6" x2="1288.2" y2="-385.9"/>
-			
-				<line id="XMLID_532_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1245.5" y1="-394.3" x2="1269.2" y2="-417.6"/>
-			
-				<line id="XMLID_531_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1262.5" y1="-391.9" x2="1294.5" y2="-411.3"/>
-			<path id="XMLID_530_" fill="#FFFFFF" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" d="
-				M1255-380.6c-2.3,1.4-5.2,0.6-6.5-1.6"/>
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 1200 259" xml:space="preserve">
+<path id="XMLID_10_" fill="#F4F9FD" d="M0,259V74c204.3,6.2,327.8-61,457-50c161.6,13.8,320,89.9,451,57s292-7,292-7v185H0z"/>
+<g id="XMLID_9_">
+	<g id="XMLID_3732_">
+		<g id="XMLID_3777_">
+			<rect id="XMLID_3781_" x="592.3" y="18.1" fill="#245E8E" width="15.3" height="13.7"/>
+			<g id="XMLID_3778_">
+				<path id="XMLID_3780_" fill="#3B79C4" d="M604.6,13.4h-0.4h-8.4h-0.4h-8.8v6.4c0,1.3,1,2.3,2.3,2.3h6.4h0.4h8.4h0.4h6.4
+					c1.3,0,2.3-1,2.3-2.3v-6.4H604.6z"/>
+				<path id="XMLID_3779_" fill="#6FA6DD" d="M610.1,10h-5.6h-0.4h-8.4h-0.4h-5.6c-1.8,0-3.2,1.3-3.2,2.8v0.7h8.8h0.4h8.4h0.4h8.8
+					v-0.7C613.3,11.2,611.9,10,610.1,10z"/>
+			</g>
 		</g>
-		<g id="XMLID_562_">
+		<g id="XMLID_3772_">
 			
-				<circle id="XMLID_557_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="952" cy="-119.7" r="10.2"/>
-			<g id="XMLID_558_">
-				<g id="XMLID_559_">
-					
-						<line id="XMLID_30_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="957.3" y1="-103.4" x2="961" y2="-100.1"/>
-					
-						<line id="XMLID_29_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="963" y1="-98.2" x2="968" y2="-93.7"/>
-					
-						<line id="XMLID_26_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="969" y1="-92.8" x2="980" y2="-82.7"/>
-					
-						<line id="XMLID_25_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="981" y1="-81.8" x2="984.7" y2="-78.5"/>
-				</g>
-				<g id="XMLID_561_">
-					
-						<line id="XMLID_24_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="968.7" y1="-115.9" x2="976.1" y2="-109.2"/>
-					
-						<line id="XMLID_23_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="982.4" y1="-103.4" x2="985.6" y2="-100.6"/>
-					
-						<line id="XMLID_22_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="988.7" y1="-97.7" x2="996.1" y2="-90.9"/>
+				<rect id="XMLID_3776_" x="621" y="30" transform="matrix(0.8514 0.5245 -0.5245 0.8514 110.6256 -322.6746)" fill="#245E8E" width="7.6" height="7.8"/>
+			<g id="XMLID_3773_">
+				<path id="XMLID_3775_" fill="#3B79C4" d="M633.3,31.5l-5.2-3.2l0,0l-5-3.1l-2,3.3c-0.3,0.5-0.2,1.3,0.4,1.6l4.2,2.6l0,0l4,2.5
+					c0.5,0.3,1.3,0.2,1.6-0.4L633.3,31.5z"/>
+				<path id="XMLID_3774_" fill="#6FA6DD" d="M632.8,28.4l-3.2-2l0,0l-3.4-2.1c-1-0.6-2.2-0.3-2.8,0.7l-0.2,0.4l5.2,3.2l0,0l5,3.1
+					l0.2-0.4C634,30.3,633.7,29,632.8,28.4z"/>
+			</g>
+		</g>
+		<g id="XMLID_3733_">
+			<g id="XMLID_3768_">
+				<circle id="XMLID_3771_" fill="#3B79C4" cx="600" cy="76" r="47.1"/>
+				<circle id="XMLID_3770_" display="none" fill="#37ACF4" cx="600" cy="76" r="38.6"/>
+				<circle id="XMLID_3769_" fill="#6FA6DD" cx="600" cy="76" r="37.8"/>
+			</g>
+			<g id="XMLID_3734_">
+				<path id="XMLID_3767_" fill="#FFFFFF" d="M625,85.9H575c-0.4,0-0.7-0.3-0.7-0.7V66.8c0-0.4,0.3-0.7,0.7-0.7H625
+					c0.4,0,0.7,0.3,0.7,0.7v18.5C625.7,85.6,625.4,85.9,625,85.9z"/>
+				<g id="XMLID_3735_" display="none">
+					<path id="XMLID_3760_" display="inline" fill="#231F20" d="M583.1,72.6v2.6l-0.9,0.8l-0.3-0.3v-3.5L583.1,72.6z M581.9,80v-3.5
+						l0.3-0.3l0.9,0.8v2.6L581.9,80z M587.2,81h-4.5c-0.4-0.1-0.6-0.3-0.7-0.7l1.2-0.4h3.6L587.2,81z M586.7,72.3h-3.6l-1.2-0.4
+						c0.1-0.4,0.3-0.6,0.7-0.7h4.5L586.7,72.3z M587,75.1v-2.9l0.4-1.1c0.4,0.1,0.6,0.3,0.7,0.7v3.8l-0.3,0.3L587,75.1z M587.9,76.2
+						l0.3,0.3v3.8c-0.1,0.4-0.3,0.6-0.7,0.7l-0.4-1.1v-2.9L587.9,76.2z"/>
+					<path id="XMLID_3753_" display="inline" fill="#231F20" d="M590.6,72.6v2.6l-0.9,0.8l-0.3-0.3v-3.5L590.6,72.6z M589.4,80v-3.5
+						l0.3-0.3l0.9,0.8v2.6L589.4,80z M594.6,81h-4.5c-0.4-0.1-0.6-0.3-0.7-0.7l1.2-0.4h3.6L594.6,81z M594.2,72.3h-3.6l-1.2-0.4
+						c0.1-0.4,0.3-0.6,0.7-0.7h4.5L594.2,72.3z M594.5,75.1v-2.9l0.4-1.1c0.4,0.1,0.6,0.3,0.7,0.7v3.8l-0.3,0.3L594.5,75.1z
+						 M595.4,76.2l0.3,0.3v3.8c-0.1,0.4-0.3,0.6-0.7,0.7l-0.4-1.1v-2.9L595.4,76.2z"/>
+					<path id="XMLID_3750_" display="inline" fill="#231F20" d="M600.6,74.5h-1.2v-1.1h1.2V74.5z M600.6,81h-1.2v-1.1h1.2V81z"/>
+					<path id="XMLID_3742_" display="inline" fill="#231F20" d="M605.5,72.6v2.6l-0.9,0.8l-0.3-0.3v-3.5L605.5,72.6z M604.3,80v-3.5
+						l0.3-0.3l0.9,0.8v2.6L604.3,80z M609.6,81h-4.5c-0.4-0.1-0.6-0.3-0.7-0.7l1.2-0.4h3.6L609.6,81z M609.1,72.3h-3.6l-1.2-0.4
+						c0.1-0.4,0.3-0.6,0.7-0.7h4.5L609.1,72.3z M609.4,75.1v-2.9l0.4-1.1c0.4,0.1,0.6,0.3,0.7,0.7v3.8l-0.3,0.3L609.4,75.1z
+						 M610.3,76.2l0.3,0.3v3.8c-0.1,0.4-0.3,0.6-0.7,0.7l-0.4-1.1v-2.9L610.3,76.2z"/>
+					<path id="XMLID_3736_" display="inline" fill="#231F20" d="M613,72.6v2.6l-0.9,0.8l-0.3-0.3v-3.5L613,72.6z M617,81h-4.5
+						c-0.4-0.1-0.6-0.3-0.7-0.7l1.2-0.4h3.6L617,81z M617,72.3h-4l-1.2-0.4c0.1-0.4,0.3-0.6,0.7-0.7h4.9L617,72.3z M616.9,75.6
+						l0.6,0.5l-0.6,0.5H613l-0.6-0.5l0.6-0.5H616.9z M617.8,76.2l0.3,0.3v3.8c-0.1,0.4-0.3,0.6-0.7,0.7l-0.4-1.1v-2.9L617.8,76.2z"
+						/>
 				</g>
 			</g>
-			
-				<line id="XMLID_560_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="967.5" y1="-105.6" x2="1002.3" y2="-73.8"/>
 		</g>
-		
-			<line id="XMLID_63_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1304.1" y1="55.9" x2="1314.7" y2="44.2"/>
-		
-			<circle id="XMLID_895_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1522" cy="-287.4" r="4.3"/>
-		
-			<circle id="XMLID_529_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1353.1" cy="-192.7" r="5.8"/>
-		
-			<circle id="XMLID_20_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1184.9" cy="143.6" r="8.9"/>
-		
-			<circle id="XMLID_536_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="766.4" cy="-7.9" r="4.3"/>
-		
-			<circle id="XMLID_50_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="613.3" cy="169.3" r="4.3"/>
-		
-			<circle id="XMLID_42_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="566.3" cy="-60.8" r="6.5"/>
-		
-			<line id="XMLID_65_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="638.5" y1="-36.8" x2="642.3" y2="-32.2"/>
-		
-			<line id="XMLID_64_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1564.7" y1="-61.1" x2="1576.6" y2="-67.2"/>
-		
-			<line id="XMLID_9_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1516.7" y1="-218.1" x2="1529.7" y2="-214.6"/>
-		
-			<line id="XMLID_27_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1364.3" y1="119.4" x2="1373.8" y2="121.1"/>
-		
-			<line id="XMLID_81_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1571.8" y1="424.1" x2="1581.2" y2="425.7"/>
-		
-			<circle id="XMLID_4_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1411.5" cy="-42.7" r="3.1"/>
-		
-			<circle id="XMLID_69_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="670.3" cy="391" r="3.1"/>
-		
-			<line id="XMLID_515_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="975.8" y1="-211.7" x2="984.6" y2="-209.1"/>
-		
-			<line id="XMLID_21_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="807.2" y1="111.1" x2="815.2" y2="106.7"/>
-		
-			<line id="XMLID_782_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1174.2" y1="-184.5" x2="1180.1" y2="-192.7"/>
-		
-			<line id="XMLID_51_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1100.7" y1="195.1" x2="1110" y2="199.2"/>
-		
-			<line id="XMLID_61_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1038.4" y1="17" x2="1043.3" y2="9.3"/>
-		
-			<line id="XMLID_10_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="796.6" y1="-128.2" x2="814.7" y2="-133.9"/>
-		
-			<circle id="XMLID_781_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1244.2" cy="-272.2" r="7.3"/>
-		
-			<line id="XMLID_904_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1129.3" y1="-322.1" x2="1145.7" y2="-313.7"/>
-		
-			<line id="XMLID_79_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="833.3" y1="-397.1" x2="843.3" y2="-401.7"/>
-		
-			<circle id="XMLID_11_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="990.8" cy="-298.3" r="4.9"/>
-		
-			<circle id="XMLID_13_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1066.7" cy="-265.6" r="3.7"/>
-		
-			<line id="XMLID_8_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1232.1" y1="-96.6" x2="1246.3" y2="-109.5"/>
-		
-			<circle id="XMLID_67_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1236.2" cy="423.9" r="5.8"/>
-		
-			<line id="XMLID_66_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1237.1" y1="244.8" x2="1245" y2="251.1"/>
-		
-			<circle id="XMLID_59_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1311.9" cy="356.3" r="7.3"/>
-		
-			<line id="XMLID_58_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1105.3" y1="293.6" x2="1131.6" y2="304"/>
-		
-			<line id="XMLID_57_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1028.2" y1="370.6" x2="1043.8" y2="364.1"/>
-		
-			<circle id="XMLID_60_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1180.7" cy="-21.9" r="4.3"/>
-		
-			<circle id="XMLID_55_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1463.8" cy="353.6" r="4.3"/>
-		
-			<circle id="XMLID_56_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1561.3" cy="274.3" r="5.9"/>
-		
-			<circle id="XMLID_12_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1009.3" cy="121.1" r="5.4"/>
-		
-			<line id="XMLID_73_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="584" y1="414.7" x2="597.3" y2="417.1"/>
-		
-			<circle id="XMLID_72_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="678.1" cy="475.9" r="5.4"/>
-		
-			<circle id="XMLID_6_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="695.8" cy="104.4" r="5.9"/>
-		
-			<circle id="XMLID_53_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="752.8" cy="269.7" r="5.9"/>
-		
-			<circle id="XMLID_54_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="968" cy="324.3" r="6.6"/>
-		
-			<circle id="XMLID_7_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="862.2" cy="-33" r="3.1"/>
-		
-			<circle id="XMLID_77_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1050.8" cy="437.7" r="3.1"/>
-		<g id="XMLID_495_">
-			
-				<circle id="XMLID_428_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="735" cy="-272.1" r="8.1"/>
-			<g id="XMLID_429_">
-				
-					<line id="XMLID_430_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="722.3" y1="-263.9" x2="704.5" y2="-244.6"/>
-				
-					<line id="XMLID_443_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="727.9" y1="-258.8" x2="699.2" y2="-227.7"/>
-			</g>
-		</g>
-		<g id="XMLID_15_">
-			
-				<circle id="XMLID_19_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="1485.1" cy="129.5" r="8.1"/>
-			<g id="XMLID_16_">
-				
-					<line id="XMLID_18_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1500.2" y1="129.8" x2="1525.7" y2="123.7"/>
-				
-					<line id="XMLID_17_" fill="none" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" x1="1498.4" y1="122.4" x2="1529.6" y2="115"/>
-			</g>
-		</g>
-		
-			<circle id="XMLID_14_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="702.2" cy="-112.9" r="3.1"/>
-		
-			<circle id="XMLID_5_" fill="#ECF1FB" stroke="#DBE4F3" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" cx="639.5" cy="-346.9" r="4.3"/>
+	</g>
+	<g id="XMLID_1_">
+		<path id="XMLID_1968_" fill="#231F20" d="M580.5,71.3v3.3l-1,1l-0.3-0.3v-4.5L580.5,71.3z M579.1,80.8v-4.5l0.3-0.3l1,1v3.3
+			L579.1,80.8z M585.2,82H580c-0.5-0.1-0.7-0.4-0.9-0.9l1.4-0.5h4.1L585.2,82z M584.6,70.9h-4.1l-1.4-0.5c0.1-0.5,0.4-0.7,0.9-0.9
+			h5.2L584.6,70.9z M585,74.6v-3.6l0.5-1.4c0.5,0.1,0.7,0.4,0.9,0.9v4.8l-0.3,0.3L585,74.6z M586,76l0.3,0.3v4.8
+			c-0.1,0.5-0.4,0.7-0.9,0.9l-0.5-1.4V77L586,76z"/>
+		<path id="XMLID_1890_" fill="#231F20" d="M589.1,71.3v3.3l-1,1l-0.3-0.3v-4.5L589.1,71.3z M587.8,80.8v-4.5l0.3-0.3l1,1v3.3
+			L587.8,80.8z M593.8,82h-5.2c-0.5-0.1-0.7-0.4-0.9-0.9l1.4-0.5h4.1L593.8,82z M593.3,70.9h-4.1l-1.4-0.5c0.1-0.5,0.4-0.7,0.9-0.9
+			h5.2L593.3,70.9z M593.6,74.6v-3.6l0.5-1.4c0.5,0.1,0.7,0.4,0.9,0.9v4.8l-0.3,0.3L593.6,74.6z M594.7,76l0.3,0.3v4.8
+			c-0.1,0.5-0.4,0.7-0.9,0.9l-0.5-1.4V77L594.7,76z"/>
+		<path id="XMLID_1763_" fill="#231F20" d="M600.7,73.7h-1.4v-1.4h1.4V73.7z M600.7,82h-1.4v-1.4h1.4V82z"/>
+		<path id="XMLID_1756_" fill="#231F20" d="M606.4,71.3v3.3l-1,1l-0.3-0.3v-4.5L606.4,71.3z M605,80.8v-4.5l0.3-0.3l1,1v3.3
+			L605,80.8z M611.1,82h-5.2c-0.5-0.1-0.7-0.4-0.9-0.9l1.4-0.5h4.1L611.1,82z M610.6,70.9h-4.1l-1.4-0.5c0.1-0.5,0.4-0.7,0.9-0.9
+			h5.2L610.6,70.9z M610.9,74.6v-3.6l0.5-1.4c0.5,0.1,0.7,0.4,0.9,0.9v4.8l-0.3,0.3L610.9,74.6z M611.9,76l0.3,0.3v4.8
+			c-0.1,0.5-0.4,0.7-0.9,0.9l-0.5-1.4V77L611.9,76z"/>
+		<path id="XMLID_2_" fill="#231F20" d="M615,71.3v3.3l-1,1l-0.3-0.3v-4.5L615,71.3z M613.6,80.8v-4.5L614,76l1,1v3.3L613.6,80.8z
+			 M619.7,82h-5.2c-0.5-0.1-0.7-0.4-0.9-0.9l1.4-0.5h4.1L619.7,82z M619.2,70.9H615l-1.4-0.5c0.1-0.5,0.4-0.7,0.9-0.9h5.2
+			L619.2,70.9z M619.5,74.6v-3.6l0.5-1.4c0.5,0.1,0.7,0.4,0.9,0.9v4.8l-0.3,0.3L619.5,74.6z M620.5,76l0.3,0.3v4.8
+			c-0.1,0.5-0.4,0.7-0.9,0.9l-0.5-1.4V77L620.5,76z"/>
+	</g>
+</g>
+<circle id="XMLID_11_" fill="#3B79C4" cx="445.8" cy="59.3" r="1.8"/>
+<circle id="XMLID_104_" fill="#3B79C4" cx="189.3" cy="188.8" r="2.3"/>
+<circle id="XMLID_102_" fill="#3B79C4" cx="40.8" cy="143.3" r="1.8"/>
+<circle id="XMLID_99_" fill="#3B79C4" cx="359.9" cy="163.4" r="2.7"/>
+<circle id="XMLID_15_" fill="#C3E1F5" cx="552.9" cy="235.4" r="4"/>
+<circle id="XMLID_32_" fill="#3B79C4" cx="173.9" cy="88.4" r="2"/>
+<circle id="XMLID_143_" fill="#3B79C4" cx="16.8" cy="59.3" r="2.9"/>
+<circle id="XMLID_111_" fill="#3B79C4" cx="464" cy="201.5" r="1.8"/>
+<circle id="XMLID_107_" fill="#3B79C4" cx="534.9" cy="151.4" r="2.7"/>
+<circle id="XMLID_110_" fill="#3B79C4" cx="305.1" cy="100.6" r="1.5"/>
+<circle id="XMLID_129_" fill="#3B79C4" cx="252.1" cy="22.6" r="1.5"/>
+<circle id="XMLID_13_" fill="#FAB718" cx="466.4" cy="69.1" r="1.4"/>
+<circle id="XMLID_103_" fill="#FAB718" cx="108.4" cy="141.1" r="1.4"/>
+<circle id="XMLID_140_" fill="#FAB718" cx="263.5" cy="212.1" r="2.5"/>
+<circle id="XMLID_142_" fill="#FAB718" cx="107.7" cy="57.3" r="1.7"/>
+<circle id="XMLID_100_" fill="#FAB718" cx="204.1" cy="143.7" r="1.1"/>
+<circle id="XMLID_14_" fill="#C3E1F5" cx="417" cy="83.5" r="3"/>
+<circle id="XMLID_141_" fill="#C3E1F5" cx="422.1" cy="226.7" r="2.1"/>
+<circle id="XMLID_130_" fill="#C3E1F5" cx="293" cy="7.5" r="3"/>
+<circle id="XMLID_128_" fill="#C3E1F5" cx="662" cy="107.5" r="3"/>
+<circle id="XMLID_108_" fill="#C3E1F5" cx="509.6" cy="130.9" r="1.6"/>
+<circle id="XMLID_127_" fill="#C3E1F5" cx="675.6" cy="216.9" r="1.6"/>
+<circle id="XMLID_105_" fill="#C3E1F5" cx="293" cy="178.5" r="3"/>
+<circle id="XMLID_101_" fill="#C3E1F5" cx="94" cy="170.5" r="3"/>
+<circle id="XMLID_132_" fill="#C3E1F5" cx="58" cy="47.5" r="3"/>
+<circle id="XMLID_98_" fill="#C3E1F5" cx="212" cy="111.5" r="2"/>
+<circle id="XMLID_97_" fill="#FAB718" cx="349.2" cy="48.3" r="2.2"/>
+<circle id="XMLID_123_" fill="#FAB718" cx="623.5" cy="187.5" r="2.9"/>
+<circle id="XMLID_106_" fill="#FAB718" cx="381.1" cy="189.1" r="1.1"/>
+<circle id="XMLID_131_" fill="#FAB718" cx="511.9" cy="9.9" r="1.8"/>
+<circle id="XMLID_119_" fill="#3B79C4" cx="852.3" cy="240.8" r="2.3"/>
+<circle id="XMLID_122_" fill="#3B79C4" cx="747.3" cy="117.8" r="2.3"/>
+<circle id="XMLID_133_" fill="#3B79C4" cx="637.3" cy="44.8" r="2.3"/>
+<circle id="XMLID_124_" fill="#3B79C4" cx="1099.3" cy="174.8" r="2.3"/>
+<circle id="XMLID_138_" fill="#3B79C4" cx="1172.3" cy="27.8" r="2.3"/>
+<circle id="XMLID_118_" fill="#3B79C4" cx="1001.9" cy="187.4" r="2.7"/>
+<circle id="XMLID_117_" fill="#3B79C4" cx="947.1" cy="124.6" r="1.5"/>
+<circle id="XMLID_135_" fill="#3B79C4" cx="830.1" cy="64.6" r="1.5"/>
+<circle id="XMLID_116_" fill="#FAB718" cx="881.1" cy="145.7" r="1.1"/>
+<circle id="XMLID_121_" fill="#FAB718" cx="718.1" cy="187.7" r="1.1"/>
+<circle id="XMLID_115_" fill="#C3E1F5" cx="1059" cy="107.5" r="3"/>
+<circle id="XMLID_126_" fill="#C3E1F5" cx="1084.5" cy="228.1" r="1.5"/>
+<circle id="XMLID_114_" fill="#C3E1F5" cx="935" cy="202.5" r="3"/>
+<circle id="XMLID_134_" fill="#C3E1F5" cx="719.8" cy="43.8" r="3.8"/>
+<circle id="XMLID_120_" fill="#C3E1F5" cx="778" cy="191.5" r="2.2"/>
+<circle id="XMLID_113_" fill="#C3E1F5" cx="854" cy="135.5" r="2"/>
+<circle id="XMLID_137_" fill="#C3E1F5" cx="964" cy="53.5" r="2"/>
+<circle id="XMLID_112_" fill="#FAB718" cx="1023.1" cy="213.1" r="1.1"/>
+<circle id="XMLID_136_" fill="#FAB718" cx="928.6" cy="42.7" r="2.4"/>
+<circle id="XMLID_125_" fill="#FAB718" cx="1164.1" cy="189.1" r="1.1"/>
+<circle id="XMLID_139_" fill="#FAB718" cx="1116.3" cy="41.3" r="1.9"/>
+<circle id="XMLID_109_" fill="#FAB718" cx="482.1" cy="155.1" r="1.1"/>
+<g id="XMLID_17_">
+	<circle id="XMLID_16_" fill="#FFFFFF" cx="702.6" cy="146.9" r="26.6"/>
+	<g id="XMLID_19_">
+		<path id="XMLID_26_" fill="#FAB718" d="M718.2,144.9c0,0.4-0.1,0.7-0.4,0.9c-0.3,0.3-0.6,0.4-0.9,0.4h-0.4l-1.4,10
+			c-0.1,0.7-0.4,1.2-0.9,1.6c-0.5,0.4-1.1,0.6-1.7,0.6h-19.9c-0.7,0-1.2-0.2-1.7-0.6c-0.5-0.4-0.8-1-0.9-1.6l-1.4-10H688
+			c-0.4,0-0.7-0.1-0.9-0.4c-0.3-0.3-0.4-0.6-0.4-0.9V144c0-0.4,0.1-0.7,0.4-0.9c0.3-0.3,0.6-0.4,0.9-0.4h3.7l5.9-8
+			c0.3-0.4,0.7-0.6,1.1-0.7c0.5-0.1,0.9,0,1.3,0.3c0.4,0.3,0.6,0.7,0.7,1.1c0.1,0.5,0,0.9-0.3,1.3l-4.4,6h12.9l-4.4-6
+			c-0.3-0.4-0.4-0.8-0.3-1.3c0.1-0.5,0.3-0.9,0.7-1.1c0.4-0.3,0.8-0.4,1.3-0.3c0.5,0.1,0.9,0.3,1.1,0.7l5.9,8h3.7
+			c0.4,0,0.7,0.1,0.9,0.4c0.3,0.3,0.4,0.6,0.4,0.9V144.9z M697.7,147.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4
+			s-0.7,0.1-0.9,0.4c-0.3,0.3-0.4,0.6-0.4,0.9v6.1c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4
+			c0.3-0.3,0.4-0.6,0.4-0.9V147.5z M703.8,147.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4s-0.7,0.1-0.9,0.4
+			c-0.3,0.3-0.4,0.6-0.4,0.9v6.1c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4c0.3-0.3,0.4-0.6,0.4-0.9V147.5z
+			 M709.9,147.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4s-0.7,0.1-0.9,0.4c-0.3,0.3-0.4,0.6-0.4,0.9v6.1
+			c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4c0.3-0.3,0.4-0.6,0.4-0.9V147.5z"/>
+	</g>
+</g>
+<g id="XMLID_81_">
+	<circle id="XMLID_88_" fill="#FFFFFF" cx="147.6" cy="151.9" r="26.6"/>
+	<g id="XMLID_82_">
+		<path id="XMLID_83_" fill="#FAB718" d="M163.2,149.9c0,0.4-0.1,0.7-0.4,0.9c-0.3,0.3-0.6,0.4-0.9,0.4h-0.4l-1.4,10
+			c-0.1,0.7-0.4,1.2-0.9,1.6c-0.5,0.4-1.1,0.6-1.7,0.6h-19.9c-0.7,0-1.2-0.2-1.7-0.6c-0.5-0.4-0.8-1-0.9-1.6l-1.4-10H133
+			c-0.4,0-0.7-0.1-0.9-0.4c-0.3-0.3-0.4-0.6-0.4-0.9V149c0-0.4,0.1-0.7,0.4-0.9c0.3-0.3,0.6-0.4,0.9-0.4h3.7l5.9-8
+			c0.3-0.4,0.7-0.6,1.1-0.7c0.5-0.1,0.9,0,1.3,0.3c0.4,0.3,0.6,0.7,0.7,1.1c0.1,0.5,0,0.9-0.3,1.3l-4.4,6h12.9l-4.4-6
+			c-0.3-0.4-0.4-0.8-0.3-1.3c0.1-0.5,0.3-0.9,0.7-1.1c0.4-0.3,0.8-0.4,1.3-0.3c0.5,0.1,0.9,0.3,1.1,0.7l5.9,8h3.7
+			c0.4,0,0.7,0.1,0.9,0.4c0.3,0.3,0.4,0.6,0.4,0.9V149.9z M142.7,152.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4
+			s-0.7,0.1-0.9,0.4c-0.3,0.3-0.4,0.6-0.4,0.9v6.1c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4
+			c0.3-0.3,0.4-0.6,0.4-0.9V152.5z M148.8,152.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4s-0.7,0.1-0.9,0.4
+			c-0.3,0.3-0.4,0.6-0.4,0.9v6.1c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4c0.3-0.3,0.4-0.6,0.4-0.9V152.5z
+			 M154.9,152.5c0-0.4-0.1-0.7-0.4-0.9c-0.3-0.3-0.6-0.4-0.9-0.4s-0.7,0.1-0.9,0.4c-0.3,0.3-0.4,0.6-0.4,0.9v6.1
+			c0,0.4,0.1,0.7,0.4,0.9c0.3,0.3,0.6,0.4,0.9,0.4s0.7-0.1,0.9-0.4c0.3-0.3,0.4-0.6,0.4-0.9V152.5z"/>
+	</g>
+</g>
+<g id="XMLID_31_">
+	<circle id="XMLID_20_" fill="#FFFFFF" cx="453.5" cy="122.8" r="20.3"/>
+	<g id="XMLID_18_">
+		<path id="XMLID_21_" fill="#FAB718" d="M464.6,121.2c0,0.3-0.1,0.5-0.3,0.7c-0.2,0.2-0.4,0.3-0.7,0.3h-0.3l-1,7.1
+			c-0.1,0.5-0.3,0.9-0.6,1.2c-0.4,0.3-0.8,0.4-1.2,0.4h-14.2c-0.5,0-0.9-0.1-1.2-0.4c-0.4-0.3-0.6-0.7-0.6-1.2l-1-7.1h-0.3
+			c-0.3,0-0.5-0.1-0.7-0.3c-0.2-0.2-0.3-0.4-0.3-0.7v-0.6c0-0.3,0.1-0.5,0.3-0.7c0.2-0.2,0.4-0.3,0.7-0.3h2.6l4.2-5.7
+			c0.2-0.3,0.5-0.5,0.8-0.5c0.3-0.1,0.7,0,0.9,0.2c0.3,0.2,0.5,0.5,0.5,0.8c0.1,0.3,0,0.7-0.2,0.9l-3.1,4.3h9.2l-3.1-4.3
+			c-0.2-0.3-0.3-0.6-0.2-0.9c0.1-0.3,0.2-0.6,0.5-0.8c0.3-0.2,0.6-0.3,0.9-0.2c0.3,0.1,0.6,0.2,0.8,0.5l4.2,5.7h2.6
+			c0.3,0,0.5,0.1,0.7,0.3c0.2,0.2,0.3,0.4,0.3,0.7V121.2z M450,123c0-0.3-0.1-0.5-0.3-0.7c-0.2-0.2-0.4-0.3-0.7-0.3
+			s-0.5,0.1-0.7,0.3c-0.2,0.2-0.3,0.4-0.3,0.7v4.4c0,0.3,0.1,0.5,0.3,0.7c0.2,0.2,0.4,0.3,0.7,0.3s0.5-0.1,0.7-0.3
+			c0.2-0.2,0.3-0.4,0.3-0.7V123z M454.3,123c0-0.3-0.1-0.5-0.3-0.7c-0.2-0.2-0.4-0.3-0.7-0.3s-0.5,0.1-0.7,0.3
+			c-0.2,0.2-0.3,0.4-0.3,0.7v4.4c0,0.3,0.1,0.5,0.3,0.7c0.2,0.2,0.4,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7V123z
+			 M458.7,123c0-0.3-0.1-0.5-0.3-0.7c-0.2-0.2-0.4-0.3-0.7-0.3s-0.5,0.1-0.7,0.3c-0.2,0.2-0.3,0.4-0.3,0.7v4.4
+			c0,0.3,0.1,0.5,0.3,0.7c0.2,0.2,0.4,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7V123z"/>
+	</g>
+</g>
+<g id="XMLID_65_">
+	<circle id="XMLID_72_" fill="#FFFFFF" cx="993.1" cy="168.1" r="24.9"/>
+	<g id="XMLID_66_">
+		<path id="XMLID_67_" fill="#FAB718" d="M1006.8,166.2c0,0.3-0.1,0.6-0.3,0.8c-0.2,0.2-0.5,0.3-0.8,0.3h-0.4l-1.2,8.8
+			c-0.1,0.6-0.4,1-0.8,1.4c-0.4,0.4-0.9,0.6-1.5,0.6h-17.5c-0.6,0-1.1-0.2-1.5-0.6c-0.4-0.4-0.7-0.8-0.8-1.4l-1.2-8.8h-0.4
+			c-0.3,0-0.6-0.1-0.8-0.3c-0.2-0.2-0.3-0.5-0.3-0.8v-0.8c0-0.3,0.1-0.6,0.3-0.8c0.2-0.2,0.5-0.3,0.8-0.3h3.2l5.1-7.1
+			c0.3-0.4,0.6-0.6,1-0.6c0.4-0.1,0.8,0,1.2,0.3c0.4,0.3,0.6,0.6,0.6,1c0.1,0.4,0,0.8-0.3,1.2l-3.8,5.2h11.3l-3.8-5.2
+			c-0.3-0.4-0.4-0.7-0.3-1.2c0.1-0.4,0.3-0.8,0.6-1c0.4-0.3,0.7-0.4,1.2-0.3c0.4,0.1,0.8,0.3,1,0.6l5.1,7.1h3.2
+			c0.3,0,0.6,0.1,0.8,0.3c0.2,0.2,0.3,0.5,0.3,0.8V166.2z M988.8,168.5c0-0.3-0.1-0.6-0.3-0.8c-0.2-0.2-0.5-0.3-0.8-0.3
+			s-0.6,0.1-0.8,0.3c-0.2,0.2-0.3,0.5-0.3,0.8v5.4c0,0.3,0.1,0.6,0.3,0.8c0.2,0.2,0.5,0.3,0.8,0.3s0.6-0.1,0.8-0.3
+			c0.2-0.2,0.3-0.5,0.3-0.8V168.5z M994.2,168.5c0-0.3-0.1-0.6-0.3-0.8c-0.2-0.2-0.5-0.3-0.8-0.3c-0.3,0-0.6,0.1-0.8,0.3
+			c-0.2,0.2-0.3,0.5-0.3,0.8v5.4c0,0.3,0.1,0.6,0.3,0.8c0.2,0.2,0.5,0.3,0.8,0.3c0.3,0,0.6-0.1,0.8-0.3c0.2-0.2,0.3-0.5,0.3-0.8
+			V168.5z M999.5,168.5c0-0.3-0.1-0.6-0.3-0.8c-0.2-0.2-0.5-0.3-0.8-0.3c-0.3,0-0.6,0.1-0.8,0.3c-0.2,0.2-0.3,0.5-0.3,0.8v5.4
+			c0,0.3,0.1,0.6,0.3,0.8c0.2,0.2,0.5,0.3,0.8,0.3c0.3,0,0.6-0.1,0.8-0.3c0.2-0.2,0.3-0.5,0.3-0.8V168.5z"/>
+	</g>
+</g>
+<g id="XMLID_33_">
+	<circle id="XMLID_40_" fill="#FFFFFF" cx="392.9" cy="52.3" r="15.7"/>
+	<g id="XMLID_34_">
+		<path id="XMLID_35_" fill="#FAB718" d="M401.6,51.1c0,0.2-0.1,0.4-0.2,0.5c-0.1,0.1-0.3,0.2-0.5,0.2h-0.2l-0.8,5.5
+			c-0.1,0.4-0.2,0.7-0.5,0.9c-0.3,0.2-0.6,0.3-1,0.3h-11c-0.4,0-0.7-0.1-1-0.3c-0.3-0.2-0.4-0.5-0.5-0.9l-0.8-5.5h-0.2
+			c-0.2,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.2-0.3-0.2-0.5v-0.5c0-0.2,0.1-0.4,0.2-0.5c0.1-0.1,0.3-0.2,0.5-0.2h2l3.2-4.5
+			c0.2-0.2,0.4-0.4,0.6-0.4c0.3,0,0.5,0,0.7,0.2c0.2,0.2,0.4,0.4,0.4,0.6c0,0.3,0,0.5-0.2,0.7l-2.4,3.3h7.1l-2.4-3.3
+			c-0.2-0.2-0.2-0.5-0.2-0.7c0-0.3,0.2-0.5,0.4-0.6c0.2-0.2,0.5-0.2,0.7-0.2c0.3,0,0.5,0.2,0.6,0.4l3.2,4.5h2c0.2,0,0.4,0.1,0.5,0.2
+			c0.1,0.1,0.2,0.3,0.2,0.5V51.1z M390.2,52.5c0-0.2-0.1-0.4-0.2-0.5c-0.1-0.1-0.3-0.2-0.5-0.2s-0.4,0.1-0.5,0.2
+			c-0.1,0.1-0.2,0.3-0.2,0.5v3.4c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5V52.5z
+			 M393.6,52.5c0-0.2-0.1-0.4-0.2-0.5c-0.1-0.1-0.3-0.2-0.5-0.2s-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.5v3.4
+			c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5V52.5z M397,52.5c0-0.2-0.1-0.4-0.2-0.5
+			c-0.1-0.1-0.3-0.2-0.5-0.2s-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.5v3.4c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2
+			s0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5V52.5z"/>
+	</g>
+</g>
+<g id="XMLID_41_">
+	<circle id="XMLID_48_" fill="#FFFFFF" cx="254.9" cy="91.3" r="15.7"/>
+	<g id="XMLID_42_">
+		<path id="XMLID_43_" fill="#FAB718" d="M263.6,90.1c0,0.2-0.1,0.4-0.2,0.5c-0.1,0.1-0.3,0.2-0.5,0.2h-0.2l-0.8,5.5
+			c-0.1,0.4-0.2,0.7-0.5,0.9c-0.3,0.2-0.6,0.3-1,0.3h-11c-0.4,0-0.7-0.1-1-0.3c-0.3-0.2-0.4-0.5-0.5-0.9l-0.8-5.5h-0.2
+			c-0.2,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.2-0.3-0.2-0.5v-0.5c0-0.2,0.1-0.4,0.2-0.5c0.1-0.1,0.3-0.2,0.5-0.2h2l3.2-4.5
+			c0.2-0.2,0.4-0.4,0.6-0.4c0.3,0,0.5,0,0.7,0.2c0.2,0.2,0.4,0.4,0.4,0.6c0,0.3,0,0.5-0.2,0.7l-2.4,3.3h7.1l-2.4-3.3
+			c-0.2-0.2-0.2-0.5-0.2-0.7c0-0.3,0.2-0.5,0.4-0.6c0.2-0.2,0.5-0.2,0.7-0.2c0.3,0,0.5,0.2,0.6,0.4l3.2,4.5h2c0.2,0,0.4,0.1,0.5,0.2
+			c0.1,0.1,0.2,0.3,0.2,0.5V90.1z M252.2,91.5c0-0.2-0.1-0.4-0.2-0.5c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2
+			c-0.1,0.1-0.2,0.3-0.2,0.5v3.4c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5
+			V91.5z M255.6,91.5c0-0.2-0.1-0.4-0.2-0.5c-0.1-0.1-0.3-0.2-0.5-0.2s-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.5v3.4
+			c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2s0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5V91.5z M259,91.5c0-0.2-0.1-0.4-0.2-0.5
+			c-0.1-0.1-0.3-0.2-0.5-0.2s-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.5v3.4c0,0.2,0.1,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2
+			s0.4-0.1,0.5-0.2c0.1-0.1,0.2-0.3,0.2-0.5V91.5z"/>
+	</g>
+</g>
+<g id="XMLID_49_">
+	<circle id="XMLID_56_" fill="#FFFFFF" cx="325.4" cy="146.8" r="12.2"/>
+	<g id="XMLID_50_">
+		<path id="XMLID_51_" fill="#FAB718" d="M332.1,145.9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2h-0.2l-0.6,4.3
+			c0,0.3-0.2,0.5-0.4,0.7c-0.2,0.2-0.5,0.3-0.7,0.3h-8.5c-0.3,0-0.5-0.1-0.7-0.3c-0.2-0.2-0.3-0.4-0.4-0.7l-0.6-4.3h-0.2
+			c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-0.4c0-0.2,0.1-0.3,0.2-0.4c0.1-0.1,0.2-0.2,0.4-0.2h1.6l2.5-3.5
+			c0.1-0.2,0.3-0.3,0.5-0.3c0.2,0,0.4,0,0.6,0.1c0.2,0.1,0.3,0.3,0.3,0.5c0,0.2,0,0.4-0.1,0.6l-1.9,2.6h5.5l-1.9-2.6
+			c-0.1-0.2-0.2-0.4-0.1-0.6c0-0.2,0.1-0.4,0.3-0.5c0.2-0.1,0.4-0.2,0.6-0.1c0.2,0,0.4,0.1,0.5,0.3l2.5,3.5h1.6
+			c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4V145.9z M323.3,147c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2
+			c-0.2,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2
+			c0.1-0.1,0.2-0.2,0.2-0.4V147z M325.9,147c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2c-0.2,0-0.3,0.1-0.4,0.2
+			c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V147
+			z M328.6,147c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2s-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6
+			c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2s0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V147z"/>
+	</g>
+</g>
+<g id="XMLID_89_">
+	<circle id="XMLID_96_" fill="#FFFFFF" cx="54.4" cy="197.8" r="12.2"/>
+	<g id="XMLID_90_">
+		<path id="XMLID_91_" fill="#FAB718" d="M61.1,196.9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2h-0.2l-0.6,4.3
+			c0,0.3-0.2,0.5-0.4,0.7c-0.2,0.2-0.5,0.3-0.7,0.3h-8.5c-0.3,0-0.5-0.1-0.7-0.3c-0.2-0.2-0.3-0.4-0.4-0.7l-0.6-4.3h-0.2
+			c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-0.4c0-0.2,0.1-0.3,0.2-0.4c0.1-0.1,0.2-0.2,0.4-0.2h1.6l2.5-3.5
+			c0.1-0.2,0.3-0.3,0.5-0.3c0.2,0,0.4,0,0.6,0.1c0.2,0.1,0.3,0.3,0.3,0.5c0,0.2,0,0.4-0.1,0.6l-1.9,2.6h5.5l-1.9-2.6
+			c-0.1-0.2-0.2-0.4-0.1-0.6c0-0.2,0.1-0.4,0.3-0.5c0.2-0.1,0.4-0.2,0.6-0.1c0.2,0,0.4,0.1,0.5,0.3l2.5,3.5h1.6
+			c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4V196.9z M52.3,198c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2
+			c-0.2,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2
+			c0.1-0.1,0.2-0.2,0.2-0.4V198z M54.9,198c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2c-0.2,0-0.3,0.1-0.4,0.2
+			c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V198
+			z M57.6,198c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2s-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6
+			c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2s0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V198z"/>
+	</g>
+</g>
+<g id="XMLID_57_">
+	<circle id="XMLID_64_" fill="#FFFFFF" cx="830.4" cy="112.8" r="12.2"/>
+	<g id="XMLID_58_">
+		<path id="XMLID_59_" fill="#FAB718" d="M837.1,111.9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2h-0.2l-0.6,4.3
+			c0,0.3-0.2,0.5-0.4,0.7c-0.2,0.2-0.5,0.3-0.7,0.3h-8.5c-0.3,0-0.5-0.1-0.7-0.3c-0.2-0.2-0.3-0.4-0.4-0.7l-0.6-4.3h-0.2
+			c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-0.4c0-0.2,0.1-0.3,0.2-0.4c0.1-0.1,0.2-0.2,0.4-0.2h1.6l2.5-3.5
+			c0.1-0.2,0.3-0.3,0.5-0.3c0.2,0,0.4,0,0.6,0.1c0.2,0.1,0.3,0.3,0.3,0.5c0,0.2,0,0.4-0.1,0.6l-1.9,2.6h5.5l-1.9-2.6
+			c-0.1-0.2-0.2-0.4-0.1-0.6c0-0.2,0.1-0.4,0.3-0.5c0.2-0.1,0.4-0.2,0.6-0.1c0.2,0,0.4,0.1,0.5,0.3l2.5,3.5h1.6
+			c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4V111.9z M828.3,113c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2
+			s-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2s0.3-0.1,0.4-0.2
+			c0.1-0.1,0.2-0.2,0.2-0.4V113z M830.9,113c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2s-0.3,0.1-0.4,0.2
+			c-0.1,0.1-0.2,0.2-0.2,0.4v2.6c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2s0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V113z
+			 M833.6,113c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.2-0.2-0.4-0.2c-0.2,0-0.3,0.1-0.4,0.2c-0.1,0.1-0.2,0.2-0.2,0.4v2.6
+			c0,0.2,0.1,0.3,0.2,0.4c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2c0.1-0.1,0.2-0.2,0.2-0.4V113z"/>
+	</g>
+</g>
+<g id="XMLID_73_">
+	<circle id="XMLID_80_" fill="#FFFFFF" cx="1109.4" cy="112.8" r="18.2"/>
+	<g id="XMLID_74_">
+		<path id="XMLID_75_" fill="#FAB718" d="M1119.5,111.4c0,0.2-0.1,0.4-0.2,0.6c-0.2,0.2-0.4,0.2-0.6,0.2h-0.3l-0.9,6.4
+			c-0.1,0.4-0.3,0.8-0.6,1c-0.3,0.3-0.7,0.4-1.1,0.4H1103c-0.4,0-0.8-0.1-1.1-0.4c-0.3-0.3-0.5-0.6-0.6-1l-0.9-6.4h-0.3
+			c-0.2,0-0.4-0.1-0.6-0.2c-0.2-0.2-0.2-0.4-0.2-0.6v-0.6c0-0.2,0.1-0.4,0.2-0.6c0.2-0.2,0.4-0.2,0.6-0.2h2.4l3.8-5.2
+			c0.2-0.3,0.4-0.4,0.7-0.5c0.3,0,0.6,0,0.8,0.2c0.3,0.2,0.4,0.4,0.5,0.7c0,0.3,0,0.6-0.2,0.8l-2.8,3.8h8.3l-2.8-3.8
+			c-0.2-0.3-0.3-0.5-0.2-0.8c0-0.3,0.2-0.5,0.5-0.7c0.3-0.2,0.5-0.3,0.8-0.2c0.3,0,0.6,0.2,0.7,0.5l3.8,5.2h2.4
+			c0.2,0,0.4,0.1,0.6,0.2c0.2,0.2,0.2,0.4,0.2,0.6V111.4z M1106.3,113.1c0-0.2-0.1-0.4-0.2-0.6c-0.2-0.2-0.4-0.2-0.6-0.2
+			c-0.2,0-0.4,0.1-0.6,0.2c-0.2,0.2-0.2,0.4-0.2,0.6v3.9c0,0.2,0.1,0.4,0.2,0.6c0.2,0.2,0.4,0.2,0.6,0.2c0.2,0,0.4-0.1,0.6-0.2
+			c0.2-0.2,0.2-0.4,0.2-0.6V113.1z M1110.2,113.1c0-0.2-0.1-0.4-0.2-0.6c-0.2-0.2-0.4-0.2-0.6-0.2s-0.4,0.1-0.6,0.2
+			c-0.2,0.2-0.2,0.4-0.2,0.6v3.9c0,0.2,0.1,0.4,0.2,0.6c0.2,0.2,0.4,0.2,0.6,0.2s0.4-0.1,0.6-0.2c0.2-0.2,0.2-0.4,0.2-0.6V113.1z
+			 M1114.1,113.1c0-0.2-0.1-0.4-0.2-0.6c-0.2-0.2-0.4-0.2-0.6-0.2c-0.2,0-0.4,0.1-0.6,0.2c-0.2,0.2-0.2,0.4-0.2,0.6v3.9
+			c0,0.2,0.1,0.4,0.2,0.6c0.2,0.2,0.4,0.2,0.6,0.2c0.2,0,0.4-0.1,0.6-0.2c0.2-0.2,0.2-0.4,0.2-0.6V113.1z"/>
 	</g>
 </g>
 </svg>
